@@ -1,5 +1,7 @@
 # Zow
 
+View project proposal (here)[documentation/proposal.pdf).
+
 Project for UCLA Computer Science 130 (Software Engineering) with Professor Miryung Kim and TA Sneha Shankar.
 
 ## Running Zow
