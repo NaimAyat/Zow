@@ -1,14 +1,14 @@
-import * as http from 'http';
+import Koa from "koa";
 
-const hostname = '0.0.0.0';
-const port = 3000;
+const app = new Koa();
 
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello, world!');
+app.use(async ctx => {
+  ctx.body = "Hello, world!";
 });
 
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+const hostname = "0.0.0.0";
+const port = 3000;
+
+app.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
 });
