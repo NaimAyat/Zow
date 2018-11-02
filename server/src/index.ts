@@ -1,10 +1,6 @@
 import Koa from "koa";
 
-const app = new Koa();
-
-app.use(async ctx => {
-  ctx.body = "Hello, world!";
-});
+import app from "./handlers";
 
 const hostname = "0.0.0.0";
 const port = 3000;
