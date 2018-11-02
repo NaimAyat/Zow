@@ -4,6 +4,9 @@ services:
     build: ./client/
   server:
     build: ./server/
+  mongodb:
+    image: mongo
+    container_name: "mongodb"
   proxy:
     build: ./proxy/
     ports:
