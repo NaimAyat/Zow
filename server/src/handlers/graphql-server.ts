@@ -1,9 +1,33 @@
 import { ApolloServer, gql } from "apollo-server-koa";
 
 const typeDefs = gql`
-  type Query {
-    hello: String
-    time: Int
+  type User {
+    id: Int!
+    username: String
+  }
+
+  type Question {
+    id: Int!
+    prompt: String
+  }
+
+  type Answer {
+    id: Int!
+    question: Question
+    answer: String
+  }
+
+  type Response {
+    id: Int!
+    respondent: String
+    answers: [Answer]
+  }
+
+  type Form {
+    id: Int!
+    author: User
+    questions: [Question]
+    responses: [Response]
   }
 `;
 
