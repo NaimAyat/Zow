@@ -1,33 +1,50 @@
 import { ApolloServer, gql } from "apollo-server-koa";
 
 const typeDefs = gql`
-  type User {
-    id: Int!
-    username: String
+  type Query {
+    user(username: String!): User
+    form(user: User!): Form
   }
 
-  type Question {
-    id: Int!
-    prompt: String
+  type User {
+    id: ID!
+    username: String!
+    forms: [Form]
+  }
+
+  interface Question {
+    id: ID!
+    prompt: String!
+  }
+
+  type ChoiceQuestion implements Question {
+    id: ID!
+    prompt: String!
+    options: [String]!
+  }
+
+  type TextQuestion implements Question {
+    id: ID!
+    prompt: String!
   }
 
   type Answer {
-    id: Int!
-    question: Question
-    answer: String
+    id: ID!
+    question: Question!
+    answer: String!
   }
 
   type Response {
-    id: Int!
-    respondent: String
-    answers: [Answer]
+    id: ID!
+    respondent: String!
+    answers: [Answer]!
   }
 
   type Form {
-    id: Int!
-    author: User
-    questions: [Question]
-    responses: [Response]
+    id: ID!
+    author: [User]!
+    questions: [Question]!
+    responses: [Response]!
   }
 `;
 
