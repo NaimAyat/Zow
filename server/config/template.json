@@ -1,0 +1,6 @@
+{
+  "SENDGRID_API_KEY": "API key for sendgrid",
+  "SENDGRID_FROM_EMAIL": "address to send emails from",
+  "SENDGRID_ENABLE": "should be true or false (boolean value)",
+  "comment": "move this to 'config.json', fill in values, and delete this comment field"
+}
