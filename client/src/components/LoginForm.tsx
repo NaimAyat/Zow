@@ -20,34 +20,29 @@ const LoginForm = () => (
           Log in to your account
         </Header>
         <Form size="large">
-          <Segment stacked={true}>
+          <Segment stacked>
             <Form.Input
-              fluid={true}
+              fluid
               icon="user"
               iconPosition="left"
               placeholder="Email address"
             />
             <Form.Input
-              fluid={true}
+              fluid
               icon="lock"
               iconPosition="left"
               placeholder="Password"
               type="password"
             />
 
-            <Button
-              color="black"
-              size="large"
-              icon={true}
-              labelPosition="right"
-            >
-              Login
+            <Button color="black" size="large" icon labelPosition="right">
+              Log In
               <Icon name="arrow right" />
             </Button>
           </Segment>
           <Segment>
             <Header as="h3">New to Zow?</Header>
-            <Button color="blue" size="large" icon={true} labelPosition="right">
+            <Button color="blue" size="large" icon labelPosition="right">
               Sign Up
               <Icon name="arrow right" />
             </Button>
