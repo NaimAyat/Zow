@@ -7,7 +7,7 @@ Project for UCLA Computer Science 130 (Software Engineering) with Professor Miry
 1. Install [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/)
 2. From the project directory run `docker-compose up --build`
 
-Note: Currently the website is running at localhost:8000
+Note: Currently the website is running at localhost:3000
 
 ## Team
 

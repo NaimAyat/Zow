@@ -8,13 +8,7 @@ COPY package.json yarn.lock ./
 RUN yarn
 # copy source
 COPY . .
-# build
-RUN yarn build
 
-## execution container
-FROM nginx:alpine
-
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# start
+EXPOSE 3000
+CMD ["yarn", "start"]
