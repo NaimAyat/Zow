@@ -2,12 +2,16 @@ version: "3"
 services:
   client:
     build: ./client/
+    volumes:
+      - ./client/src:/usr/src/app/src
   server:
     build: ./server/
+    volumes:
+      - ./server/src:/usr/src/app/src
   mongodb:
     image: mongo
     container_name: "mongodb"
   proxy:
     build: ./proxy/
     ports:
-      - "8000:80"
+      - "3000:80"

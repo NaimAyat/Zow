@@ -15,7 +15,7 @@ const App = () => (
           time
         }
       `}
-      pollInterval={3000}
+      pollInterval={1000}
     >
       {({ loading, error, data }) => {
         if (loading) {
@@ -25,7 +25,7 @@ const App = () => (
           return <p>Error: {error.message}</p>;
         }
 
-        return <p>Time: {data.time}</p>;
+        return <p>The time is: {data.time}</p>;
       }}
     </Query>
   </ApolloProvider>
