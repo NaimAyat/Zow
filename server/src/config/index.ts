@@ -42,8 +42,6 @@ class FileConfig {
   public getDbUri() {
     return this.dbUri
   }
-
-  public
 }
 
 export default function getConfig(): IConfig {
