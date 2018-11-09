@@ -4,11 +4,13 @@ import path from "path";
 export interface IConfig {
   getEmailerKey?(): string;
   getEmailerFromAddress?(): string;
+  getDbUri(): string;
 }
 
 class FileConfig {
   private sendGridKey?: string;
   private fromAddress?: string;
+  private dbUri: string;
 
   public load() {
     const configPath = path.join(
@@ -25,6 +27,7 @@ class FileConfig {
         this.sendGridKey = config.SENDGRID_API_KEY;
         this.fromAddress = config.SENDGRID_FROM_EMAIL;
       }
+      this.dbUri = config.DB_URI;
     }
   }
 
@@ -35,6 +38,12 @@ class FileConfig {
   public getEmailerFromAddress() {
     return this.fromAddress;
   }
+
+  public getDbUri() {
+    return this.dbUri
+  }
+
+  public
 }
 
 export default function getConfig(): IConfig {
