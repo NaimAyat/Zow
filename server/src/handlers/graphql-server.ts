@@ -1,4 +1,5 @@
 import { ApolloServer, gql } from "apollo-server-koa";
+import resolvers from "./resolvers";
 
 const typeDefs = gql`
   type Query {
@@ -6,13 +7,6 @@ const typeDefs = gql`
     time: Int
   }
 `;
-
-const resolvers = {
-  Query: {
-    hello: () => "Hello, world!",
-    time: () => Math.floor(new Date().getTime() / 1000)
-  }
-};
 
 const server = new ApolloServer({ typeDefs, resolvers });
 export default server;

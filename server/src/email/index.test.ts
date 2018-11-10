@@ -1,13 +1,20 @@
+import { IConfig } from "../config";
 import getEmailer, { IEmailer } from "./index";
 
 jest.mock("@sendgrid/mail");
 
 describe("getEmailer", () => {
+  let mockConfig: IConfig;
+
   describe("API key is unset", () => {
     let emailer: IEmailer;
 
     beforeEach(() => {
-      emailer = getEmailer(undefined, undefined);
+      mockConfig = {
+        getEmailerFromAddress: () => undefined,
+        getEmailerKey: () => undefined
+      };
+      emailer = getEmailer(mockConfig);
     });
 
     test("it returns an emailer", () => {
@@ -28,7 +35,12 @@ describe("getEmailer", () => {
       sgMail.setApiKey = jest.fn();
       sgMail.send = jest.fn().mockResolvedValue(undefined);
 
-      emailer = getEmailer("APIKEY", "from@example.com");
+      mockConfig = {
+        getEmailerFromAddress: () => "from@example.com",
+        getEmailerKey: () => "APIKEY"
+      };
+
+      emailer = getEmailer(mockConfig);
     });
 
     test("it returns an emailer", () => {
