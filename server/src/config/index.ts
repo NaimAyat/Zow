@@ -6,11 +6,11 @@ export interface IConfig {
   getEmailerFromAddress?(): string;
 }
 
-class FileConfig {
+class FileConfig implements IConfig {
   private sendGridKey?: string;
   private fromAddress?: string;
 
-  public load() {
+  constructor() {
     const configPath = path.join(
       __dirname,
       "..",
@@ -37,8 +37,7 @@ class FileConfig {
   }
 }
 
-export default function getConfig(): IConfig {
+export default function getDefaultConfig(): IConfig {
   const config = new FileConfig();
-  config.load();
   return config;
 }

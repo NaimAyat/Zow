@@ -1,4 +1,5 @@
 import sgMail from "@sendgrid/mail";
+import { IConfig } from "../config";
 
 export interface IEmailer {
   send(recipient: string, subject: string, message: string): Promise<void>;
@@ -29,10 +30,9 @@ class SendGridEmailer implements IEmailer {
   }
 }
 
-export default function getEmailer(
-  apiKey?: string,
-  fromEmail?: string
-): IEmailer {
+export default function getEmailer(config: IConfig): IEmailer {
+  const apiKey = config.getEmailerKey();
+  const fromEmail = config.getEmailerFromAddress();
   if (apiKey && fromEmail) {
     return new SendGridEmailer(apiKey, fromEmail);
   }
