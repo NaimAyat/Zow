@@ -4,7 +4,7 @@ import mongoose, {Schema} from 'mongoose';
 let UserSchema : Schema = new Schema({
   name: String,
   email: String,
-  password: String
+  passwordHash: String
 })
 
 // Questions
@@ -28,7 +28,9 @@ let ResponseSchema : Schema = new Schema({
   scoring: {
     score: Number,
     notes: String
+    }
   },
+  {
   timestamps: true
 })
 
@@ -36,7 +38,7 @@ let InterviewSlotSchema: Schema = new Schema({
   start: Date,
   end: Date,
   available: Boolean,
-  email: String
+  intervieweeEmail: String
 })
 
 let FormSchema : Schema = new Schema({
