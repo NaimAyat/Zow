@@ -44,7 +44,22 @@ const typeDefs = gql`
     id: ID!
     author: [User]!
     questions: [Question]!
-    responses: [Response]!
+    responses: [Response]
+    scores: [Scoring]
+    slots: [InterviewSlot]
+  }
+
+  type Scoring {
+    id: ID!
+    user: User!
+    score: Int!
+  }
+
+  type InterviewSlot {
+    id: ID!
+    start: Int!
+    end: Int!
+    claimedBy: User
   }
 `;
 
