@@ -1,5 +1,5 @@
-import { IAnswer } from "./Answer";
-import { IUser } from "./User";
+import { IAnswer } from "./answer";
+import { IUser } from "./user";
 
 interface IScore {
   score: number;
@@ -8,6 +8,7 @@ interface IScore {
 }
 
 export interface IResponse {
+  id: string;
   respondent: string;
   answers: [IAnswer];
   scores: [IScore];

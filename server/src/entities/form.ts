@@ -1,9 +1,10 @@
-import { IInterviewSlot } from "./InterviewSlot";
-import { IQuestion } from "./Question";
-import { IResponse } from "./Response";
-import { IUser } from "./User";
+import { IInterviewSlot } from "./interviewSlot";
+import { IQuestion } from "./question";
+import { IResponse } from "./response";
+import { IUser } from "./user";
 
 export interface IForm {
+  id: string;
   owners: [IUser];
   questions: [IQuestion];
   responses: [IResponse];
