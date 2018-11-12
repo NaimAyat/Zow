@@ -3,8 +3,6 @@ import getConfig from "./config";
 import getEmailer from "./email";
 import app from "./handlers";
 import mongoose from 'mongoose';
-import models from "./models";
-import { log } from "util";
 
 
 const hostname = "0.0.0.0";
