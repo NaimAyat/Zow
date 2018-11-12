@@ -1,18 +1,29 @@
+import { IUser } from "../entities";
+
 export interface IUserService {
-  findUserByUsernameAndPassword(username: string, password: string);
-  findUserById(id: string);
-  newUser(username: string, password: string);
+  findUserByUsernameAndPassword(
+    username: string,
+    password: string
+  ): Promise<IUser>;
+  findUserById(id: string): Promise<IUser>;
+  newUser(username: string, password: string): Promise<IUser>;
 }
 
 class DatabaseUserService implements IUserService {
-  public findUserByUsernameAndPassword(username: string, password: string) {
+  public async findUserByUsernameAndPassword(
+    username: string,
+    password: string
+  ): Promise<IUser> {
     // TODO
+    return null;
   }
-  public findUserById(id: string) {
+  public async findUserById(id: string): Promise<IUser> {
     // TODO
+    return null;
   }
-  public newUser(username: string, password: string) {
+  public async newUser(username: string, password: string): Promise<IUser> {
     // TODO
+    return null;
   }
 }
 
