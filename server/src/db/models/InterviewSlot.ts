@@ -1,7 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
 import { IInterviewSlot } from "../../entities";
 
-const InterviewSlotSchema: Schema = new Schema({
+const InterviewSlotSchema = new mongoose.Schema({
   start: { type: Date, required: true },
   end: { type: Date, required: true },
   available: { type: Boolean, required: true, default: true },

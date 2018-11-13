@@ -1,7 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
 import { IResponse } from "../../entities";
 
-const ResponseSchema: Schema = new Schema(
+const ResponseSchema = new mongoose.Schema(
   {
     respondent: { type: String, required: true },
     answers: {

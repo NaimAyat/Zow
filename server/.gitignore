@@ -2,4 +2,4 @@ dist/
 node_modules/
 yarn-error.log
 coverage/
-config/config.json
+config/private.json

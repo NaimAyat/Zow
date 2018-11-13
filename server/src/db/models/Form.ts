@@ -1,7 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
 import { IForm } from "../../entities";
 
-const FormSchema: Schema = new Schema({
+const FormSchema = new mongoose.Schema({
   owners: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     required: true
