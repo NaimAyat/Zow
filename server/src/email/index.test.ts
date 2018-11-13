@@ -12,7 +12,8 @@ describe("getEmailer", () => {
     beforeEach(() => {
       mockConfig = {
         getEmailerFromAddress: () => undefined,
-        getEmailerKey: () => undefined
+        getEmailerKey: () => undefined,
+        getDbUri: () => ""
       };
       emailer = getEmailer(mockConfig);
     });
@@ -37,7 +38,8 @@ describe("getEmailer", () => {
 
       mockConfig = {
         getEmailerFromAddress: () => "from@example.com",
-        getEmailerKey: () => "APIKEY"
+        getEmailerKey: () => "APIKEY",
+        getDbUri: () => ""
       };
 
       emailer = getEmailer(mockConfig);

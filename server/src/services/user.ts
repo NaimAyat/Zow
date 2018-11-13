@@ -1,4 +1,5 @@
 import { IUser } from "../entities";
+import { User } from "../db/models";
 
 export interface IUserService {
   findUserByUsernameAndPassword(
@@ -18,8 +19,12 @@ class DatabaseUserService implements IUserService {
     return null;
   }
   public async findUserById(id: string): Promise<IUser> {
-    // TODO
-    return null;
+    const user = await User.findById(id);
+    if (!user) {
+      throw new Error("user not found");
+    }
+
+    return user;
   }
   public async newUser(username: string, password: string): Promise<IUser> {
     // TODO

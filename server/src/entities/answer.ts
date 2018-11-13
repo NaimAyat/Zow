@@ -1,7 +1,7 @@
 import { IQuestion } from "./question";
 
 export interface IAnswer {
-  id: string;
+  id?: any;
   question: IQuestion;
   value: string;
 }

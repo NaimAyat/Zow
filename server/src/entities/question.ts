@@ -1,5 +1,5 @@
 export interface IQuestion {
-  id: string;
+  id?: any;
   prompt: string;
   options: [string];
   type: string;
