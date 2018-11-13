@@ -1,7 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
 import { IAnswer } from "../../entities";
 
-const AnswerSchema: Schema = new mongoose.Schema({
+const AnswerSchema = new mongoose.Schema({
   question: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Question",

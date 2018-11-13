@@ -1,14 +1,19 @@
 import { ApolloServer, gql } from "apollo-server-koa";
-import resolvers from "./resolvers";
 
 const typeDefs = gql`
   type Query {
-    form(id: String): Form!
+    currentUser: User
+  }
+
+  type Mutation {
+    login(email: String!, password: String!): Boolean!
+    logout: Boolean
+    newUser(name: String!, email: String!, password: String!): Boolean!
   }
 
   type User {
     id: ID!
-    username: String!
+    email: String!
     forms: [Form]
   }
 
@@ -63,5 +68,15 @@ const typeDefs = gql`
   }
 `;
 
-const server = new ApolloServer({ typeDefs, resolvers });
-export default server;
+export default function getGQLApolloServer(resolvers) {
+  return new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ ctx }) => ctx,
+    playground: {
+      settings: {
+        "request.credentials": "same-origin"
+      }
+    }
+  });
+}

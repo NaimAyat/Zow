@@ -13,7 +13,8 @@ describe("getEmailer", () => {
       mockConfig = {
         getEmailerFromAddress: () => undefined,
         getEmailerKey: () => undefined,
-        getDbUri: () => ""
+        getDbUri: () => "",
+        getSessionSecret: () => ""
       };
       emailer = getEmailer(mockConfig);
     });
@@ -39,7 +40,8 @@ describe("getEmailer", () => {
       mockConfig = {
         getEmailerFromAddress: () => "from@example.com",
         getEmailerKey: () => "APIKEY",
-        getDbUri: () => ""
+        getDbUri: () => "",
+        getSessionSecret: () => ""
       };
 
       emailer = getEmailer(mockConfig);

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
 import { IQuestion } from "../../entities";
 
 const questionTypes = [
@@ -13,7 +13,7 @@ const questionTypes = [
 ];
 
 // TODO move those enum values to constants somewhere
-const QuestionSchema: Schema = new Schema({
+const QuestionSchema = new mongoose.Schema({
   prompt: { type: String, required: true },
   options: { type: [String] },
   type: { type: String, enum: questionTypes, required: true }
