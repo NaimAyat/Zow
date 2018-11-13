@@ -1,0 +1,8 @@
+/* All the elements in LoginForm `Grid`
+   must have a height of 100%. */
+
+body > div,
+body > div > div,
+body > div > div > div.login-form {
+  height: 100%;
+}
