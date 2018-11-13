@@ -3,8 +3,7 @@ import resolvers from "./resolvers";
 
 const typeDefs = gql`
   type Query {
-    user(username: String!): User
-    form(user: User!): Form
+    form(id: String): Form!
   }
 
   type User {

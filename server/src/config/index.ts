@@ -40,7 +40,7 @@ class FileConfig implements IConfig {
   }
 
   public getDbUri() {
-    return this.dbUri
+    return this.dbUri;
   }
 }
 

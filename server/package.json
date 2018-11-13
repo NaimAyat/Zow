@@ -6,12 +6,10 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
-    "build": "npm run build-ts",
+    "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "concurrently \"npm run watch-ts\" \"npm run watch-node\"",
-    "build-ts": "tsc",
-    "watch-ts": "tsc -w",
-    "watch-node": "nodemon dist/index.js"
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/index.js\"",
+    "lint": "tslint-config-prettier-check ./tslint.json"
   },
   "repository": {
     "type": "git",
@@ -26,6 +24,7 @@
     "@types/graphql": "^14.0.3",
     "@types/jest": "^23.3.9",
     "@types/koa": "^2.0.46",
+    "@types/mongoose": "^5.3.1",
     "@types/node": "^10.12.3",
     "@types/supertest": "^2.0.6",
     "concurrently": "^4.0.1",
@@ -39,7 +38,9 @@
   },
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",
+    "@types/bcrypt": "^3.0.0",
     "apollo-server-koa": "2.2.0-alpha.1",
+    "bcrypt": "^3.0.2",
     "graphql": "^14.0.2",
     "koa": "^2.6.1",
     "mongoose": "^5.3.10"

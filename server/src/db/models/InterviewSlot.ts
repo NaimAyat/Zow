@@ -1,12 +1,16 @@
-import mongoose, {Schema} from 'mongoose';
-let Schema = mongoose.Schema
+import mongoose, { Schema, Document } from "mongoose";
+import { IInterviewSlot } from "../../entities";
 
-let InterviewSlotSchema: Schema = new Schema({
-  start: {type: Date, required: true},
-  end: {type: Date, required: true},
-  available: {type: Boolean, required: true, default: true},
-  intervieweeEmail: {type: String}
-})
+const InterviewSlotSchema: Schema = new Schema({
+  start: { type: Date, required: true },
+  end: { type: Date, required: true },
+  available: { type: Boolean, required: true, default: true },
+  intervieweeEmail: { type: String }
+});
 
-const InterviewSlot = mongoose.model('InterviewSlot', InterviewSlotSchema)
-export default InterviewSlot
+interface IInterviewSlotModel extends IInterviewSlot, Document {}
+const InterviewSlot = mongoose.model<IInterviewSlotModel>(
+  "InterviewSlot",
+  InterviewSlotSchema
+);
+export default InterviewSlot;

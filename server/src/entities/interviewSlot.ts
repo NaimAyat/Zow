@@ -1,5 +1,5 @@
 export interface IInterviewSlot {
-  id: string;
+  id?: any;
   start: Date;
   end: Date;
   available: boolean;

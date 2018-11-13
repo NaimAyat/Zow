@@ -8,7 +8,7 @@ interface IScore {
 }
 
 export interface IResponse {
-  id: string;
+  id?: any;
   respondent: string;
   answers: [IAnswer];
   scores: [IScore];

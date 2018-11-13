@@ -4,7 +4,7 @@ import { IResponse } from "./response";
 import { IUser } from "./user";
 
 export interface IForm {
-  id: string;
+  id?: any;
   owners: [IUser];
   questions: [IQuestion];
   responses: [IResponse];

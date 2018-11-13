@@ -1,21 +1,23 @@
-import mongoose from 'mongoose'
-import * as models from './models';
-import { IConfig } from '../config';
+import { IConfig } from "../config";
+import * as models from "./models";
+import mongoose from "mongoose";
 
-export {models}
+export { models };
 
 export function connectDb(config: IConfig): void {
-  mongoose.connect(config.getDbUri(),(err) => {
-    if (err){
-      console.log(err)
+  mongoose.connect(
+    config.getDbUri(),
+    err => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Connected to MongoDB");
+      }
     }
-    else {
-      console.log('Connected to MongoDB')
-    }
-  })
+  );
 }
 
 export default {
   models,
   connectDb
-}
+};
