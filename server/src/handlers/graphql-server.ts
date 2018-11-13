@@ -71,6 +71,11 @@ export default function getGQLApolloServer(resolvers) {
   return new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ ctx }) => ctx
+    context: ({ ctx }) => ctx,
+    playground: {
+      settings: {
+        "request.credentials": "same-origin"
+      }
+    }
   });
 }
