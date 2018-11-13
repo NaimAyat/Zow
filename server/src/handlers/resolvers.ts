@@ -16,17 +16,7 @@ export default function getResolvers(authService: IAuthorizationService) {
       async forms(parent, args, ctx) {
         const { user } = args;
         return await formService.getFormsByUser(ctx, user);
-      },
-      async questions(parent, args, ctx) {
-        const { formID } = args;
-        return await formService.getQuestions(ctx, formID);
-      },
-      async responses(parent, args, ctx) {
-        const { formID } = args;
-        return await formService.getResponses(ctx, formID);
-      },
-
-
+      }
     },
     Mutation: {
       // Authentication Service
@@ -54,6 +44,15 @@ export default function getResolvers(authService: IAuthorizationService) {
         const { formID, userID } = args;
         return await formService.addOwner(ctx, formID, userID);
       }
+    }
+
+    Form: {
+      async questions(form) {
+        return await formService.getQuestions(ctx, form.id);
+      },
+      async responses(form) {
+        return await formService.getResponses(ctx, form.id);
+      },
     }
   };
 }
