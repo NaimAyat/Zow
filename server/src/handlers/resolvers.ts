@@ -9,14 +9,17 @@ export default function getResolvers(authService: IAuthorizationService) {
       }
     },
     Mutation: {
-      async login(parent, args, ctx) {
+      async login(parent, args, ctx): Promise<boolean> {
         const { email, password } = args;
         return await authService.login(ctx, args.email, args.password);
       },
-
-      async newUser(parent, args, ctx) {
+      async newUser(parent, args, ctx): Promise<boolean> {
         const { name, email, password } = args;
         return await authService.newUser(ctx, name, email, password);
+      },
+      async logout(parent, args, ctx): Promise<boolean> {
+        await authService.logout(ctx);
+        return true;
       }
     }
   };

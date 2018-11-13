@@ -11,6 +11,7 @@ export interface IAuthorizationService {
     password: string
   ): Promise<boolean>;
   login(ctx: Koa.Context, email: string, password: string): Promise<boolean>;
+  logout(ctx: Koa.Context): Promise<void>;
 }
 
 class SessionAuthorizationService implements IAuthorizationService {
@@ -53,6 +54,10 @@ class SessionAuthorizationService implements IAuthorizationService {
 
     ctx.session.user = null;
     return false; // failed to login
+  }
+
+  public async logout(ctx: Koa.Context): Promise<void> {
+    ctx.session.user = null;
   }
 }
 
