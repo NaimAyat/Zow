@@ -7,7 +7,7 @@ export interface IEncryptService {
   hashPassword(password: string): Promise<string>;
 }
 
-class BcryptAuthService implements IEncryptService {
+class BcryptEncryptService implements IEncryptService {
   public async testPassword(
     password: string,
     passwordHash: string
@@ -21,5 +21,5 @@ class BcryptAuthService implements IEncryptService {
 }
 
 export default function getDefaultEncryptService(): IEncryptService {
-  return new BcryptAuthService();
+  return new BcryptEncryptService();
 }
