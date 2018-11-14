@@ -1,14 +1,15 @@
 import { IForm, IResponse, IUser, IQuestion } from "../entities";
+import { Context } from "koa";
 
 export interface IFormService {
   // Accessors
-  getFormByID(id: string): Promise<IForm>;
-  getFormsByUser(user: IUser): Promise<[IForm]>;
-  getQuestions(formID: string): Promise<[IQuestion]>;
-  getResponses(formID: string): Promise<[IResponse]>;
-  //Mutators
-  saveForm(form: IForm): Promise<void>;
-  createNewForm(author: IUser): Promise<IForm>;
-  addResponse(formID: string, response: IResponse): Promise<void>;
-  addOwner(formID: string, newOwner: IUser): Promise<void>;
+  getFormByID(ctx: Context, id: string): Promise<IForm>;
+  getFormsByUser(ctx: Context, user: IUser): Promise<[IForm]>;
+  getQuestions(ctx: Context, formID: string): Promise<[IQuestion]>;
+  getResponses(ctx: Context, formID: string): Promise<[IResponse]>;
+  // Mutators
+  saveForm(ctx: Context, form: IForm): Promise<void>;
+  createNewForm(ctx: Context, author: IUser): Promise<IForm>;
+  addResponse(ctx: Context, formID: string, answers: [string]): Promise<void>;
+  addOwner(ctx: Context, formID: string, newOwner: IUser): Promise<void>;
 }

@@ -65,7 +65,7 @@ class FileConfig implements IConfig {
   }
 
   public getSessionSecret() {
-    return this.sessionSecret;
+    return this.sessionSecret || "";
   }
 }
 
