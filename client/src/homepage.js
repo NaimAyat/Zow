@@ -95,7 +95,7 @@ class DesktopContainer extends Component {
                 <Menu.Item as='a'>About Us</Menu.Item>
                 <Menu.Item position='right'>
                   <Button as='a' inverted={!fixed}>
-                    Log in
+                    Login
                   </Button>
                   <Button as='a' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
                     Sign Up
@@ -140,7 +140,7 @@ class MobileContainer extends Component {
               Zow
             </Menu.Item>
             <Menu.Item as='a'>About Us</Menu.Item>
-            <Menu.Item as='a'>Log in</Menu.Item>
+            <Menu.Item as='a'>Login</Menu.Item>
             <Menu.Item as='a'>Sign Up</Menu.Item>
           </Sidebar>
 
@@ -162,7 +162,7 @@ class MobileContainer extends Component {
                   </Menu.Item>
                   <Menu.Item position='right'>
                     <Button as='a' inverted>
-                      Log in
+                      Login
                     </Button>
                     <Button as='a' inverted style={{ marginLeft: '0.5em' }}>
                       Sign Up
@@ -234,8 +234,8 @@ const HomepageLayout = () => (
             <Grid.Column width={3}>
               <Header inverted as='h4' content='Services' />
               <List link inverted>
-                <List.Item as='a'>Login as Recruiters</List.Item>
-                <List.Item as='a'>Login as Applicants</List.Item>
+                <List.Item as='a'>Login as Recruiter</List.Item>
+                <List.Item as='a'>Login as Applicant</List.Item>
               </List>
             </Grid.Column>
           </Grid.Row>
