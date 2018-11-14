@@ -1,5 +1,7 @@
 export interface IQuestion {
   prompt: string;
+  options?: string[];
+  type: string;
 }
 
 export interface IAnswer {

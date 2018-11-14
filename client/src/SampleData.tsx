@@ -36,11 +36,11 @@ const emails = [
 ];
 
 export default {
-  questions: questions.map(question => ({ prompt: question })),
+  questions: questions.map(question => ({ prompt: question, type: "normal" })),
   responses: emails.map(email => ({
     answers: questions.map(question => ({
       answer: getWord(),
-      question: { prompt: question }
+      question: { prompt: question, type: "normal" }
     })),
     email
   })),

@@ -1,15 +1,26 @@
 import * as React from "react";
-// import { Header } from "semantic-ui-react";
 // @ts-ignore
 import Reorder, { reorder } from "react-reorder";
+import { Form } from "semantic-ui-react";
+import Question from "./Question";
 
-const red = <div style={{ backgroundColor: "red", minHeight: "100px" }} />;
-const green = <div style={{ backgroundColor: "green", minHeight: "100px" }} />;
-const yellow = (
-  <div style={{ backgroundColor: "yellow", minHeight: "100px" }} />
-);
-const black = <div style={{ backgroundColor: "black", minHeight: "100px" }} />;
-const blue = <div style={{ backgroundColor: "blue", minHeight: "100px" }} />;
+const q1 = {
+  prompt: "Whats ur name?",
+  type: "normal type"
+};
+const q2 = {
+  prompt: "How much r u?",
+  type: "normal type"
+};
+const q3 = {
+  prompt:
+    " Sldjfalksdjf lkasj dflkaj sdlkfj alksdjf laksdj flka jldjfalksdjf lkasj dflkaj sdlkfj alksdjf laksdj flka jldksf alksdf jlkasd fjlkaj ldjfalksdjf lkasj dflkaj sdlkfj alksdjf laksdj flka jldksf alksdf jlkasd fjlkaj ldjfalksdjf lkasj dflkaj sdlkfj alksdjf laksdj flka jldksf alksdf jlkasd fjlkaj ldjfalksdjf lkasj dflkaj sdlkfj alksdjf laksdj flka jldksf alksdf jlkasd fjlkaj ldksf alksdf jlkasd fjlkaj sdlkfj alksdjf lajsdlf j",
+  type: "normal type"
+};
+
+const question1 = <Question question={q1} />;
+const question2 = <Question question={q2} />;
+const question3 = <Question question={q3} />;
 
 interface IFormCreationState {
   questions: JSX.Element[];
@@ -18,7 +29,11 @@ interface IFormCreationState {
 class FormCreationPage extends React.Component<{}, IFormCreationState> {
   public constructor(props: any) {
     super(props);
-    this.state = { questions: [red, green, yellow, black, blue] };
+    this.state = {
+      questions: [question1, question2, question3].map((element, index) => (
+        <div key={index}>{element}</div>
+      ))
+    };
     this.onReorder = this.onReorder.bind(this);
   }
   public onReorder(
@@ -35,9 +50,15 @@ class FormCreationPage extends React.Component<{}, IFormCreationState> {
 
   public render() {
     return (
-      <Reorder onReorder={this.onReorder} reorderId="my-list">
-        {this.state.questions}
-      </Reorder>
+      <Form size="big">
+        <Reorder
+          onReorder={this.onReorder}
+          reorderId="my-list"
+          lock="horizontal"
+        >
+          {this.state.questions}
+        </Reorder>
+      </Form>
     );
   }
 }
