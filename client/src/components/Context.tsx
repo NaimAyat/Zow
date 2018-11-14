@@ -13,7 +13,7 @@ export function UserContextProvider(props: React.Props<{}>) {
   return (
     <Query query={GET_USER_GQL}>
       {({ loading, error, data, refetch }) => {
-        const user = data.currentUser;
+        const user = data && data.currentUser;
         return (
           <UserContext.Provider value={{ user, refetch }}>
             {props.children}

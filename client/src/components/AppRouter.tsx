@@ -8,7 +8,7 @@ import Logout from "./Logout";
 
 const Home = () => (
   <Header as="h1" textAlign="center">
-    Home
+    Welcome to ZOW
   </Header>
 );
 

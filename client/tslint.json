@@ -11,6 +11,7 @@
   "rules": {
     "jsx-boolean-value": { "options": "never" },
     "ordered-imports": false,
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "max-classes-per-file": false
   }
 }

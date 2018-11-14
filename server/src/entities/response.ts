@@ -10,6 +10,6 @@ interface IScore {
 export interface IResponse {
   id?: any;
   respondent: string;
-  answers: [IAnswer];
-  scores: [IScore];
+  answers: IAnswer[];
+  scores: IScore[];
 }
