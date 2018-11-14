@@ -1,6 +1,13 @@
 import { IAuthorizationService } from "../services/auth";
+import { IUser } from "../entities";
+import { IFormService } from "../services/form";
+import { IUserService } from "../services/user";
 
-export default function getResolvers(authService: IAuthorizationService) {
+export default function getResolvers(
+  authService: IAuthorizationService,
+  formService: IFormService,
+  userService: IUserService
+) {
   return {
     Query: {
       ////////////////////
@@ -26,7 +33,7 @@ export default function getResolvers(authService: IAuthorizationService) {
        */
       async form(parent, args, ctx) {
         const { formID } = args;
-        return await formService.getFormsByID(ctx, formID);
+        return await formService.getFormByID(ctx, formID);
       },
       /**
        * Retrieves all forms for a given user.
@@ -101,14 +108,14 @@ export default function getResolvers(authService: IAuthorizationService) {
        * @return the newly created form
        */
       async createForm(parent, args, ctx) {
-        return await formService.createNewForm(ctx.session.user);
+        return await formService.createNewForm(ctx, ctx.session.user);
       },
       /**
        * Adds a response for the provided form.
        * @param formID
        *          ID of form
-       * @param response
-       *          response to add to form
+       * @param answers
+       *          answers to questions for response
        * @return void
        */
       async addResponse(parent, args, ctx) {
@@ -127,7 +134,7 @@ export default function getResolvers(authService: IAuthorizationService) {
         const { formID, userID } = args;
         return await formService.addOwner(ctx, formID, userID);
       }
-    }
+    },
 
     Form: {
       /**
@@ -136,7 +143,7 @@ export default function getResolvers(authService: IAuthorizationService) {
        *          form as provided by top level query
        * @return all associated questions
        */
-      async questions(form) {
+      async questions(form, args, ctx) {
         return await formService.getQuestions(ctx, form.id);
       },
       /**
@@ -145,9 +152,9 @@ export default function getResolvers(authService: IAuthorizationService) {
        *          form as provided by top level query
        * @return all associated responses
        */
-      async responses(form) {
+      async responses(form, args, ctx) {
         return await formService.getResponses(ctx, form.id);
-      },
+      }
     }
   };
 }

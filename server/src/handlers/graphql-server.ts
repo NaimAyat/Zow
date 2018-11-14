@@ -3,12 +3,18 @@ import { ApolloServer, gql } from "apollo-server-koa";
 const typeDefs = gql`
   type Query {
     currentUser: User
+    user(userID: ID!): User!
+    form(formID: ID!): Form!
+    forms(userID: ID!): [Form!]!
   }
 
   type Mutation {
     login(email: String!, password: String!): Boolean!
     logout: Boolean
     newUser(name: String!, email: String!, password: String!): Boolean!
+    createForm: Boolean
+    addResponse(formID: ID!, answers: [String]): Boolean
+    addOwner(formID: ID!, userID: ID!): Boolean
   }
 
   type User {
