@@ -203,10 +203,10 @@ const HomepageLayout = () => (
         <Grid.Row>
           <Grid.Column width={8}>
             <Header as='h3' style={{ fontSize: '2em' }}>
-              ZOW provides
+              Zow provides
             </Header>
             <p style={{ fontSize: '1.33em' }}>
-              a unified and intuitive interface to solve inconvenient club recruiting Problem
+              a streamlined, centralized platform for the student organization recruiting process.
             </p>
           </Grid.Column>
           <Grid.Column floated='right' width={6}>
