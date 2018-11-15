@@ -213,7 +213,7 @@ const HomepageLayout = () => (
             < /p>
                 < /Grid.Column>
                 < Grid.Column floated = 'right' width = { 6} >
-                  <Image bordered rounded size = 'large' src = 'cow.png' />
+                  <Image size = 'large' src = 'images/cow.png' />
                     </Grid.Column>
                     < /Grid.Row>
                     < Grid.Row >
