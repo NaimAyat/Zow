@@ -1,9 +1,20 @@
 export interface IQuestion {
   prompt: string;
+  options?: string[];
+  type: QuestionType;
 }
 
+export type QuestionType =
+  | "radio"
+  | "checkBox"
+  | "email"
+  | "phone"
+  | "shortText"
+  | "longText"
+  | "dropDown";
+
 export interface IAnswer {
-  question: IQuestion;
+  // question: IQuestion;
   answer: string;
 }
 

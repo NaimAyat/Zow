@@ -1,3 +1,5 @@
+import { IAnswer, IQuestion, IResponse, QuestionType } from "./DataTypes";
+
 const getWord = () => {
   const words = [
     "Kook",
@@ -12,12 +14,17 @@ const getWord = () => {
   return words[Math.floor(Math.random() * words.length)];
 };
 
+const getType = () => {
+  const words: QuestionType[] = ["radio", "longText", "shortText"];
+  return words[Math.floor(Math.random() * words.length)];
+};
+
 const getScore = () => {
   const gpas = ["2", "3", "4", "5"];
   return gpas[Math.floor(Math.random() * gpas.length)];
 };
 
-const questions = [
+const questionStrings = [
   "Name",
   "GPA",
   "Email",
@@ -35,14 +42,23 @@ const emails = [
   "okay@not.okay"
 ];
 
+const questions: IQuestion[] = questionStrings.map(questionString => ({
+  prompt: questionString,
+  type: getType()
+}));
+
+const answers: IAnswer[] = questions.map(question => ({
+  answer: getWord()
+  // question: { prompt: question, type: getType() }
+}));
+
+const responses: IResponse[] = emails.map(email => ({
+  answers,
+  email
+}));
+
 export default {
-  questions: questions.map(question => ({ prompt: question })),
-  responses: emails.map(email => ({
-    answers: questions.map(question => ({
-      answer: getWord(),
-      question: { prompt: question }
-    })),
-    email
-  })),
+  questions,
+  responses,
   scores: emails.map(email => ({ email, score: getScore() }))
 };

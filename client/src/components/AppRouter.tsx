@@ -1,6 +1,7 @@
 import * as React from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import { Container, Divider, Header, Menu } from "semantic-ui-react";
+import FormCreationPage from "./FormCreationPage";
 import LoginForm from "./LoginForm";
 import SummaryPage from "./SummaryPage";
 import { UserContext } from "./Context";
@@ -16,13 +17,17 @@ const AppRouter = () => (
   <UserContext.Consumer>
     {({ user, refetch: refetchUser }) => (
       <Router>
-        <div style={{ backgroundColor: "rgb(63, 131, 198)" }}>
+        <div>
+          {(document.body.style.backgroundColor = "rgb(63, 131, 198)") && null}
           <Menu fixed="top">
             <Menu.Item>
               <Link to="/">Home</Link>
             </Menu.Item>
             <Menu.Item>
               <Link to="/summary">Summary</Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="/formcreation">Form Creation</Link>
             </Menu.Item>
             <Menu.Item position="right">
               {user ? (
@@ -48,6 +53,7 @@ const AppRouter = () => (
               <Route exact path="/" component={Home} />
               <Route path="/login" component={LoginForm} />
               <Route path="/summary" component={SummaryPage} />
+              <Route path="/formcreation" component={FormCreationPage} />
             </Switch>
           </Container>
         </div>
