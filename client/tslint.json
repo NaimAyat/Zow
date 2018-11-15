@@ -9,6 +9,9 @@
   },
   "defaultSeverity": "warning",
   "rules": {
-    "jsx-boolean-value": { "options": "never" }
+    "jsx-boolean-value": { "options": "never" },
+    "ordered-imports": false,
+    "jsx-no-lambda": false,
+    "max-classes-per-file": false
   }
 }

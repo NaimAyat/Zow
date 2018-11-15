@@ -1,0 +1,4 @@
+{
+  "DB_URI": "mongodb://mongodb/zow",
+  "SENDGRID_ENABLE": true
+}

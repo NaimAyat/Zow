@@ -4,14 +4,22 @@ View project proposal [here](documentation/proposal.pdf).
 
 Project for UCLA Computer Science 130 (Software Engineering) with Professor Miryung Kim and TA Sneha Shankar.
 
-## Running Zow
+### Running Zow
 
 1. Install [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/)
 2. From the project directory run `docker-compose up --build`
+3. Read `server/config/template.json` and produce `server/config/private.json` accordingly
+4. Visit the website at `localhost:3000`
 
-Note: Currently the website is running at localhost:3000
+### Test Cases
 
-## Team
+Client tests can be viewed [here](https://github.com/NaimAyat/Zow/tree/master/client/src/tests).
+
+- [App.test.tsx](https://github.com/NaimAyat/Zow/blob/master/client/src/tests/App.test.tsx): test to ensure default page renders correctly
+- [LoginForm.test.tsx](https://github.com/NaimAyat/Zow/blob/master/client/src/tests/LoginForm.test.tsx): test to Login page renders correctly
+- [SummaryPage.test.tsx](https://github.com/NaimAyat/Zow/blob/master/client/src/tests/SummaryPage.test.tsx): test to ensure Summary page renders correctly
+
+### Team
 
 - [Naim Ayat](https://github.com/NaimAyat)
 - [Christopher Aziz](https://github.com/caziz)

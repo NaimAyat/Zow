@@ -1,7 +1,7 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
 import { IUser } from "../../entities";
 
-const UserSchema: Schema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   name: { type: String },
   email: { type: String, required: true },
   password: { type: String, required: true }
