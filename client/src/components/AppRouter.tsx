@@ -13,7 +13,8 @@ const Home = () => (
 
 const AppRouter = () => (
   <Router>
-    <div style={{ backgroundColor: "rgb(63, 131, 198)" }}>
+    <div>
+      {(document.body.style.backgroundColor = "rgb(63, 131, 198)") && null}
       <Menu fixed="top">
         <Menu.Item>
           <Link to="/">Home</Link>
