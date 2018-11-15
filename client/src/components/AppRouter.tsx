@@ -20,7 +20,7 @@ const AppRouter = () => (
     {({ user, refetch: refetchUser }) => (
       <Router>
         <div>
-          {(document.body.style.backgroundColor = "rgb(63, 131, 198)") && null}
+          {(document.body.style.backgroundColor = "rgb(47, 72, 88)") && null}
           <Menu fixed="top">
             <Menu.Item>
               <Link to="/">Home</Link>
