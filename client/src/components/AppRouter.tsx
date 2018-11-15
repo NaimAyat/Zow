@@ -2,7 +2,9 @@ import * as React from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import { Container, Divider, Header, Menu } from "semantic-ui-react";
 import FormCreationPage from "./FormCreationPage";
+import FormViewPage from "./FormViewPage";
 import LoginForm from "./LoginForm";
+import ScoringPage from "./ScoringPage";
 import SummaryPage from "./SummaryPage";
 import { UserContext } from "./Context";
 import Logout from "./Logout";
@@ -27,7 +29,13 @@ const AppRouter = () => (
               <Link to="/summary">Summary</Link>
             </Menu.Item>
             <Menu.Item>
+              <Link to="/score">Scoring Page</Link>
+            </Menu.Item>
+            <Menu.Item>
               <Link to="/formcreation">Form Creation</Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="/form">Form Viewing</Link>
             </Menu.Item>
             <Menu.Item position="right">
               {user ? (
@@ -54,8 +62,11 @@ const AppRouter = () => (
               <Route path="/login" component={LoginForm} />
               <Route path="/summary" component={SummaryPage} />
               <Route path="/formcreation" component={FormCreationPage} />
+              <Route path="/form" component={FormViewPage} />
+              <Route path="/score" component={ScoringPage} />
             </Switch>
           </Container>
+          <Divider style={{ minHeight: "50px" }} hidden />
         </div>
       </Router>
     )}
