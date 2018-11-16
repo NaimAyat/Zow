@@ -42,7 +42,7 @@ class FormCreationPage extends React.Component<{}, IState> {
         prompt: "",
         type
       };
-      if (type === "checkBox" || type === "radio" || type === "dropDown") {
+      if (type === "checkbox" || type === "radio" || type === "dropdown") {
         question.options = [];
       }
       questions.push(question);
@@ -110,12 +110,12 @@ class FormCreationPage extends React.Component<{}, IState> {
           />
           <Button
             icon="check square"
-            onClick={this.getAddQuestion("checkBox")}
+            onClick={this.getAddQuestion("checkbox")}
             content="Checkbox"
           />
           <Button
             icon="chevron down"
-            onClick={this.getAddQuestion("dropDown")}
+            onClick={this.getAddQuestion("dropdown")}
             content="Drop Down"
           />
         </Segment>

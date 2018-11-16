@@ -2,7 +2,7 @@ import * as React from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import { Container, Divider, Header, Menu } from "semantic-ui-react";
 import FormCreationPage from "./FormCreationPage";
-import FormViewPage from "./FormViewPage";
+import FormViewPageLoader from "./FormViewPageLoader";
 import LoginForm from "./LoginForm";
 import ScoringPage from "./ScoringPage";
 import SummaryPage from "./SummaryPage";
@@ -62,7 +62,7 @@ const AppRouter = () => (
               <Route path="/login" component={LoginForm} />
               <Route path="/summary" component={SummaryPage} />
               <Route path="/formcreation" component={FormCreationPage} />
-              <Route path="/form" component={FormViewPage} />
+              <Route path="/form" component={FormViewPageLoader} />
               <Route path="/score" component={ScoringPage} />
             </Switch>
           </Container>
