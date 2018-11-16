@@ -6,12 +6,12 @@ export interface IQuestion {
 
 export type QuestionType =
   | "radio"
-  | "checkBox"
+  | "checkbox"
   | "email"
   | "phone"
   | "shortText"
   | "longText"
-  | "dropDown";
+  | "dropdown";
 
 export interface IAnswer {
   // question: IQuestion;
