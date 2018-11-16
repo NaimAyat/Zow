@@ -13,7 +13,7 @@ export default function getHandlers(
   app.keys = [config.getSessionSecret()];
   app.use(session({}, app));
 
-  const resolvers = getResolvers(authService);
+  const resolvers = getResolvers(authService, null, null);
   const gqlApolloServer = getGQLApolloServer(resolvers);
   gqlApolloServer.applyMiddleware({ app, path: "/api/gql" });
 
