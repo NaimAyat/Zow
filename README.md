@@ -12,12 +12,27 @@ Project for UCLA Computer Science 130 (Software Engineering) with Professor Miry
 4. Visit the website at `localhost:3000`
 
 ### Test Cases
-
+#### Frontend
 Client tests can be viewed [here](https://github.com/NaimAyat/Zow/tree/master/client/src/tests).
+- [App.test.tsx](https://github.com/NaimAyat/Zow/blob/master/client/src/tests/App.test.tsx): tests to ensure default page renders correctly
+- [LoginForm.test.tsx](https://github.com/NaimAyat/Zow/blob/master/client/src/tests/LoginForm.test.tsx): tests to Login page renders correctly
+- [SummaryPage.test.tsx](https://github.com/NaimAyat/Zow/blob/master/client/src/tests/SummaryPage.test.tsx): tests to ensure Summary page renders correctly
 
-- [App.test.tsx](https://github.com/NaimAyat/Zow/blob/master/client/src/tests/App.test.tsx): test to ensure default page renders correctly
-- [LoginForm.test.tsx](https://github.com/NaimAyat/Zow/blob/master/client/src/tests/LoginForm.test.tsx): test to Login page renders correctly
-- [SummaryPage.test.tsx](https://github.com/NaimAyat/Zow/blob/master/client/src/tests/SummaryPage.test.tsx): test to ensure Summary page renders correctly
+
+#### Backend
+Backend tests are all in separate folders.
+- [index.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/config/index.test.ts): tests to ensure configuration file works correctly
+- [Answer.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/db/models/Answer.test.ts): tests to ensure Answer database model works correctly
+- [Form.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/db/models/Form.test.ts): tests to ensure Form database model works correctly
+- [InterviewSlot.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/db/models/InterviewSlot.test.ts): tests to ensure InterviewSlot database model works correctly
+- [Question.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/db/models/Question.test.ts): tests to ensure Question database model works correctly
+- [Response.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/db/models/Response.test.ts): tests to ensure Response database model works correctly
+- [User.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/db/models/User.test.ts): tests to ensure User database model works correctly
+- [email/index.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/email/index.test.ts): tests to ensure email module works correctly
+- [graphql-server.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/handlers/graphql-server.test.ts): tests to ensure graphql server works correctly
+- [resolvers.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/handlers/resolvers.test.ts): tests to ensure graphql resolvers work correctly
+- [encrypt.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/services/encrypt.test.ts): tests to ensure encryption module works correctly
+
 
 ### Team
 
