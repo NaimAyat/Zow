@@ -21,7 +21,7 @@ Client tests can be viewed [here](https://github.com/NaimAyat/Zow/tree/master/cl
 
 #### Backend
 Backend tests are all in separate folders.
-- [index.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/config/index.test.ts): tests to ensure configuration file works correctly
+- [config/index.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/config/index.test.ts): tests to ensure configuration file works correctly
 - [Answer.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/db/models/Answer.test.ts): tests to ensure Answer database model works correctly
 - [Form.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/db/models/Form.test.ts): tests to ensure Form database model works correctly
 - [InterviewSlot.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/db/models/InterviewSlot.test.ts): tests to ensure InterviewSlot database model works correctly
