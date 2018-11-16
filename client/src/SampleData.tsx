@@ -2,20 +2,15 @@ import { IAnswer, IQuestion, IResponse, QuestionType } from "./DataTypes";
 
 const getWord = () => {
   const words = [
-    "Kook",
+    "Is this a question?",
     "Mushroom",
-    "Potato",
+    "A word",
     "Rocky Road",
     "Eggs",
-    "Sammy",
-    "Cocoa",
-    "Crisps"
+    "This is a sentence.",
+    "Sample input",
+    "Another word"
   ];
-  return words[Math.floor(Math.random() * words.length)];
-};
-
-const getType = () => {
-  const words: QuestionType[] = ["radio", "longText", "shortText"];
   return words[Math.floor(Math.random() * words.length)];
 };
 
@@ -26,10 +21,10 @@ const getScore = () => {
 
 const questionStrings = [
   "Name",
-  "GPA",
+  "Phone",
   "Email",
   "Favorite Color",
-  "Category",
+  "Tell me a bit about yourself.",
   "Favorite Icecream"
 ];
 
@@ -44,16 +39,41 @@ const emails = [
 
 const questions: IQuestion[] = questionStrings.map(questionString => ({
   prompt: questionString,
-  type: getType()
+  type: (questionString === "Email"
+    ? "email"
+    : questionString === "Phone"
+    ? "phone"
+    : questionString === "Tell me a bit about yourself."
+    ? "longText"
+    : "shortText") as QuestionType
 }));
+questions.push({
+  options: ["One answer", "1-way street", "I won!"],
+  prompt: "You may select only one.",
+  type: "radio"
+});
 
-const answers: IAnswer[] = questions.map(question => ({
-  answer: getWord()
-  // question: { prompt: question, type: getType() }
-}));
+questions.push({
+  options: ["Alabama", "California", "Utah", "Maine", "this.state"],
+  prompt: "Which state is the best state?",
+  type: "dropdown"
+});
+
+questions.push({
+  options: ["You can pick me", "And me", "And also me", "Pick all of us!"],
+  prompt: "Select multiple of these options.",
+  type: "checkbox"
+});
+
+const getAnswers: () => IAnswer[] = () => {
+  return questions.map(question => ({
+    answer: getWord()
+    // question: { prompt: question, type: getType() }
+  }));
+};
 
 const responses: IResponse[] = emails.map(email => ({
-  answers,
+  answers: getAnswers(),
   email
 }));
 

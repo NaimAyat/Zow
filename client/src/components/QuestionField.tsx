@@ -39,9 +39,9 @@ class QuestionField extends React.Component<IProps, IState> {
         return <input disabled placeholder="(555) 555-5555" />;
       case "email":
         return <input disabled placeholder="example@ucla.edu" />;
-      case "dropDown":
+      case "dropdown":
       case "radio":
-      case "checkBox":
+      case "checkbox":
         if (this.props.question.options == null) {
           const question = { ...this.props.question };
           question.options = [];
@@ -91,10 +91,10 @@ class QuestionField extends React.Component<IProps, IState> {
         return "short text";
       case "radio":
         return "radio button";
-      case "checkBox":
+      case "checkbox":
         return "checkbox";
-      case "dropDown":
-        return "drop down";
+      case "dropdown":
+        return "dropdown";
     }
   }
 
