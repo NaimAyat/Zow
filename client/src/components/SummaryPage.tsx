@@ -2,6 +2,7 @@ import * as React from "react";
 import { Button, Header } from "semantic-ui-react";
 import SampleData from "../SampleData";
 import SummaryTable from "./SummaryTable";
+import Card from "./Card";
 
 interface IRow {
   checked: boolean;
@@ -43,7 +44,11 @@ class SummaryPage extends React.Component<{}, ISummaryPageState> {
       const rows = { ...this.state.rows };
       Object.keys(rows).forEach(email => {
         if (rows[email].checked) {
-          rows[email].status = status;
+          if (rows[email].status === status) {
+            rows[email].status = "Pending";
+          } else {
+            rows[email].status = status;
+          }
         }
       });
       this.setState({ rows });
@@ -86,7 +91,7 @@ class SummaryPage extends React.Component<{}, ISummaryPageState> {
 
   public render() {
     return (
-      <React.Fragment>
+      <Card>
         <Header as="h1" textAlign="center">
           Summary View
         </Header>
@@ -96,7 +101,7 @@ class SummaryPage extends React.Component<{}, ISummaryPageState> {
           getToggleChecked={this.getToggleChecked}
           rows={this.state.rows}
         />
-      </React.Fragment>
+      </Card>
     );
   }
 }

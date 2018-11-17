@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as moment from "moment";
 import { Card, Header, Grid } from "semantic-ui-react";
+import ZowCard from "./Card";
 
 interface IProps {
   formID?: string;
@@ -56,33 +57,35 @@ export default class InterviewSelection extends React.Component<IProps> {
       .sort()
       .splice(0, 12);
     return (
-      <Grid divided columns={6}>
-        <Grid.Row>
-          {dates.map((date, i) => (
-            <Grid.Column key={i}>
-              <Header>{moment(date).format("MMM DD")}</Header>
-            </Grid.Column>
-          ))}
-        </Grid.Row>
-        <Grid.Row>
-          {dates.map((date, i) => (
-            <Grid.Column key={i}>
-              {graph
-                .get(date)!
-                .sort((a, b) => a.start.getTime() - b.start.getTime())
-                .map((slot, j) => (
-                  <Card as="a" onClick={() => alert(slot.start)} key={j}>
-                    <Card.Content>
-                      {moment(slot.start).format("h:mm")}
-                      &nbsp;to&nbsp;
-                      {moment(slot.end).format("h:mm")}
-                    </Card.Content>
-                  </Card>
-                ))}
-            </Grid.Column>
-          ))}
-        </Grid.Row>
-      </Grid>
+      <ZowCard>
+        <Grid divided columns={6}>
+          <Grid.Row>
+            {dates.map((date, i) => (
+              <Grid.Column key={i}>
+                <Header>{moment(date).format("MMM DD")}</Header>
+              </Grid.Column>
+            ))}
+          </Grid.Row>
+          <Grid.Row>
+            {dates.map((date, i) => (
+              <Grid.Column key={i}>
+                {graph
+                  .get(date)!
+                  .sort((a, b) => a.start.getTime() - b.start.getTime())
+                  .map((slot, j) => (
+                    <Card as="a" onClick={() => alert(slot.start)} key={j}>
+                      <Card.Content>
+                        {moment(slot.start).format("h:mm")}
+                        &nbsp;to&nbsp;
+                        {moment(slot.end).format("h:mm")}
+                      </Card.Content>
+                    </Card>
+                  ))}
+              </Grid.Column>
+            ))}
+          </Grid.Row>
+        </Grid>
+      </ZowCard>
     );
   }
 }

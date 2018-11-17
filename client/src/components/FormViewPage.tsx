@@ -2,6 +2,7 @@ import * as React from "react";
 import { Button, Divider, Header, Form } from "semantic-ui-react";
 import { IAnswer, IQuestion, IResponse } from "../DataTypes";
 import AnswerField from "./AnswerField";
+import Card from "./Card";
 
 interface IProps {
   formName: string;
@@ -38,7 +39,7 @@ class FormViewPage extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <React.Fragment>
+      <Card>
         <Header as="h1">{this.props.formName}</Header>
         <Form size="big">
           {this.props.questions.map((question, index) => (
@@ -58,7 +59,7 @@ class FormViewPage extends React.Component<IProps, IState> {
           size="huge"
           content="Submit"
         />
-      </React.Fragment>
+      </Card>
     );
   }
 }

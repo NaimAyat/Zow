@@ -162,17 +162,13 @@ class AnswerField extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <React.Fragment>
-        <Message style={{ margin: "10px" }}>
-          <Form.Field required>
-            <label>{this.props.question.prompt}</label>
-            {this.getInput()}
-            {this.state.error && (
-              <Message negative content={this.state.error} />
-            )}
-          </Form.Field>
-        </Message>
-      </React.Fragment>
+      <Message style={{ margin: "10px" }}>
+        <Form.Field required>
+          <label>{this.props.question.prompt}</label>
+          {this.getInput()}
+          {this.state.error && <Message negative content={this.state.error} />}
+        </Form.Field>
+      </Message>
     );
   }
 }
