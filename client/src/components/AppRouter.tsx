@@ -9,6 +9,7 @@ import SummaryPage from "./SummaryPage";
 import { UserContext } from "./Context";
 import Logout from "./Logout";
 import InterviewSelection from "./InterviewSelection";
+import InterviewCreation from "./InterviewCreationPage";
 
 const Home = () => (
   <Header as="h1" textAlign="center">
@@ -39,7 +40,10 @@ const AppRouter = () => (
               <Link to="/form">Form Viewing</Link>
             </Menu.Item>
             <Menu.Item>
-              <Link to="/interview-selection">Interview Selection</Link>
+              <Link to="/interview-creation">Interview Creation</Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="/interview">Interview Selection</Link>
             </Menu.Item>
             <Menu.Item position="right">
               {user ? (
@@ -61,7 +65,8 @@ const AppRouter = () => (
             <Route path="/form-creation" component={FormCreationPage} />
             <Route path="/form" component={FormViewPageLoader} />
             <Route path="/score" component={ScoringPageLoader} />
-            <Route path="/interview-selection" component={InterviewSelection} />
+            <Route path="/interview-creation" component={InterviewCreation} />
+            <Route path="/interview" component={InterviewSelection} />
           </Switch>
           <Divider style={{ minHeight: "50px" }} hidden />
         </div>
