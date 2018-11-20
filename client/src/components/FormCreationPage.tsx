@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, Form, Grid, Header, Input, Segment } from "semantic-ui-react";
 import { IQuestion, QuestionType } from "src/DataTypes";
-import Card from "./Card";
+import Page from "./Page";
 import QuestionField from "./QuestionField";
 
 interface IState {
@@ -59,7 +59,7 @@ class FormCreationPage extends React.Component<{}, IState> {
   public render() {
     return (
       <React.Fragment>
-        <Card>
+        <Page>
           <Header as="h1">Create Form</Header>
           <Input
             fluid
@@ -77,8 +77,8 @@ class FormCreationPage extends React.Component<{}, IState> {
               />
             ))}
           </Form>
-        </Card>
-        <Card>
+        </Page>
+        <Page>
           <Segment textAlign="center">
             <Header as="h3" content="Add New Question" />
             <Grid textAlign="center">
@@ -125,7 +125,7 @@ class FormCreationPage extends React.Component<{}, IState> {
             size="huge"
             content="Publish"
           />
-        </Card>
+        </Page>
       </React.Fragment>
     );
   }
