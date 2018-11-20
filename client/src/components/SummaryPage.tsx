@@ -2,7 +2,7 @@ import * as React from "react";
 import { Button, Header } from "semantic-ui-react";
 import SampleData from "../SampleData";
 import SummaryTable from "./SummaryTable";
-import Card from "./Card";
+import Page from "./Page";
 
 interface IRow {
   checked: boolean;
@@ -91,7 +91,7 @@ class SummaryPage extends React.Component<{}, ISummaryPageState> {
 
   public render() {
     return (
-      <Card>
+      <Page>
         <Header as="h1" textAlign="center">
           Summary View
         </Header>
@@ -101,7 +101,7 @@ class SummaryPage extends React.Component<{}, ISummaryPageState> {
           getToggleChecked={this.getToggleChecked}
           rows={this.state.rows}
         />
-      </Card>
+      </Page>
     );
   }
 }

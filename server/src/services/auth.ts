@@ -21,7 +21,16 @@ class SessionAuthorizationService implements IAuthorizationService {
     this.config = config;
     this.encryptService = encryptService;
   }
-
+  /**
+   * Creates new user in database.
+   * @param name
+   *          username
+   * @param email
+   *          e-mail address for new user
+   * @param password
+   *          password for new user
+   * @return true if successful creation, false otherwise
+   */
   public async newUser(
     ctx: Koa.Context,
     name: string,
@@ -39,6 +48,14 @@ class SessionAuthorizationService implements IAuthorizationService {
     return true;
   }
 
+  /**
+   * Logs in user and creates a session.
+   * @param email
+   *          e-mail address for user
+   * @param password
+   *          password for user
+   * @return true if successful login, false otherwise
+   */
   public async login(
     ctx: Koa.Context,
     email: string,
@@ -56,6 +73,12 @@ class SessionAuthorizationService implements IAuthorizationService {
     return false; // failed to login
   }
 
+
+  /**
+   * Logs out user if a session is currently active.
+   *
+   * @return void
+   */
   public async logout(ctx: Koa.Context): Promise<void> {
     ctx.session.user = null;
   }

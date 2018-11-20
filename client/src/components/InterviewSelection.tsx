@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as moment from "moment";
 import { Card, Header, Grid } from "semantic-ui-react";
-import ZowCard from "./Card";
+import Page from "./Page";
 
 interface IProps {
   formID?: string;
@@ -57,7 +57,7 @@ export default class InterviewSelection extends React.Component<IProps> {
       .sort()
       .splice(0, 12);
     return (
-      <ZowCard>
+      <Page>
         <Grid divided columns={6}>
           <Grid.Row>
             {dates.map((date, i) => (
@@ -85,7 +85,7 @@ export default class InterviewSelection extends React.Component<IProps> {
             ))}
           </Grid.Row>
         </Grid>
-      </ZowCard>
+      </Page>
     );
   }
 }

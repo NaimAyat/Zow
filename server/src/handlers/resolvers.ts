@@ -29,7 +29,7 @@ export default function getResolvers(
        * Retrieves a form given a form ID.
        * @param formID
        *          ID of form to retrieve
-       * @return form for given ID
+       * @return IForm for given ID
        */
       async form(parent, args, ctx) {
         const { formID } = args;
@@ -39,7 +39,7 @@ export default function getResolvers(
        * Retrieves all forms for a given user.
        * @param user
        *          user for which forms are retrieved
-       * @return forms for given user
+       * @return IForms for given user
        */
       async forms(parent, args, ctx) {
         const { user } = args;
@@ -52,7 +52,7 @@ export default function getResolvers(
        * Retrieves a user given a user ID.
        * @param userID
        *          ID of user to retrieve
-       * @return user for given ID
+       * @return IUser for given ID
        */
       async user(parent, args, ctx) {
         const { userID } = args;
@@ -105,7 +105,7 @@ export default function getResolvers(
       /**
        * Creates a form for the currently logged in user.
        *
-       * @return the newly created form
+       * @return the newly created IForm
        */
       async createForm(parent, args, ctx) {
         return await formService.createNewForm(ctx, ctx.session.user);
@@ -141,7 +141,7 @@ export default function getResolvers(
        * Retrieves questions for given form.
        * @param form
        *          form as provided by top level query
-       * @return all associated questions
+       * @return all associated IQuestions
        */
       async questions(form, args, ctx) {
         return await formService.getQuestions(ctx, form.id);
@@ -150,7 +150,7 @@ export default function getResolvers(
        * Retrieves responses for given form.
        * @param form
        *          form as provided by top level query
-       * @return all associated responses
+       * @return all associated IResponses
        */
       async responses(form, args, ctx) {
         return await formService.getResponses(ctx, form.id);

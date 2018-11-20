@@ -9,7 +9,7 @@ import {
   Message
 } from "semantic-ui-react";
 import { IAnswer, IResponse, IQuestion } from "../DataTypes";
-import Card from "./Card";
+import Page from "./Page";
 
 interface IProps {
   formName: string;
@@ -51,7 +51,7 @@ class ScoringPage extends React.Component<IProps, IState> {
   public render() {
     return (
       <React.Fragment>
-        <Card>
+        <Page>
           <div style={{ textAlign: "center" }}>
             <Form size="big">
               <Header textAlign="left" as="h1" content="Score Applicant" />
@@ -75,8 +75,8 @@ class ScoringPage extends React.Component<IProps, IState> {
               </Form.Field>
             </Form>
           </div>
-        </Card>
-        <Card>
+        </Page>
+        <Page>
           <Header as="h1">{this.props.formName}</Header>
           <Form size="big">
             {this.props.questions.map((question, index) => (
@@ -88,7 +88,7 @@ class ScoringPage extends React.Component<IProps, IState> {
               </Message>
             ))}
           </Form>
-        </Card>
+        </Page>
       </React.Fragment>
     );
   }
