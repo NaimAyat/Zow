@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Container } from "semantic-ui-react";
 
-const Card: React.SFC = props => {
+const Page: React.SFC = props => {
   return (
     <Container
       style={{
@@ -16,4 +16,4 @@ const Card: React.SFC = props => {
   );
 };
 
-export default Card;
+export default Page;
