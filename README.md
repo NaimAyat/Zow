@@ -39,6 +39,6 @@ Backend tests are all in separate folders.
 - [Naim Ayat](https://github.com/NaimAyat)
 - [Christopher Aziz](https://github.com/caziz)
 - [Austin Berke](https://github.com/austinberke)
-- [Dmitri Brereton](https://github.com/mitrikyle)
+- [Dmitri Brereton](https://github.com/dkb868)
 - [Reinaldo Daniswara](https://github.com/rdans)
 - [Aidan Wolk](https://github.com/awolk)
