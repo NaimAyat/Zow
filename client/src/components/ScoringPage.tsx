@@ -51,10 +51,9 @@ class ScoringPage extends React.Component<IProps, IState> {
   public render() {
     return (
       <React.Fragment>
-        <Page>
+        <Page header="Score Applicant">
           <div style={{ textAlign: "center" }}>
             <Form size="big">
-              <Header textAlign="left" as="h1" content="Score Applicant" />
               <Form.Field>
                 <Rating
                   clearable

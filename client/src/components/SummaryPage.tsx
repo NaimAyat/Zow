@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Header } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import SampleData from "../SampleData";
 import SummaryTable from "./SummaryTable";
 import Page from "./Page";
@@ -91,10 +91,7 @@ class SummaryPage extends React.Component<{}, ISummaryPageState> {
 
   public render() {
     return (
-      <Page>
-        <Header as="h1" textAlign="center">
-          Summary View
-        </Header>
+      <Page header="Summary View">
         <this.ButtonRow />
         <SummaryTable
           {...SampleData}

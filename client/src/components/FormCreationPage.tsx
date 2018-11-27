@@ -59,8 +59,7 @@ class FormCreationPage extends React.Component<{}, IState> {
   public render() {
     return (
       <React.Fragment>
-        <Page>
-          <Header as="h1">Create Form</Header>
+        <Page header="Create Form">
           <Input
             fluid
             size="huge"
