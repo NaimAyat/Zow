@@ -27,3 +27,8 @@ export interface IScore {
   email: string;
   score: string;
 }
+
+export interface ISlot {
+  start: Date;
+  end: Date;
+}
