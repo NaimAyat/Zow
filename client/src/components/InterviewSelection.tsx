@@ -57,7 +57,7 @@ export default class InterviewSelection extends React.Component<IProps> {
       .sort()
       .splice(0, 12);
     return (
-      <Page>
+      <Page header="Select Interview">
         <Grid divided columns={6}>
           <Grid.Row>
             {dates.map((date, i) => (
