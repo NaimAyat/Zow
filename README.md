@@ -34,7 +34,7 @@ Backend tests are all in separate folders.
 - [encrypt.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/services/encrypt.test.ts): tests to ensure encryption module works correctly
 
 
-### Team
+## Team
 
 - [Naim Ayat](https://github.com/NaimAyat)
 - [Christopher Aziz](https://github.com/caziz)
