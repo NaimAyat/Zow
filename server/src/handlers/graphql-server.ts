@@ -23,20 +23,11 @@ const typeDefs = gql`
     forms: [Form]
   }
 
-  interface Question {
+  type Question {
     id: ID!
     prompt: String!
-  }
-
-  type ChoiceQuestion implements Question {
-    id: ID!
-    prompt: String!
-    options: [String]!
-  }
-
-  type TextQuestion implements Question {
-    id: ID!
-    prompt: String!
+    choices: [String]!
+    type: String!
   }
 
   type Answer {
@@ -53,6 +44,7 @@ const typeDefs = gql`
 
   type Form {
     id: ID!
+    name: String!
     author: [User]!
     questions: [Question]!
     responses: [Response]

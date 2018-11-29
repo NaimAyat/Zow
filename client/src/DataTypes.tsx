@@ -5,13 +5,13 @@ export interface IQuestion {
 }
 
 export type QuestionType =
-  | "radio"
-  | "checkbox"
-  | "email"
-  | "phone"
-  | "shortText"
-  | "longText"
-  | "dropdown";
+  | "RADIO"
+  | "CHECKBOX"
+  | "EMAIL"
+  | "PHONE"
+  | "SHORT_TEXT"
+  | "LONG_TEXT"
+  | "DROPDOWN";
 
 export interface IAnswer {
   // question: IQuestion;

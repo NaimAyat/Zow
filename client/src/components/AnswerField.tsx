@@ -90,7 +90,7 @@ class AnswerField extends React.Component<IProps, IState> {
 
   public getInput() {
     switch (this.props.question.type) {
-      case "email":
+      case "EMAIL":
         return (
           <Input
             placeholder="Email"
@@ -100,7 +100,7 @@ class AnswerField extends React.Component<IProps, IState> {
             )}
           />
         );
-      case "phone":
+      case "PHONE":
         return (
           <Input
             placeholder="Phone"
@@ -110,15 +110,15 @@ class AnswerField extends React.Component<IProps, IState> {
             )}
           />
         );
-      case "longText":
+      case "LONG_TEXT":
         return (
           <TextArea placeholder="Answer" onChange={this.handleTextChange} />
         );
-      case "shortText":
+      case "SHORT_TEXT":
         return (
           <Input placeholder="Answer" onChange={this.handleAnswerChange} />
         );
-      case "radio":
+      case "RADIO":
         return this.props.question.options!.map((option, index) => (
           <Form.Field key={index}>
             <Radio
@@ -130,7 +130,7 @@ class AnswerField extends React.Component<IProps, IState> {
             />
           </Form.Field>
         ));
-      case "dropdown":
+      case "DROPDOWN":
         const dropdownOptions = this.props.question.options!.map(option => ({
           key: option,
           text: option,
@@ -145,7 +145,7 @@ class AnswerField extends React.Component<IProps, IState> {
             onChange={this.handleDropdownChange}
           />
         );
-      case "checkbox":
+      case "CHECKBOX":
         return this.props.question.options!.map(option => (
           <Form.Field>
             <Checkbox
@@ -158,6 +158,7 @@ class AnswerField extends React.Component<IProps, IState> {
           </Form.Field>
         ));
     }
+    return "";
   }
 
   public render() {

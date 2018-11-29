@@ -1,5 +1,7 @@
 import { IForm, IResponse, IUser, IQuestion } from "../entities";
 import { Context } from "koa";
+import { Form } from "../db/models";
+import { fromString } from "long";
 
 export interface IFormService {
   // Accessors
@@ -16,21 +18,21 @@ export interface IFormService {
    *          IUser for which forms are retrieved
    * @return IForms for given user
    */
-  getFormsByUser(ctx: Context, user: IUser): Promise<[IForm]>;
+  getFormsByUser(ctx: Context, user: IUser): Promise<IForm[]>;
   /**
    * Retrieves IQuestions for given form.
    * @param formID
    *          form ID for which to retrieve questions
    * @return all associated IQuestions
    */
-  getQuestions(ctx: Context, formID: string): Promise<[IQuestion]>;
+  getQuestions(ctx: Context, formID: string): Promise<IQuestion[]>;
   /**
    * Retrieves IResponses for given form.
    * @param formID
    *          form ID for which to retrieve responses
    * @return all associated IResponses
    */
-  getResponses(ctx: Context, formID: string): Promise<[IResponse]>;
+  getResponses(ctx: Context, formID: string): Promise<IResponse[]>;
 
   // Mutators
   /**
@@ -61,7 +63,7 @@ export interface IFormService {
    *
    * @return void
    */
-  addResponse(ctx: Context, formID: string, answers: [string]): Promise<void>;
+  addResponse(ctx: Context, formID: string, answers: string[]): Promise<void>;
   /**
    * Associates an owner with a given form.
    *
@@ -73,4 +75,61 @@ export interface IFormService {
    * @return void
    */
   addOwner(ctx: Context, formID: string, newOwner: IUser): Promise<void>;
+}
+
+export class DatabaseFormService implements IFormService {
+  public async getFormByID(ctx: Context, id: string): Promise<IForm> {
+    // TODO: filter info
+    return await Form.findById(id);
+    // return { owners: [], questions: [], responses: [], interviewSlots: [] };
+  }
+
+  public async getFormsByUser(ctx: Context, user: IUser): Promise<IForm[]> {
+    if (ctx.session.user.id === user.id) {
+      return await Form.find({ owners: { $elemMatch: { $oid: user.id } } });
+    }
+  }
+
+  public async getQuestions(
+    ctx: Context,
+    formID: string
+  ): Promise<IQuestion[]> {
+    console.log("REQUESTED FORM", formID);
+    const form = await Form.findById(formID).populate("questions");
+    console.log("GOT FORM", form);
+    return form.questions;
+  }
+
+  public async getResponses(
+    ctx: Context,
+    formID: string
+  ): Promise<IResponse[]> {
+    // TODO: Authenticate
+    const form = await Form.findById(formID);
+    return form.responses;
+  }
+
+  public async saveForm(ctx: Context, form: IForm): Promise<void> {
+    return; // TODO
+  }
+
+  public async createNewForm(ctx: Context, author: IUser): Promise<IForm> {
+    return await Form.create({ owners: [author.id] });
+  }
+
+  public async addResponse(
+    ctx: Context,
+    formID: string,
+    answers: string[]
+  ): Promise<void> {
+    return; // TODO
+  }
+
+  public async addOwner(
+    ctx: Context,
+    formID: string,
+    newOwner: IUser
+  ): Promise<void> {
+    return; // TODO
+  }
 }

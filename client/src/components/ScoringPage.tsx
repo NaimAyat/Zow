@@ -42,7 +42,7 @@ class ScoringPage extends React.Component<IProps, IState> {
   public getAnswer(question: IQuestion, answer: IAnswer) {
     const text = answer.answer;
 
-    if (question.type === "checkbox") {
+    if (question.type === "CHECKBOX") {
       const words = text.split(",");
       return words.map((word, index) => <p key={index}>{word}</p>);
     }
