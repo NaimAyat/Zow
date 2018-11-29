@@ -12,7 +12,8 @@ const typeDefs = gql`
     login(email: String!, password: String!): Boolean!
     logout: Boolean
     newUser(name: String!, email: String!, password: String!): Boolean!
-    createForm: Boolean
+    createForm: ID!
+    saveForm(formID: ID!, form: FormInput): Boolean
     addResponse(formID: ID!, answers: [String]): Boolean
     addOwner(formID: ID!, userID: ID!): Boolean
   }
@@ -50,6 +51,17 @@ const typeDefs = gql`
     responses: [Response]
     scores: [Scoring]
     slots: [InterviewSlot]
+  }
+
+  input FormInput {
+    name: String!
+    questions: [QuestionInput]!
+  }
+
+  input QuestionInput {
+    prompt: String!
+    choices: [String]!
+    type: String!
   }
 
   type Scoring {

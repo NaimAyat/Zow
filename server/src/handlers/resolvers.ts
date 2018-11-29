@@ -105,10 +105,11 @@ export default function getResolvers(
       /**
        * Creates a form for the currently logged in user.
        *
-       * @return the newly created IForm
+       * @return the newly created form's id
        */
       async createForm(parent, args, ctx) {
-        return await formService.createNewForm(ctx, ctx.session.user);
+        const form = await formService.createNewForm(ctx, ctx.session.user);
+        return form.id;
       },
       /**
        * Adds a response for the provided form.
@@ -144,7 +145,6 @@ export default function getResolvers(
        * @return all associated IQuestions
        */
       async questions(form, args, ctx) {
-        console.log("GETTING QUESTIONS FROM", form);
         return await formService.getQuestions(ctx, form.id);
       },
       /**

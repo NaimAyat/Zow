@@ -5,7 +5,8 @@ import Question from "./Question";
 const FormSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    default: ""
   },
   owners: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
@@ -13,7 +14,8 @@ const FormSchema = new mongoose.Schema({
   },
   questions: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Question" }],
-    required: true
+    required: true,
+    default: []
   },
   responses: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Response" }],

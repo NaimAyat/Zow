@@ -11,3 +11,15 @@ export const GET_FORM_GQL = gql`
     }
   }
 `;
+
+export const NEW_FORM_GQL = gql`
+  mutation {
+    createForm
+  }
+`;
+
+export const SAVE_FORM_GQL = gql`
+  mutation saveForm($id: ID!, $form: FormInput!) {
+    saveForm(formID: $id, form: $form)
+  }
+`;
