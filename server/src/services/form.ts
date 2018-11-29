@@ -2,6 +2,7 @@ import { IForm, IResponse, IUser, IQuestion } from "../entities";
 import { Context } from "koa";
 import { Form } from "../db/models";
 import { fromString } from "long";
+import { fromPromise } from "apollo-link";
 
 export interface IFormService {
   // Accessors
@@ -80,8 +81,12 @@ export interface IFormService {
 export class DatabaseFormService implements IFormService {
   public async getFormByID(ctx: Context, id: string): Promise<IForm> {
     // TODO: filter info
-    return await Form.findById(id);
-    // return { owners: [], questions: [], responses: [], interviewSlots: [] };
+    const form = await Form.findById(id).populate("owners questions ");
+    if (!form) {
+      throw new Error("form does not exist");
+    }
+
+    return { id: form.id, name: form.id };
   }
 
   public async getFormsByUser(ctx: Context, user: IUser): Promise<IForm[]> {
@@ -94,9 +99,10 @@ export class DatabaseFormService implements IFormService {
     ctx: Context,
     formID: string
   ): Promise<IQuestion[]> {
-    console.log("REQUESTED FORM", formID);
     const form = await Form.findById(formID).populate("questions");
-    console.log("GOT FORM", form);
+    if (!form) {
+      throw new Error("form does not exist");
+    }
     return form.questions;
   }
 
@@ -104,8 +110,16 @@ export class DatabaseFormService implements IFormService {
     ctx: Context,
     formID: string
   ): Promise<IResponse[]> {
-    // TODO: Authenticate
-    const form = await Form.findById(formID);
+    const form = await Form.findById(formID).populate("owners responses");
+    if (!form) {
+      throw new Error("form does not exist");
+    }
+    if (
+      !ctx.session.user ||
+      form.owners.find(user => user.id === ctx.session.user.id) === undefined
+    ) {
+      throw new Error("access not allowed");
+    }
     return form.responses;
   }
 
@@ -114,7 +128,11 @@ export class DatabaseFormService implements IFormService {
   }
 
   public async createNewForm(ctx: Context, author: IUser): Promise<IForm> {
-    return await Form.create({ owners: [author.id] });
+    if (!author) {
+      throw new Error("access not allowed");
+    }
+    const form = await Form.create({ name: "New Form", owners: [author.id] });
+    return { id: form.id };
   }
 
   public async addResponse(

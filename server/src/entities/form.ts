@@ -5,8 +5,9 @@ import { IUser } from "./user";
 
 export interface IForm {
   id?: any;
-  owners: IUser[];
-  questions: IQuestion[];
-  responses: IResponse[];
-  interviewSlots: IInterviewSlot[];
+  name?: string;
+  owners?: IUser[];
+  questions?: IQuestion[];
+  responses?: IResponse[];
+  interviewSlots?: IInterviewSlot[];
 }
