@@ -30,6 +30,7 @@ const FormSchema = new mongoose.Schema({
 interface IFormModel extends IForm, Document {}
 const Form = mongoose.model<IFormModel>("Form", FormSchema);
 
+// TODO: Remove, this is only for testing
 (async () => {
   let form = await Form.findOne({ name: "test Form" });
   if (!form) {
