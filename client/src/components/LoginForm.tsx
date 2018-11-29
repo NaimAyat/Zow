@@ -46,7 +46,7 @@ class LoginForm extends React.Component<IProps, IState> {
                 let error = "";
 
                 if (called && !loading) {
-                  if (data.login) {
+                  if (data && data.login) {
                     // successful login
                     refetchUser();
                     this.props.history.push("/summary");
@@ -57,6 +57,9 @@ class LoginForm extends React.Component<IProps, IState> {
 
                 return (
                   <Grid.Column style={{ maxWidth: 450 }}>
+                    <Header as="h2" textAlign="center">
+                      Log in to your account
+                    </Header>
                     <Form
                       size="large"
                       onSubmit={() =>
@@ -69,12 +72,8 @@ class LoginForm extends React.Component<IProps, IState> {
                       }
                       error={!!error}
                     >
+                      {error && <Message error content="Invalid Login" />}
                       <Segment stacked>
-                        <Header
-                          as="h2"
-                          textAlign="center"
-                          content="Log in to your account"
-                        />
                         <Form.Input
                           fluid
                           icon="user"
@@ -92,7 +91,6 @@ class LoginForm extends React.Component<IProps, IState> {
                           value={this.state.password}
                           onChange={this.handleChangePassword}
                         />
-                        {error && <Message error content="Invalid Login" />}
 
                         <Button primary size="large" animated>
                           <Button.Content visible>Login</Button.Content>

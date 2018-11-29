@@ -50,19 +50,19 @@ const questions: IQuestion[] = questionStrings.map(questionString => ({
 questions.push({
   options: ["One answer", "1-way street", "I won!"],
   prompt: "You may select only one.",
-  type: "radio"
+  type: "RADIO"
 });
 
 questions.push({
   options: ["Alabama", "California", "Utah", "Maine", "this.state"],
   prompt: "Which state is the best state?",
-  type: "dropdown"
+  type: "DROPDOWN"
 });
 
 questions.push({
   options: ["You can pick me", "And me", "And also me", "Pick all of us!"],
   prompt: "Select multiple of these options.",
-  type: "checkbox"
+  type: "CHECKBOX"
 });
 
 const getAnswers: () => IAnswer[] = () => {

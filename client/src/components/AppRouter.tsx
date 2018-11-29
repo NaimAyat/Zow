@@ -63,7 +63,7 @@ const AppRouter = () => (
             <Route path="/login" component={LoginForm} />
             <Route path="/summary" component={SummaryPage} />
             <Route path="/form-creation" component={FormCreationPage} />
-            <Route path="/form" component={FormViewPageLoader} />
+            <Route path="/form/:id" component={FormViewPageLoader} />
             <Route path="/score" component={ScoringPageLoader} />
             <Route path="/interview-creation" component={InterviewCreation} />
             <Route path="/interview" component={InterviewSelection} />

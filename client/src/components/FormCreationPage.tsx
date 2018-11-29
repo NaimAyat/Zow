@@ -14,7 +14,7 @@ class FormCreationPage extends React.Component<{}, IState> {
     super(props);
     const emailQuestion: IQuestion = {
       prompt: "Email",
-      type: "email"
+      type: "EMAIL"
     };
     this.state = { questions: [emailQuestion], formName: "" };
     this.onChangeFormName = this.onChangeFormName.bind(this);
@@ -43,7 +43,7 @@ class FormCreationPage extends React.Component<{}, IState> {
         prompt: "",
         type
       };
-      if (type === "checkbox" || type === "radio" || type === "dropdown") {
+      if (type === "CHECKBOX" || type === "RADIO" || type === "DROPDOWN") {
         question.options = [];
       }
       questions.push(question);
@@ -84,34 +84,34 @@ class FormCreationPage extends React.Component<{}, IState> {
               <Grid.Row>
                 <Button
                   icon="phone"
-                  onClick={this.getAddQuestion("phone")}
+                  onClick={this.getAddQuestion("PHONE")}
                   content="Phone"
                 />
                 <Button
                   icon="window minimize outline"
-                  onClick={this.getAddQuestion("shortText")}
+                  onClick={this.getAddQuestion("SHORT_TEXT")}
                   content="Short Text"
                 />
                 <Button
                   icon="bars"
-                  onClick={this.getAddQuestion("longText")}
+                  onClick={this.getAddQuestion("LONG_TEXT")}
                   content="Long Text"
                 />
               </Grid.Row>
               <Grid.Row>
                 <Button
                   icon="dot circle"
-                  onClick={this.getAddQuestion("radio")}
+                  onClick={this.getAddQuestion("RADIO")}
                   content="Radio Button"
                 />
                 <Button
                   icon="check square"
-                  onClick={this.getAddQuestion("checkbox")}
+                  onClick={this.getAddQuestion("CHECKBOX")}
                   content="Checkbox"
                 />
                 <Button
                   icon="chevron down"
-                  onClick={this.getAddQuestion("dropdown")}
+                  onClick={this.getAddQuestion("DROPDOWN")}
                   content="Drop Down"
                 />
               </Grid.Row>

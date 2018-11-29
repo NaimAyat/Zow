@@ -75,9 +75,9 @@ export default class InterviewSelection extends React.Component<IProps> {
                   .map((slot, j) => (
                     <Card as="a" onClick={() => alert(slot.start)} key={j}>
                       <Card.Content>
-                        {moment(slot.start).format("h:mm")}
+                        {moment(slot.start).format("h:mm a")}
                         &nbsp;to&nbsp;
-                        {moment(slot.end).format("h:mm")}
+                        {moment(slot.end).format("h:mm a")}
                       </Card.Content>
                     </Card>
                   ))}

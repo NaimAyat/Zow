@@ -30,7 +30,7 @@ class FormViewPage extends React.Component<IProps, IState> {
     return (answer: IAnswer) => {
       const response = { ...this.state.response };
       response.answers[index] = answer;
-      if (this.props.questions[index].type === "email") {
+      if (this.props.questions[index].type === "EMAIL") {
         response.email = answer.answer;
       }
       this.setState({ response });

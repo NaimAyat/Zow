@@ -144,6 +144,7 @@ export default function getResolvers(
        * @return all associated IQuestions
        */
       async questions(form, args, ctx) {
+        console.log("GETTING QUESTIONS FROM", form);
         return await formService.getQuestions(ctx, form.id);
       },
       /**

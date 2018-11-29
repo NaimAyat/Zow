@@ -31,17 +31,17 @@ class QuestionField extends React.Component<IProps, IState> {
 
   public getAnswerField() {
     switch (this.props.question.type) {
-      case "shortText":
+      case "SHORT_TEXT":
         return <input disabled placeholder="Short answer will go here" />;
-      case "longText":
+      case "LONG_TEXT":
         return <TextArea disabled placeholder="Long answer will go here" />;
-      case "phone":
+      case "PHONE":
         return <input disabled placeholder="(555) 555-5555" />;
-      case "email":
+      case "EMAIL":
         return <input disabled placeholder="example@ucla.edu" />;
-      case "dropdown":
-      case "radio":
-      case "checkbox":
+      case "DROPDOWN":
+      case "RADIO":
+      case "CHECKBOX":
         if (this.props.question.options == null) {
           const question = { ...this.props.question };
           question.options = [];
@@ -81,19 +81,19 @@ class QuestionField extends React.Component<IProps, IState> {
 
   public getQuestionType() {
     switch (this.props.question.type) {
-      case "email":
+      case "EMAIL":
         return "email";
-      case "phone":
+      case "PHONE":
         return "phone";
-      case "longText":
+      case "LONG_TEXT":
         return "long text";
-      case "shortText":
+      case "SHORT_TEXT":
         return "short text";
-      case "radio":
+      case "RADIO":
         return "radio button";
-      case "checkbox":
+      case "CHECKBOX":
         return "checkbox";
-      case "dropdown":
+      case "DROPDOWN":
         return "dropdown";
     }
   }
@@ -152,16 +152,16 @@ class QuestionField extends React.Component<IProps, IState> {
           <Grid.Column segment centered width={1}>
             <Icon
               style={
-                this.props.question.type === "email"
+                this.props.question.type === "EMAIL"
                   ? null
                   : { cursor: "pointer" }
               }
               name="x"
               color="red"
               size="big"
-              disabled={this.props.question.type === "email"}
+              disabled={this.props.question.type === "EMAIL"}
               onClick={
-                this.props.question.type === "email"
+                this.props.question.type === "EMAIL"
                   ? null
                   : this.props.deleteQuestion
               }

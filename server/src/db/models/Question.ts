@@ -8,8 +8,7 @@ const questionTypes = [
   "EMAIL",
   "DROPDOWN",
   "CHECKBOX",
-  "RADIO",
-  "FILE"
+  "RADIO"
 ];
 
 // TODO move those enum values to constants somewhere
