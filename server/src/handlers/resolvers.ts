@@ -37,13 +37,11 @@ export default function getResolvers(
       },
       /**
        * Retrieves all forms for a given user.
-       * @param user
-       *          user for which forms are retrieved
        * @return IForms for given user
        */
-      async forms(parent, args, ctx) {
-        const { user } = args;
-        return await formService.getFormsByUser(ctx, user);
+      async ownedForms(parent, args, ctx) {
+        console.log("[Resolver]: Fetching owned forms");
+        return await formService.getOwnedForms(ctx);
       },
       //////////////////
       // User Service //

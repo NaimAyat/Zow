@@ -51,7 +51,7 @@ class Registration extends React.Component<IProps, IState> {
                   if (data && data.newUser) {
                     // successful login
                     refetchUser();
-                    this.props.history.push("/summary");
+                    this.props.history.push("/");
                   } else {
                     if (
                       !this.state.name ||

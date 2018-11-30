@@ -50,7 +50,7 @@ class LoginForm extends React.Component<IProps, IState> {
                   if (data && data.login) {
                     // successful login
                     refetchUser();
-                    this.props.history.push("/summary");
+                    this.props.history.push("/");
                   } else {
                     error = "Invalid login";
                   }
