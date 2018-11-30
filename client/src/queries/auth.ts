@@ -20,3 +20,9 @@ export const GET_USER_GQL = gql`
     }
   }
 `;
+
+export const NEW_USER_GQL = gql`
+  mutation newUser($name: String!, $email: String!, $password: String!) {
+    newUser(name: $name, email: $email, password: $password)
+  }
+`;

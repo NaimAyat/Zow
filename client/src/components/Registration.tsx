@@ -13,24 +13,25 @@ import "../css/LoginForm.css";
 import { Mutation } from "react-apollo";
 import { History } from "history";
 import { UserContext } from "./Context";
-import { LOGIN_GQL } from "../queries/auth";
-import { Link } from "react-router-dom";
+import { NEW_USER_GQL } from "../queries/auth";
 
 interface IProps {
   history: History;
 }
 
 interface IState {
+  name: string;
   email: string;
   password: string;
 }
 
-class LoginForm extends React.Component<IProps, IState> {
+class Registration extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    this.state = { email: "", password: "" };
+    this.state = { name: "", email: "", password: "" };
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
+    this.handleChangeName = this.handleChangeName.bind(this);
   }
 
   public render() {
@@ -42,30 +43,39 @@ class LoginForm extends React.Component<IProps, IState> {
             style={{ height: "100%" }}
             verticalAlign="middle"
           >
-            <Mutation mutation={LOGIN_GQL}>
-              {(login, { loading, data, called }) => {
+            <Mutation mutation={NEW_USER_GQL}>
+              {(newUser, { loading, data, called }) => {
                 let error = "";
 
                 if (called && !loading) {
-                  if (data && data.login) {
+                  if (data && data.newUser) {
                     // successful login
                     refetchUser();
                     this.props.history.push("/summary");
                   } else {
-                    error = "Invalid login";
+                    if (
+                      !this.state.name ||
+                      !this.state.email ||
+                      !this.state.password
+                    ) {
+                      error = "Must fill out all fields";
+                    } else {
+                      error = "User already exists";
+                    }
                   }
                 }
 
                 return (
                   <Grid.Column style={{ maxWidth: 450 }}>
                     <Header as="h2" textAlign="center">
-                      Log in to your account
+                      Create your new account with Zow
                     </Header>
                     <Form
                       size="large"
                       onSubmit={() =>
-                        login({
+                        newUser({
                           variables: {
+                            name: this.state.name,
                             email: this.state.email,
                             password: this.state.password
                           }
@@ -73,8 +83,16 @@ class LoginForm extends React.Component<IProps, IState> {
                       }
                       error={!!error}
                     >
-                      {error && <Message error content="Invalid Login" />}
+                      {error && <Message error content={error} />}
                       <Segment stacked>
+                        <Form.Input
+                          fluid
+                          icon="user"
+                          iconPosition="left"
+                          placeholder="Name"
+                          value={this.state.name}
+                          onChange={this.handleChangeName}
+                        />
                         <Form.Input
                           fluid
                           icon="user"
@@ -83,6 +101,7 @@ class LoginForm extends React.Component<IProps, IState> {
                           value={this.state.email}
                           onChange={this.handleChangeEmail}
                         />
+
                         <Form.Input
                           fluid
                           icon="lock"
@@ -94,22 +113,13 @@ class LoginForm extends React.Component<IProps, IState> {
                         />
 
                         <Button primary size="large" animated>
-                          <Button.Content visible>Login</Button.Content>
+                          <Button.Content visible>
+                            Create Account
+                          </Button.Content>
                           <Button.Content hidden>
                             <Icon name="arrow right" />
                           </Button.Content>
                         </Button>
-                      </Segment>
-                      <Segment style={{ margin: "auto", maxWidth: 200 }}>
-                        <Header as="h3">New to Zow?</Header>
-                        <Link to="/register">
-                          <Button secondary size="large" animated>
-                            <Button.Content visible>Sign Up</Button.Content>
-                            <Button.Content hidden>
-                              <Icon name="arrow right" />
-                            </Button.Content>
-                          </Button>
-                        </Link>
                       </Segment>
                     </Form>
                   </Grid.Column>
@@ -135,6 +145,13 @@ class LoginForm extends React.Component<IProps, IState> {
   ) {
     this.setState({ password: value });
   }
+
+  private handleChangeName(
+    event: React.ChangeEvent,
+    { value }: InputOnChangeData
+  ) {
+    this.setState({ name: value });
+  }
 }
 
-export default LoginForm;
+export default Registration;
