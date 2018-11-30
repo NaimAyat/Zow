@@ -5,7 +5,7 @@ const typeDefs = gql`
     currentUser: User
     user(userID: ID!): User!
     form(formID: ID!): Form!
-    forms(userID: ID!): [Form!]!
+    ownedForms: [Form!]!
   }
 
   type Mutation {

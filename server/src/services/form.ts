@@ -1,8 +1,6 @@
 import { IForm, IResponse, IUser, IQuestion } from "../entities";
 import { Context } from "koa";
 import { Form } from "../db/models";
-import { fromString } from "long";
-import { fromPromise } from "apollo-link";
 
 export interface IFormService {
   // Accessors
@@ -14,12 +12,10 @@ export interface IFormService {
    */
   getFormByID(ctx: Context, id: string): Promise<IForm>;
   /**
-   * Retrieves all IForms for a given user.
-   * @param user
-   *          IUser for which forms are retrieved
+   * Retrieves all IForms for a given user provided in the context
    * @return IForms for given user
    */
-  getFormsByUser(ctx: Context, user: IUser): Promise<IForm[]>;
+  getOwnedForms(ctx: Context): Promise<IForm[]>;
   /**
    * Retrieves IQuestions for given form.
    * @param formID
@@ -81,7 +77,7 @@ export interface IFormService {
 export class DatabaseFormService implements IFormService {
   public async getFormByID(ctx: Context, id: string): Promise<IForm> {
     // TODO: filter info
-    const form = await Form.findById(id).populate("owners questions ");
+    const form = await Form.findById(id).populate("owners questions");
     if (!form) {
       throw new Error("form does not exist");
     }
@@ -89,9 +85,18 @@ export class DatabaseFormService implements IFormService {
     return { id: form.id, name: form.id };
   }
 
-  public async getFormsByUser(ctx: Context, user: IUser): Promise<IForm[]> {
-    if (ctx.session.user.id === user.id) {
-      return await Form.find({ owners: { $elemMatch: { $oid: user.id } } });
+  public async getOwnedForms(ctx: Context): Promise<IForm[]> {
+    console.log("Getting forms for user", ctx.session.user.id);
+    try {
+      // const ownerID = mongoose.Types.ObjectId(ctx.session.user.id);
+      console.log("Got objectID");
+      const forms = await Form.find({
+        owners: ctx.session.user.id
+      });
+      console.log("Got forms", forms);
+      return forms;
+    } catch (e) {
+      console.error(e);
     }
   }
 

@@ -23,3 +23,12 @@ export const SAVE_FORM_GQL = gql`
     saveForm(formID: $id, form: $form)
   }
 `;
+
+export const OWNED_FORMS_GQL = gql`
+  query {
+    ownedForms {
+      id
+      name
+    }
+  }
+`;

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
-import { Divider, Header, Menu, Button, Grid } from "semantic-ui-react";
+import { Divider, Menu } from "semantic-ui-react";
 import FormCreationPage from "./FormCreationPage";
 import FormViewPageLoader from "./FormViewPageLoader";
 import LoginForm from "./LoginForm";
@@ -10,53 +10,8 @@ import { UserContext } from "./Context";
 import Logout from "./Logout";
 import InterviewSelection from "./InterviewSelection";
 import InterviewCreation from "./InterviewCreationPage";
-import { Mutation } from "react-apollo";
-import { NEW_FORM_GQL } from "src/queries/form";
-import { withRouter } from "react-router";
 import Registration from "./Registration";
-
-const Home = withRouter((props: any) => (
-  <Grid textAlign="center" style={{ height: "100%" }} verticalAlign="middle">
-    <UserContext.Consumer>
-      {({ user }) => (
-        <Mutation mutation={NEW_FORM_GQL}>
-          {newForm => {
-            const handleNewForm = () => {
-              newForm()
-                .then(res => {
-                  console.log(res);
-                  if (res && !res.errors) {
-                    props.history.push("/form-creation/" + res.data.createForm);
-                  }
-                })
-                .catch(console.error);
-            };
-
-            return (
-              <Header as="h1" textAlign="center">
-                Welcome to ZOW
-                <br />
-                {user ? (
-                  <Button onClick={handleNewForm}>Create New Form</Button>
-                ) : (
-                  <React.Fragment>
-                    <Link to="/login">
-                      <Button primary>Login</Button>
-                    </Link>
-                    <br />
-                    <Link to="/register">
-                      <Button secondary>Sign Up</Button>
-                    </Link>
-                  </React.Fragment>
-                )}
-              </Header>
-            );
-          }}
-        </Mutation>
-      )}
-    </UserContext.Consumer>
-  </Grid>
-));
+import HomePage from "./HomePage";
 
 const AppRouter = () => (
   <UserContext.Consumer>
@@ -67,9 +22,6 @@ const AppRouter = () => (
           <Menu fixed="top">
             <Menu.Item>
               <Link to="/">Home</Link>
-            </Menu.Item>
-            <Menu.Item>
-              <Link to="/summary">Summary</Link>
             </Menu.Item>
             <Menu.Item>
               <Link to="/score">Scoring Page</Link>
@@ -92,13 +44,13 @@ const AppRouter = () => (
           </Menu>
           <Divider style={{ minHeight: "50px" }} hidden />
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={HomePage} />
             <Route path="/login" component={LoginForm} />
             <Route path="/register" component={Registration} />
             <Route path="/form/:id" component={FormViewPageLoader} />
             {user && (
               <React.Fragment>
-                <Route path="/summary" component={SummaryPage} />
+                <Route path="/summary/:id" component={SummaryPage} />
                 <Route path="/form-creation/:id" component={FormCreationPage} />
                 <Route path="/score" component={ScoringPageLoader} />
                 <Route
