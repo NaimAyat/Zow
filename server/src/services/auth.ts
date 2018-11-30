@@ -37,6 +37,10 @@ class SessionAuthorizationService implements IAuthorizationService {
     email: string,
     password: string
   ): Promise<boolean> {
+    if (!name || !email || !password) {
+      return false;
+    }
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return false;
@@ -72,7 +76,6 @@ class SessionAuthorizationService implements IAuthorizationService {
     ctx.session.user = null;
     return false; // failed to login
   }
-
 
   /**
    * Logs out user if a session is currently active.
