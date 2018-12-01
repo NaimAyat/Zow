@@ -58,9 +58,9 @@ export interface IFormService {
    * @param answers
    *          array of answers to include in response
    *
-   * @return void
+   * @return the added response
    */
-  addResponse(ctx: Context, formID: string, answers: string[]): Promise<void>;
+  addResponse(ctx: Context, formID: string, answers: string[]): Promise<IResponse>;
   /**
    * Associates an owner with a given form.
    *
@@ -69,9 +69,29 @@ export interface IFormService {
    * @param newOwner
    *          user to add as owner to form
    *
-   * @return void
+   * @return the added owner
    */
-  addOwner(ctx: Context, formID: string, newOwner: IUser): Promise<void>;
+  addOwner(ctx: Context, formID: string, newOwner: IUser): Promise<IUser>;
+  /**
+   * Adds a scoring to a response.
+   *
+   * @param responseID
+   *          response ID associate score with
+   * @param score
+   *          score object to add to response
+   *
+   * @return the updated response
+   */
+  addScore(ctx: Context, responseID: string, score: IScore): Promise<IResponse>;
+  /**
+   * Retrieves average score for a given response.
+   *
+   * @param responseID
+   *          response ID for which to aggregate scores
+   *
+   * @return average of all scores associated with the response
+   */
+  getAvgScore(ctx: Context, responseID: string): Promise<number>;
 }
 
 export class DatabaseFormService implements IFormService {
@@ -129,7 +149,9 @@ export class DatabaseFormService implements IFormService {
   }
 
   public async saveForm(ctx: Context, form: IForm): Promise<void> {
-    return; // TODO
+    var query = {'id': form.id};
+    const form = await Form.findOneAndUpdate(query, form);
+    return;
   }
 
   public async createNewForm(ctx: Context, author: IUser): Promise<IForm> {
@@ -142,17 +164,51 @@ export class DatabaseFormService implements IFormService {
 
   public async addResponse(
     ctx: Context,
+    respondent: string,
     formID: string,
     answers: string[]
-  ): Promise<void> {
-    return; // TODO
+  ): Promise<IResponse> {
+    const response = await Response.create({ respondent: respondent, answers: answers });
+    var query = {'id': form.id};
+    const form = await Form.findOneAndUpdate(query, { $push: {responses: response} });
+    return { id: response.id };
   }
 
   public async addOwner(
     ctx: Context,
     formID: string,
     newOwner: IUser
-  ): Promise<void> {
-    return; // TODO
+  ): Promise<IUser> {
+    var query = {'id': form.id};
+    const form = await Form.findOneAndUpdate(query, { $push: {owners: newOwner} });
+    return { id: newOwner.id };
+  }
+
+  public async addScore(
+    ctx: Context,
+    responseID: string,
+    score: IScore
+  ): Promise<IResponse> {
+    var query = {'id': responseID};
+    const response = await Response.findOneAndUpdate(query, { $push: {scoring.type: score} });
+    return {id: response.id};
+  }
+
+  public async getAvgScore(
+    ctx: Context,
+    responseID: string
+  ): Promise<number> {
+    const form = await Form.findById(formID).populate('scoring.type');
+    var sum = 0;
+    var numScores = form.scoring.type.length;
+    for (var score of form.scoring.type) {
+      sum += score;
+    }
+    if (numScores < 1) {
+      return -1;
+    }
+    else {
+      return sum / numScores;
+    }
   }
 }
