@@ -23,7 +23,7 @@ const FormViewPageLoader: React.SFC<IProps> = props => {
                       variables: {
                         formID: props.match.params.id,
                         email: response.email,
-                        answers: response.answers.map(({ answer }) => answer)
+                        answers: response.answers.map(({ value }) => value)
                       }
                     });
                     props.history.push("/success");
