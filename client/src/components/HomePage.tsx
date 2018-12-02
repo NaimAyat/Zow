@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Header, Button, Grid, Loader, List } from "semantic-ui-react";
 import { UserContext } from "./Context";
 import { Mutation, Query } from "react-apollo";
-import { NEW_FORM_GQL, OWNED_FORMS_GQL } from "src/queries/form";
+import { NEW_FORM_GQL, OWNED_FORMS_GQL } from "../queries/form";
 import { withRouter } from "react-router";
 
 const HomePage = withRouter((props: any) => (
