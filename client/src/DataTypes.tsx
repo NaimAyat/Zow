@@ -19,6 +19,7 @@ export interface IAnswer {
 }
 
 export interface IResponse {
+  id?: string;
   email: string;
   answers: IAnswer[];
   status?: "Pending" | "Approved" | "Rejected";

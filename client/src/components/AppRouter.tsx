@@ -56,7 +56,10 @@ const AppRouter = () => (
                   path="/form-creation/:id"
                   component={FormCreationPageLoader}
                 />
-                <Route path="/score" component={ScoringPageLoader} />
+                <Route
+                  path="/score/:formid/:responseid"
+                  component={ScoringPageLoader}
+                />
                 <Route
                   path="/interview-creation"
                   component={InterviewCreation}

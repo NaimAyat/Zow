@@ -159,8 +159,8 @@ export default function getResolvers(
        * @return updated response
        */
       async addScore(parent, args, ctx) {
-        const { responseID, score } = args;
-        await formService.addScore(ctx, responseID, score);
+        const { responseID, score, notes } = args;
+        await formService.addScore(ctx, responseID, score, notes);
         return true;
       },
 
