@@ -133,12 +133,20 @@ export default function getResolvers(
         const { formID, userID } = args;
         return await formService.addOwner(ctx, formID, userID);
       },
-<<<<<<< HEAD
+
+      /**
+       * Saves form.
+       * @param formID
+       *          ID of form to save
+       * @param score
+       *          form content
+       * @return void
+       */
       async saveForm(parent, args, ctx) {
         const { formID, form } = args;
         form.id = formID;
         return await formService.saveForm(ctx, form);
-=======
+      },
 
       /**
        * Adds score to given response.
@@ -163,7 +171,6 @@ export default function getResolvers(
       async getAvgScore(parent, args, ctx) {
         const { responseID } = args;
         return await formService.getAvgScore(ctx, responseID);
->>>>>>> scoring
       }
     },
 
