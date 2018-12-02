@@ -96,6 +96,9 @@ class ConcreteEmailService implements IEmailService {
   }
 }
 
-export default function getDefaultEmailService(config: IConfig) {
-  return new ConcreteEmailService(getEmailer(config));
+export default function getDefaultEmailService(
+  emailer: IEmailer
+) {
+  
+  return new ConcreteEmailService(emailer);
 }

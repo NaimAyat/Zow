@@ -1,6 +1,7 @@
 import { IForm, IResponse, IUser, IQuestion, IScore } from "../entities";
 import { Context } from "koa";
 import { Form, Question, Answer, Response, User } from "../db/models";
+import { IEmailService } from "./email"
 
 export interface IFormService {
   // Accessors
@@ -102,6 +103,12 @@ export interface IFormService {
 }
 
 export class DatabaseFormService implements IFormService {
+
+  private emailService: IEmailService;
+  constructor(emailService: IEmailService) {
+    this.emailService = emailService;
+  }
+
   public async getFormByID(ctx: Context, id: string): Promise<IForm> {
     // TODO: filter info
     const form = await Form.findById(id).populate("owners questions");
@@ -287,4 +294,10 @@ export class DatabaseFormService implements IFormService {
       return sum / numScores;
     }
   }
+}
+
+export default function getDefaultFormService(
+  emailService: IEmailService
+) {
+  return new DatabaseFormService(emailService);
 }
