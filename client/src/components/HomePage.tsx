@@ -116,7 +116,7 @@ const HomePage = withRouter((props: any) => (
         paddingTop: '50px',
         paddingLeft: '200px',
         paddingBottom: '50px'}}>
-      <img src={require('/usr/src/app/src/images/cow.png')}
+      <img src={require('../images/cow.png')}
       style={{width: 250, height: 250,}}/>
       </Grid.Column>
     </Grid>
@@ -127,7 +127,7 @@ const HomePage = withRouter((props: any) => (
         //backgroundColor: 'rgb(242, 135, 15)',
         backgroundColor: 'skyblue',
       }}>
-      <img src={require('/usr/src/app/src/images/footer.png')} style={{
+      <img src={require('../images/footer.png')} style={{
         bottom: 0,
         flex: 1,
         height: '100%',
