@@ -32,3 +32,11 @@ export interface ISlot {
   start: Date;
   end: Date;
 }
+
+export type FilterType = "less than" | "greater than" | "matches" | "includes";
+
+export interface IFilter {
+  prompt: string;
+  type: FilterType;
+  search: string;
+}

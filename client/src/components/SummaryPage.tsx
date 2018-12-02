@@ -1,7 +1,9 @@
 import * as React from "react";
-import { Button } from "semantic-ui-react";
+import { Button, Divider } from "semantic-ui-react";
 import SampleData from "../SampleData";
 import SummaryTable from "./SummaryTable";
+import { IFilter } from "../DataTypes";
+import Filter from "./Filter";
 import Page from "./Page";
 
 interface IRow {
@@ -10,6 +12,7 @@ interface IRow {
 }
 
 interface ISummaryPageState {
+  filters: IFilter[];
   rows: { [email: string]: IRow };
 }
 
@@ -20,7 +23,7 @@ class SummaryPage extends React.Component<{}, ISummaryPageState> {
     SampleData.responses.forEach(
       response => (rows[response.email] = { checked: true, status: "Pending" })
     );
-    this.state = { rows };
+    this.state = { rows, filters: [] };
     this.getToggleChecked = this.getToggleChecked.bind(this);
   }
   public getToggleChecked(email: string) {
@@ -32,11 +35,9 @@ class SummaryPage extends React.Component<{}, ISummaryPageState> {
   }
 
   public getCheckAll(shouldCheck: boolean) {
-    return () => {
-      const rows = { ...this.state.rows };
-      Object.keys(rows).forEach(email => (rows[email].checked = shouldCheck));
-      this.setState({ rows });
-    };
+    const rows = { ...this.state.rows };
+    Object.keys(rows).forEach(email => (rows[email].checked = shouldCheck));
+    this.setState({ rows });
   }
 
   public getChangeStatus(status: string) {
@@ -61,12 +62,12 @@ class SummaryPage extends React.Component<{}, ISummaryPageState> {
         <Button
           icon="check square"
           content="Select All"
-          onClick={this.getCheckAll(true)}
+          onClick={() => this.getCheckAll(true)}
         />
         <Button
           icon="minus square"
           content="Deselect All"
-          onClick={this.getCheckAll(false)}
+          onClick={() => this.getCheckAll(false)}
         />
       </div>
       <div style={{ float: "right", margin: "10px" }}>
@@ -92,6 +93,9 @@ class SummaryPage extends React.Component<{}, ISummaryPageState> {
   public render() {
     return (
       <Page header="Summary View">
+        <Divider hidden />
+        <Filter filters={this.state.filters} questions={SampleData.questions} />
+        <Divider hidden />
         <this.ButtonRow />
         <SummaryTable
           {...SampleData}
