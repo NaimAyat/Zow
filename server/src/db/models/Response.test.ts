@@ -2,7 +2,7 @@ import Response from "./Response";
 import mongoose from "mongoose";
 
 describe("Response Model", () => {
-  test("Should not be valid without a respondent", () => {
+  test("Should not be valid without an email", () => {
     const u = new Response({
       answers: [new mongoose.Types.ObjectId()],
       scoring: { score: 1, notes: "", user: new mongoose.Types.ObjectId() }
@@ -16,7 +16,7 @@ describe("Response Model", () => {
 
   test("Should not be valid without a score", () => {
     const u = new Response({
-      respondent: "test@test.com",
+      email: "test@test.com",
       answers: [new mongoose.Types.ObjectId()],
       scoring: { notes: "", user: new mongoose.Types.ObjectId() }
     });
@@ -29,7 +29,7 @@ describe("Response Model", () => {
 
   test("Should not be valid without a user", () => {
     const u = new Response({
-      respondent: "test@test.com",
+      email: "test@test.com",
       answers: [new mongoose.Types.ObjectId()],
       scoring: { score: 1, notes: "" }
     });

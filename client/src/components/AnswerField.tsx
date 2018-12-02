@@ -35,12 +35,12 @@ class AnswerField extends React.Component<IProps, IState> {
   }
 
   public handleTextChange(event: React.SyntheticEvent, data: TextAreaProps) {
-    const answer = { answer: String(data.value) };
+    const answer = { value: String(data.value) };
     this.props.setAnswer(answer);
   }
 
   public handleAnswerChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const answer = { answer: event.target.value };
+    const answer = { value: event.target.value };
     this.props.setAnswer(answer);
   }
 
@@ -48,8 +48,8 @@ class AnswerField extends React.Component<IProps, IState> {
     event: React.FormEvent<HTMLInputElement>,
     data: CheckboxProps
   ) {
-    let answers = this.props.answer.answer
-      ? this.props.answer.answer.split(",")
+    let answers = this.props.answer.value
+      ? this.props.answer.value.split(",")
       : [];
     const value = String(data.value);
     if (data.checked) {
@@ -57,7 +57,7 @@ class AnswerField extends React.Component<IProps, IState> {
     } else {
       answers = answers.filter(element => element !== value);
     }
-    const answer = { answer: answers.join(",") };
+    const answer = { value: answers.join(",") };
     this.props.setAnswer(answer);
   }
 
@@ -65,7 +65,7 @@ class AnswerField extends React.Component<IProps, IState> {
     event: React.FormEvent<HTMLInputElement>,
     data: CheckboxProps
   ) {
-    const answer = { answer: String(data.value) };
+    const answer = { value: String(data.value) };
     this.props.setAnswer(answer);
   }
 
@@ -73,7 +73,7 @@ class AnswerField extends React.Component<IProps, IState> {
     event: React.FormEvent<HTMLInputElement>,
     data: DropdownProps
   ) {
-    const answer = { answer: String(data.value) };
+    const answer = { value: String(data.value) };
     this.props.setAnswer(answer);
   }
 
@@ -127,7 +127,7 @@ class AnswerField extends React.Component<IProps, IState> {
               label={option}
               name="radioGroup"
               value={option}
-              checked={this.props.answer.answer === option}
+              checked={this.props.answer.value === option}
               onChange={this.handleRadioChange}
             />
           </Form.Field>
@@ -154,7 +154,7 @@ class AnswerField extends React.Component<IProps, IState> {
               label={option}
               name="checkboxGroup"
               value={option}
-              checked={this.props.answer.answer.split(",").includes(option)}
+              checked={this.props.answer.value.split(",").includes(option)}
               onChange={this.handleCheckboxChange}
             />
           </Form.Field>

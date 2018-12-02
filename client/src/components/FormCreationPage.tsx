@@ -1,10 +1,20 @@
 import * as React from "react";
-import { Button, Form, Grid, Header, Input, Segment } from "semantic-ui-react";
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Input,
+  Segment,
+  Divider
+} from "semantic-ui-react";
 import { IQuestion, QuestionType } from "src/DataTypes";
 import Page from "./Page";
 import QuestionField from "./QuestionField";
+import { Link } from "react-router-dom";
 
 interface IProps {
+  id: string;
   initialQuestions: IQuestion[];
   initialName: string;
   saveForm(questions: IQuestion[], formName: string): Promise<void>;
@@ -18,7 +28,6 @@ interface IState {
 class FormCreationPage extends React.Component<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
-    console.log("Creating editing page", props);
     this.state = {
       questions: props.initialQuestions,
       formName: props.initialName
@@ -66,6 +75,12 @@ class FormCreationPage extends React.Component<IProps, IState> {
     return (
       <React.Fragment>
         <Page header="Edit Form">
+          <Link to={"/summary/" + this.props.id}>
+            <Button fluid style={{ maxWidth: "25%", margin: "auto" }}>
+              Return to Form Summary
+            </Button>
+          </Link>
+          <Divider />
           <Input
             fluid
             value={this.state.formName}

@@ -1,6 +1,6 @@
-import { IForm, IResponse, IUser, IQuestion } from "../entities";
+import { IForm, IResponse, IUser, IQuestion, IScore } from "../entities";
 import { Context } from "koa";
-import { Form, Question } from "../db/models";
+import { Form, Question, Answer, Response, User } from "../db/models";
 import { IEmailService } from "./email"
 
 export interface IFormService {
@@ -63,7 +63,12 @@ export interface IFormService {
    *
    * @return the added response
    */
-  addResponse(ctx: Context, formID: string, answers: string[]): Promise<IResponse>;
+  addResponse(
+    ctx: Context,
+    formID: string,
+    email: string,
+    answers: string[]
+  ): Promise<IResponse>;
   /**
    * Associates an owner with a given form.
    *
@@ -115,14 +120,10 @@ export class DatabaseFormService implements IFormService {
   }
 
   public async getOwnedForms(ctx: Context): Promise<IForm[]> {
-    console.log("Getting forms for user", ctx.session.user.id);
     try {
-      // const ownerID = mongoose.Types.ObjectId(ctx.session.user.id);
-      console.log("Got objectID");
       const forms = await Form.find({
         owners: ctx.session.user.id
       });
-      console.log("Got forms", forms);
       return forms;
     } catch (e) {
       console.error(e);
@@ -144,7 +145,16 @@ export class DatabaseFormService implements IFormService {
     ctx: Context,
     formID: string
   ): Promise<IResponse[]> {
-    const form = await Form.findById(formID).populate("owners responses");
+    const form = await Form.findById(formID)
+      .populate("owners")
+      .populate({
+        path: "responses",
+        model: "Response",
+        populate: {
+          path: "answers",
+          model: "Answer"
+        }
+      });
     if (!form) {
       throw new Error("form does not exist");
     }
@@ -158,7 +168,6 @@ export class DatabaseFormService implements IFormService {
   }
 
   public async saveForm(ctx: Context, form: IForm): Promise<void> {
-    console.log("Saving form", form);
     const formInDB = await Form.findById(form.id).populate("owners");
 
     if (
@@ -177,7 +186,6 @@ export class DatabaseFormService implements IFormService {
     }
 
     await formInDB.save();
-    console.log("Saved form", formInDB);
   }
 
   public async createNewForm(ctx: Context, author: IUser): Promise<IForm> {
@@ -199,21 +207,35 @@ export class DatabaseFormService implements IFormService {
 
   public async addResponse(
     ctx: Context,
-    respondent: string,
     formID: string,
     email: string,
     answers: string[]
   ): Promise<IResponse> {
-    // const response = await Response.create({ respondent: respondent, answers: answers });
-    // const form = await Form.findById(form.id);
-    // if (!form) {
-    //   throw new Error("Form not found");
-    // }
-    // form.responses.push(response);
-    // form.markModified('responses');
-    // await form.save();
-    // return { id: response.id };
-    return; // TODO: Parse and create IAnswers properly
+    const form = await Form.findById(formID);
+    if (!form) {
+      throw new Error("Form not found");
+    }
+
+    const answerObjects = await Promise.all(
+      answers.map(
+        async (answer, i) =>
+          (await Answer.create({
+            value: answer,
+            question: form.questions[i]
+          }))._id
+      )
+    );
+
+    const response = await Response.create({
+      email,
+      answers: answerObjects
+    });
+
+    form.responses.push(response);
+    form.markModified("responses");
+    await form.save();
+
+    return response;
   }
 
   public async addOwner(
@@ -231,17 +253,16 @@ export class DatabaseFormService implements IFormService {
     ) {
       throw new Error("Access not allowed");
     }
-    const owner = await User.findOne({email:newOwner});
+    const owner = await User.findOne({ email: newOwner });
     // TODO: Accept e-mail addresses of users w/o an account
     if (!owner) {
-      throw new Error("User not found with provided e-mail address")
+      throw new Error("User not found with provided e-mail address");
     }
     form.owners.push(owner);
-    form.markModified('owners');
+    form.markModified("owners");
     await form.save();
     // TODO: Send e-mail update to new owner
-    return { id: newOwner.id };
-
+    return owner;
   }
 
   public async addScore(
@@ -249,31 +270,27 @@ export class DatabaseFormService implements IFormService {
     responseID: string,
     score: IScore
   ): Promise<IResponse> {
-    var query = {'id': responseID};
+    const query = { id: responseID };
     const response = await Response.findById(responseID);
     if (!response) {
       throw new Error("Response not found");
     }
     response.scoring.push(score);
-    response.markModified('scoring');
+    response.markModified("scoring");
     await response.save();
-    return {id: response.id};
+    return response;
   }
 
-  public async getAvgScore(
-    ctx: Context,
-    responseID: string
-  ): Promise<number> {
-    const response = await Response.findById(responseID).populate('scoring');
-    var sum = 0;
-    var numScores = response.scoring.length;
-    for (var score of response.scoring) {
-      sum += score;
+  public async getAvgScore(ctx: Context, responseID: string): Promise<number> {
+    const response = await Response.findById(responseID).populate("scoring");
+    let sum = 0;
+    const numScores = response.scoring.length;
+    for (const score of response.scoring) {
+      sum += score.score;
     }
     if (numScores < 1) {
-      return -1;
-    }
-    else {
+      return 0;
+    } else {
       return sum / numScores;
     }
   }

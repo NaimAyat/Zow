@@ -19,7 +19,7 @@ class FormViewPage extends React.Component<IProps, IState> {
     super(props);
     const response: IResponse = {
       answers: this.props.questions.map(question => ({
-        answer: ""
+        value: ""
       })),
       email: ""
     };
@@ -32,7 +32,7 @@ class FormViewPage extends React.Component<IProps, IState> {
       const response = { ...this.state.response };
       response.answers[index] = answer;
       if (this.props.questions[index].type === "EMAIL") {
-        response.email = answer.answer;
+        response.email = answer.value;
       }
       this.setState({ response });
     };
