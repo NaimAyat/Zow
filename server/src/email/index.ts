@@ -7,7 +7,7 @@ export interface IEmailer {
 
 class PhonyEmailer implements IEmailer {
   public async send(recipient: string, subject: string, message: string) {
-    console.log(`PHONY sending email to ${recipient}`);
+    console.log(`PHONY sending email to '${recipient}' with subject '${subject}' and message '${message}'`);
   }
 }
 

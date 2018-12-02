@@ -56,6 +56,7 @@ class ScoringPage extends React.Component<IProps, IState> {
             <Form size="big">
               <Form.Field>
                 <Rating
+                  className="score"
                   clearable
                   icon="star"
                   maxRating={5}
