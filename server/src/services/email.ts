@@ -38,10 +38,9 @@ export interface IEmailService {
 }
 
 class ConcreteEmailService implements IEmailService {
-  private config: IConfig;
-  constructor(config: IConfig) {
-    this.config = config;
-    this.emailer = getEmailer(this.config);
+  private emailer: IEmailer;
+  constructor(emailer: IEmailer) {
+    this.emailer = emailer;
   }
 
   private async sendMessage(
@@ -104,7 +103,7 @@ class ConcreteEmailService implements IEmailService {
 }
 
 export default function getDefaultEmailService(
-  config: IConfig,
+  config: IConfig
 ) {
-  return new ConcreteEmailService(config, encryptService);
+  return new ConcreteEmailService(getEmailer(config));
 }
