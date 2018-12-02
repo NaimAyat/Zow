@@ -170,6 +170,17 @@ export default function getResolvers(
       async getAvgScore(parent, args, ctx) {
         const { responseID } = args;
         return await formService.getAvgScore(ctx, responseID);
+      },
+
+      /**
+       * Publishes or upublishes a form to the public
+       * @param formID form to publish
+       * @param published new publish state
+       */
+      async setPublishState(parent, args, ctx) {
+        const { formID, published } = args;
+        await formService.setPublishState(ctx, formID, published);
+        return true;
       }
     },
 

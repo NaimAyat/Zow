@@ -10,4 +10,5 @@ export interface IForm {
   questions?: IQuestion[];
   responses?: IResponse[];
   interviewSlots?: IInterviewSlot[];
+  published?: boolean;
 }

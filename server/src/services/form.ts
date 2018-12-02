@@ -100,6 +100,18 @@ export interface IFormService {
    * @return average of all scores associated with the response
    */
   getAvgScore(ctx: Context, responseID: string): Promise<number>;
+
+  /**
+   * Sets the public status of a form
+   * @param ctx
+   * @param formID ID of form to modify
+   * @param published true - publish form, false - unpublish form
+   */
+  setPublishState(
+    ctx: Context,
+    formID: string,
+    published: boolean
+  ): Promise<void>;
 }
 
 export class DatabaseFormService implements IFormService {
@@ -116,7 +128,7 @@ export class DatabaseFormService implements IFormService {
       throw new Error("form does not exist");
     }
 
-    return { id: form.id, name: form.name };
+    return { id: form.id, name: form.name, published: form.published };
   }
 
   public async getOwnedForms(ctx: Context): Promise<IForm[]> {
@@ -134,10 +146,18 @@ export class DatabaseFormService implements IFormService {
     ctx: Context,
     formID: string
   ): Promise<IQuestion[]> {
-    const form = await Form.findById(formID).populate("questions");
+    const form = await Form.findById(formID).populate("questions owners");
     if (!form) {
       throw new Error("form does not exist");
     }
+
+    if (
+      !form.published &&
+      form.owners.find(user => user.id === ctx.session.user.id) === undefined
+    ) {
+      throw new Error("access not allowed");
+    }
+
     return form.questions;
   }
 
@@ -293,6 +313,26 @@ export class DatabaseFormService implements IFormService {
     } else {
       return sum / numScores;
     }
+  }
+
+  public async setPublishState(
+    ctx: Context,
+    formID: string,
+    published: boolean
+  ): Promise<void> {
+    const form = await Form.findById(formID).populate("owners");
+    if (!form) {
+      throw new Error("Form not found");
+    }
+    if (
+      !ctx.session.user ||
+      form.owners.find(user => user.id === ctx.session.user.id) === undefined
+    ) {
+      throw new Error("Access not allowed");
+    }
+
+    form.published = published;
+    await form.save();
   }
 }
 
