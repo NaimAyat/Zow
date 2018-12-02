@@ -12,6 +12,7 @@ import InterviewSelection from "./InterviewSelection";
 import InterviewCreation from "./InterviewCreationPage";
 import Registration from "./Registration";
 import HomePage from "./HomePage";
+import Success from "./Success";
 
 const AppRouter = () => (
   <UserContext.Consumer>
@@ -61,6 +62,7 @@ const AppRouter = () => (
                   component={InterviewCreation}
                 />
                 <Route path="/interview" component={InterviewSelection} />
+                <Route path="/success" component={Success} />
               </React.Fragment>
             )}
           </Switch>

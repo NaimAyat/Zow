@@ -40,7 +40,6 @@ export default function getResolvers(
        * @return IForms for given user
        */
       async ownedForms(parent, args, ctx) {
-        console.log("[Resolver]: Fetching owned forms");
         return await formService.getOwnedForms(ctx);
       },
       //////////////////
@@ -118,8 +117,8 @@ export default function getResolvers(
        * @return void
        */
       async addResponse(parent, args, ctx) {
-        const { formID, answers } = args;
-        return await formService.addResponse(ctx, formID, answers);
+        const { formID, answers, email } = args;
+        return await formService.addResponse(ctx, formID, email, answers);
       },
       /**
        * Adds an owner to the provided form.
@@ -133,10 +132,44 @@ export default function getResolvers(
         const { formID, userID } = args;
         return await formService.addOwner(ctx, formID, userID);
       },
+
+      /**
+       * Saves form.
+       * @param formID
+       *          ID of form to save
+       * @param score
+       *          form content
+       * @return void
+       */
       async saveForm(parent, args, ctx) {
         const { formID, form } = args;
         form.id = formID;
         return await formService.saveForm(ctx, form);
+      },
+
+      /**
+       * Adds score to given response.
+       * @param responseID
+       *          ID of response
+       * @param score
+       *          score to add to response
+       * @return updated response
+       */
+      async addScore(parent, args, ctx) {
+        const { responseID, score } = args;
+        return await formService.addScore(ctx, responseID, score);
+      },
+
+      /**
+       * Gets average score for given response.
+       * @param responseID
+       *          ID of response
+       *
+       * @return average score
+       */
+      async getAvgScore(parent, args, ctx) {
+        const { responseID } = args;
+        return await formService.getAvgScore(ctx, responseID);
       }
     },
 

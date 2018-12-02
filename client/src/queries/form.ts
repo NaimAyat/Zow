@@ -13,6 +13,27 @@ export const GET_FORM_GQL = gql`
   }
 `;
 
+export const GET_SUMMARY_DATA = gql`
+  query summaryData($id: ID!) {
+    form(formID: $id) {
+      name
+      questions {
+        id
+        prompt
+        type
+        options
+      }
+      responses {
+        id
+        email
+        answers {
+          value
+        }
+      }
+    }
+  }
+`;
+
 export const NEW_FORM_GQL = gql`
   mutation {
     createForm
@@ -31,5 +52,11 @@ export const OWNED_FORMS_GQL = gql`
       id
       name
     }
+  }
+`;
+
+export const ADD_RESPONSE_GQL = gql`
+  mutation addResponse($formID: ID!, $email: String!, $answers: [String]!) {
+    addResponse(formID: $formID, email: $email, answers: $answers)
   }
 `;

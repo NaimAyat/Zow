@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Header, Button, Grid, Loader, List } from "semantic-ui-react";
 import { UserContext } from "./Context";
 import { Mutation, Query } from "react-apollo";
-import { NEW_FORM_GQL, OWNED_FORMS_GQL } from "src/queries/form";
+import { NEW_FORM_GQL, OWNED_FORMS_GQL } from "../queries/form";
 import { withRouter } from "react-router";
 
 const HomePage = withRouter((props: any) => (
@@ -13,14 +13,11 @@ const HomePage = withRouter((props: any) => (
         <Mutation mutation={NEW_FORM_GQL}>
           {newForm => {
             const handleNewForm = () => {
-              newForm()
-                .then(res => {
-                  console.log(res);
-                  if (res && !res.errors) {
-                    props.history.push("/form-creation/" + res.data.createForm);
-                  }
-                })
-                .catch(console.error);
+              newForm().then(res => {
+                if (res && !res.errors) {
+                  props.history.push("/form-creation/" + res.data.createForm);
+                }
+              });
             };
 
             return (
@@ -33,14 +30,6 @@ const HomePage = withRouter((props: any) => (
                     <br />
                     <Query query={OWNED_FORMS_GQL} fetchPolicy="no-cache">
                       {({ loading, error, data }) => {
-                        console.log(
-                          "Fetching owned forms",
-                          loading,
-                          error,
-                          data,
-                          !loading && data && data.ownedForms
-                        );
-                        if (error) console.error(error);
                         return !loading && data && data.ownedForms ? (
                           <React.Fragment>
                             <Header as="h1">My Forms:</Header>
@@ -48,7 +37,7 @@ const HomePage = withRouter((props: any) => (
                               {data.ownedForms.map((form: any, i: number) => (
                                 <List.Item key={i}>
                                   <Link to={"/summary/" + form.id}>
-                                    {form.name}
+                                    {form.name || "Unnamed Form"}
                                   </Link>
                                 </List.Item>
                               ))}

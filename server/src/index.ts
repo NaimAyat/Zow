@@ -5,7 +5,8 @@ import getEmailer from "./email";
 import getHandlers from "./handlers";
 import getAuthService from "./services/auth";
 import getEncryptService from "./services/encrypt";
-import { DatabaseFormService } from "./services/form";
+import getFormService from "./services/form";
+import getEmailService from "./services/email"
 
 const hostname = "0.0.0.0";
 const port = 3000;
@@ -16,7 +17,8 @@ connectDb(config);
 
 const encryptService = getEncryptService();
 const authService = getAuthService(config, encryptService);
-const formService = new DatabaseFormService();
+const emailService = getEmailService(emailer);
+const formService = getFormService(emailService);
 
 const app = getHandlers(config, authService, formService);
 

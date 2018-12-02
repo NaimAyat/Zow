@@ -1,6 +1,7 @@
-import { IForm, IResponse, IUser, IQuestion } from "../entities";
+import { IForm, IResponse, IUser, IQuestion, IScore } from "../entities";
 import { Context } from "koa";
-import { Form, Question } from "../db/models";
+import { Form, Question, Answer, Response, User } from "../db/models";
+import { IEmailService } from "./email"
 
 export interface IFormService {
   // Accessors
@@ -33,10 +34,10 @@ export interface IFormService {
 
   // Mutators
   /**
-   * Creates given form in database.
+   * Overwrites given form in database if exists, creates if it does not.
    *
    * @param form
-   *          IForm to create in database
+   *          IForm to upsert in database
    *
    * @return void
    */
@@ -55,26 +56,59 @@ export interface IFormService {
    *
    * @param formID
    *          form ID associate response with
+   * @param email
+   *          email address of submiter
    * @param answers
    *          array of answers to include in response
    *
-   * @return void
+   * @return the added response
    */
-  addResponse(ctx: Context, formID: string, answers: string[]): Promise<void>;
+  addResponse(
+    ctx: Context,
+    formID: string,
+    email: string,
+    answers: string[]
+  ): Promise<IResponse>;
   /**
    * Associates an owner with a given form.
    *
    * @param formID
    *          form ID associate owner with
    * @param newOwner
-   *          user to add as owner to form
+   *          e-mail address of user to add as owner to form
    *
-   * @return void
+   * @return the added owner
    */
-  addOwner(ctx: Context, formID: string, newOwner: IUser): Promise<void>;
+  addOwner(ctx: Context, formID: string, newOwner: string): Promise<IUser>;
+  /**
+   * Adds a scoring to a response.
+   *
+   * @param responseID
+   *          response ID associate score with
+   * @param score
+   *          score object to add to response
+   *
+   * @return the updated response
+   */
+  addScore(ctx: Context, responseID: string, score: IScore): Promise<IResponse>;
+  /**
+   * Retrieves average score for a given response.
+   *
+   * @param responseID
+   *          response ID for which to aggregate scores
+   *
+   * @return average of all scores associated with the response
+   */
+  getAvgScore(ctx: Context, responseID: string): Promise<number>;
 }
 
 export class DatabaseFormService implements IFormService {
+
+  private emailService: IEmailService;
+  constructor(emailService: IEmailService) {
+    this.emailService = emailService;
+  }
+
   public async getFormByID(ctx: Context, id: string): Promise<IForm> {
     // TODO: filter info
     const form = await Form.findById(id).populate("owners questions");
@@ -86,14 +120,10 @@ export class DatabaseFormService implements IFormService {
   }
 
   public async getOwnedForms(ctx: Context): Promise<IForm[]> {
-    console.log("Getting forms for user", ctx.session.user.id);
     try {
-      // const ownerID = mongoose.Types.ObjectId(ctx.session.user.id);
-      console.log("Got objectID");
       const forms = await Form.find({
         owners: ctx.session.user.id
       });
-      console.log("Got forms", forms);
       return forms;
     } catch (e) {
       console.error(e);
@@ -115,7 +145,16 @@ export class DatabaseFormService implements IFormService {
     ctx: Context,
     formID: string
   ): Promise<IResponse[]> {
-    const form = await Form.findById(formID).populate("owners responses");
+    const form = await Form.findById(formID)
+      .populate("owners")
+      .populate({
+        path: "responses",
+        model: "Response",
+        populate: {
+          path: "answers",
+          model: "Answer"
+        }
+      });
     if (!form) {
       throw new Error("form does not exist");
     }
@@ -129,7 +168,6 @@ export class DatabaseFormService implements IFormService {
   }
 
   public async saveForm(ctx: Context, form: IForm): Promise<void> {
-    console.log("Saving form", form);
     const formInDB = await Form.findById(form.id).populate("owners");
 
     if (
@@ -148,7 +186,6 @@ export class DatabaseFormService implements IFormService {
     }
 
     await formInDB.save();
-    console.log("Saved form", formInDB);
   }
 
   public async createNewForm(ctx: Context, author: IUser): Promise<IForm> {
@@ -171,16 +208,96 @@ export class DatabaseFormService implements IFormService {
   public async addResponse(
     ctx: Context,
     formID: string,
+    email: string,
     answers: string[]
-  ): Promise<void> {
-    return; // TODO
+  ): Promise<IResponse> {
+    const form = await Form.findById(formID);
+    if (!form) {
+      throw new Error("Form not found");
+    }
+
+    const answerObjects = await Promise.all(
+      answers.map(
+        async (answer, i) =>
+          (await Answer.create({
+            value: answer,
+            question: form.questions[i]
+          }))._id
+      )
+    );
+
+    const response = await Response.create({
+      email,
+      answers: answerObjects
+    });
+
+    form.responses.push(response);
+    form.markModified("responses");
+    await form.save();
+
+    return response;
   }
 
   public async addOwner(
     ctx: Context,
     formID: string,
-    newOwner: IUser
-  ): Promise<void> {
-    return; // TODO
+    newOwner: string
+  ): Promise<IUser> {
+    const form = await Form.findById(formID);
+    if (!form) {
+      throw new Error("Form not found");
+    }
+    if (
+      !ctx.session.user ||
+      form.owners.find(user => user.id === ctx.session.user.id) === undefined
+    ) {
+      throw new Error("Access not allowed");
+    }
+    const owner = await User.findOne({ email: newOwner });
+    // TODO: Accept e-mail addresses of users w/o an account
+    if (!owner) {
+      throw new Error("User not found with provided e-mail address");
+    }
+    form.owners.push(owner);
+    form.markModified("owners");
+    await form.save();
+    // TODO: Send e-mail update to new owner
+    return owner;
   }
+
+  public async addScore(
+    ctx: Context,
+    responseID: string,
+    score: IScore
+  ): Promise<IResponse> {
+    const query = { id: responseID };
+    const response = await Response.findById(responseID);
+    if (!response) {
+      throw new Error("Response not found");
+    }
+    response.scoring.push(score);
+    response.markModified("scoring");
+    await response.save();
+    return response;
+  }
+
+  public async getAvgScore(ctx: Context, responseID: string): Promise<number> {
+    const response = await Response.findById(responseID).populate("scoring");
+    let sum = 0;
+    const numScores = response.scoring.length;
+    for (const score of response.scoring) {
+      sum += score.score;
+    }
+    if (numScores < 1) {
+      return 0;
+    } else {
+      return sum / numScores;
+    }
+  }
+}
+
+export default function getDefaultFormService(
+  emailService: IEmailService
+) {
+  return new DatabaseFormService(emailService);
 }

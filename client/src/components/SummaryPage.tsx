@@ -4,11 +4,16 @@ import SummaryTable from "./SummaryTable";
 import { IFilter, IResponse, IQuestion, IScore } from "../DataTypes";
 import Filter from "./Filter";
 import Page from "./Page";
+import { Link } from "react-router-dom";
 
 interface IProps {
-  scores: IScore[];
-  responses: IResponse[];
-  questions: IQuestion[];
+  form: {
+    name: string;
+    responses: IResponse[];
+    questions: IQuestion[];
+    scores: IScore[];
+  };
+  id: string;
 }
 
 export interface IRow {
@@ -25,15 +30,28 @@ interface IState {
 class SummaryPage extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    const rows = this.props.responses.map((response, index) => ({
+    const rows = this.props.form.responses.map((response, index) => ({
       checked: true,
       responseIndex: index
     }));
-    const statuses = this.props.responses.map(() => "Pending");
+    const statuses = this.props.form.responses.map(() => "Pending");
     this.state = { filters: [], rows, statuses };
     this.getToggleChecked = this.getToggleChecked.bind(this);
     this.setFilters = this.setFilters.bind(this);
   }
+
+  public componentWillReceiveProps(props: IProps) {
+    // const rows = {};
+    // props.form.responses.forEach(
+    //   (response: IResponse) =>
+    //     (rows[response.email] =
+    //       rows[response.email] !== undefined
+    //         ? rows[response.email]
+    //         : { checked: true, status: response.status })
+    // );
+    // this.setState({ rows });
+  }
+
   public getToggleChecked(index: number) {
     return () => {
       const rows = [...this.state.rows];
@@ -43,13 +61,13 @@ class SummaryPage extends React.Component<IProps, IState> {
   }
 
   public setFilteredRows() {
-    let rows = [...this.props.responses].map((response, index) => ({
+    let rows = [...this.props.form.responses].map((response, index) => ({
       checked: true,
       responseIndex: index
     }));
     for (const filter of this.state.filters) {
       let questionIndex = -1;
-      this.props.questions.forEach((question, index) => {
+      this.props.form.questions.forEach((question, index) => {
         if (question.prompt === filter.prompt) {
           questionIndex = index;
         }
@@ -58,9 +76,9 @@ class SummaryPage extends React.Component<IProps, IState> {
         continue;
       }
       rows = rows.filter(row => {
-        const answer = this.props.responses[row.responseIndex].answers[
+        const answer = this.props.form.responses[row.responseIndex].answers[
           questionIndex
-        ].answer.toLowerCase();
+        ].value.toLowerCase();
         const search = filter.search.toLowerCase();
         switch (filter.type) {
           case "includes":
@@ -108,6 +126,13 @@ class SummaryPage extends React.Component<IProps, IState> {
 
   public ButtonRow = () => (
     <React.Fragment>
+      <Link to={"/form-creation/" + this.props.id}>
+        <Button primary>Edit Form</Button>
+      </Link>
+      <Link to={"/form/" + this.props.id} target="_blank">
+        <Button>Form Link</Button>
+      </Link>
+      <Divider />
       <div style={{ float: "left", margin: "10px" }}>
         <Button
           icon="check square"
@@ -148,19 +173,19 @@ class SummaryPage extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <Page header="Summary View">
+      <Page header={"Summary: " + this.props.form.name}>
         <Divider hidden />
         <Filter
           filters={this.state.filters}
-          questions={this.props.questions}
+          questions={this.props.form.questions}
           setFilters={this.setFilters}
         />
         <Divider hidden />
         <this.ButtonRow />
         <SummaryTable
-          questions={this.props.questions}
-          responses={this.props.responses}
-          scores={this.props.scores}
+          questions={this.props.form.questions}
+          responses={this.props.form.responses}
+          scores={this.props.form.scores}
           getToggleChecked={this.getToggleChecked}
           rows={this.state.rows}
           statuses={this.state.statuses}

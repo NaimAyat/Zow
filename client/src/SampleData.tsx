@@ -67,7 +67,7 @@ questions.push({
 
 const getAnswers: () => IAnswer[] = () => {
   return questions.map(question => ({
-    answer: getWord()
+    value: getWord()
     // question: { prompt: question, type: getType() }
   }));
 };

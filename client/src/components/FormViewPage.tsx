@@ -7,6 +7,7 @@ import Page from "./Page";
 interface IProps {
   formName: string;
   questions: IQuestion[];
+  onSubmit: (response: IResponse) => Promise<void>;
 }
 
 interface IState {
@@ -18,7 +19,7 @@ class FormViewPage extends React.Component<IProps, IState> {
     super(props);
     const response: IResponse = {
       answers: this.props.questions.map(question => ({
-        answer: ""
+        value: ""
       })),
       email: ""
     };
@@ -31,7 +32,7 @@ class FormViewPage extends React.Component<IProps, IState> {
       const response = { ...this.state.response };
       response.answers[index] = answer;
       if (this.props.questions[index].type === "EMAIL") {
-        response.email = answer.answer;
+        response.email = answer.value;
       }
       this.setState({ response });
     };
@@ -58,6 +59,9 @@ class FormViewPage extends React.Component<IProps, IState> {
           style={{ maxWidth: "25%", margin: "auto" }}
           size="huge"
           content="Submit"
+          onClick={() => {
+            this.props.onSubmit(this.state.response);
+          }}
         />
       </Page>
     );

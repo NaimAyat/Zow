@@ -1,15 +1,28 @@
 import * as React from "react";
-import SampleData from "../SampleData";
 import SummaryPage from "./SummaryPage";
+import { RouteComponentProps } from "react-router";
+import { Query } from "react-apollo";
+import { GET_SUMMARY_DATA } from "../queries/form";
+import { Loader } from "semantic-ui-react";
 
-const ScoringPageLoader: React.SFC = () => {
+interface IProps extends RouteComponentProps<{ id: string }> {}
+
+const SummaryPageLoader: React.SFC<IProps> = props => {
   return (
-    <SummaryPage
-      questions={SampleData.questions}
-      responses={SampleData.responses}
-      scores={SampleData.scores}
-    />
+    <Query
+      query={GET_SUMMARY_DATA}
+      variables={{ id: props.match.params.id }}
+      pollInterval={1000}
+    >
+      {({ loading, error, data }) => {
+        return !loading && data ? (
+          <SummaryPage id={props.match.params.id} form={data.form} />
+        ) : (
+          <Loader />
+        );
+      }}
+    </Query>
   );
 };
 
-export default ScoringPageLoader;
+export default SummaryPageLoader;

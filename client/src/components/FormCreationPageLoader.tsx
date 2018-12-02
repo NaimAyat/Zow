@@ -2,7 +2,7 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router";
 import FormCreationPage from "./FormCreationPage";
 import { Query, Mutation } from "react-apollo";
-import { GET_FORM_GQL, SAVE_FORM_GQL } from "src/queries/form";
+import { GET_FORM_GQL, SAVE_FORM_GQL } from "../queries/form";
 import { Loader } from "semantic-ui-react";
 import { IQuestion } from "src/DataTypes";
 
@@ -23,6 +23,7 @@ class FormViewPageLoader extends React.Component<IProps> {
               {saveForm => {
                 return (
                   <FormCreationPage
+                    id={this.props.match.params.id}
                     initialQuestions={data.form.questions}
                     initialName={data.form.name}
                     saveForm={async (
