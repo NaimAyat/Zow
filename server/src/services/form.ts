@@ -33,10 +33,10 @@ export interface IFormService {
 
   // Mutators
   /**
-   * Creates given form in database.
+   * Overwrites given form in database if exists, creates if it does not.
    *
    * @param form
-   *          IForm to create in database
+   *          IForm to upsert in database
    *
    * @return void
    */
@@ -149,8 +149,12 @@ export class DatabaseFormService implements IFormService {
   }
 
   public async saveForm(ctx: Context, form: IForm): Promise<void> {
-    var query = {'id': form.id};
-    const form = await Form.findOneAndUpdate(query, form);
+    if (!ctx.session.user) {
+      throw new Error("access not allowed");
+    }
+    const form = await Form.findOneAndUpdate({id:form.id}, form, {upsert:true}, function(err,form) {
+      if (err) throw new Error("Could not save form");
+    });
     return;
   }
 
@@ -169,8 +173,13 @@ export class DatabaseFormService implements IFormService {
     answers: string[]
   ): Promise<IResponse> {
     const response = await Response.create({ respondent: respondent, answers: answers });
-    var query = {'id': form.id};
-    const form = await Form.findOneAndUpdate(query, { $push: {responses: response} });
+    const form = await Form.findById(form.id);
+    if (!form) {
+      throw new Error("Form not found");
+    }
+    form.responses.push(response);
+    form.markModified('responses');
+    form.save();
     return { id: response.id };
   }
 
@@ -179,9 +188,22 @@ export class DatabaseFormService implements IFormService {
     formID: string,
     newOwner: IUser
   ): Promise<IUser> {
-    var query = {'id': form.id};
-    const form = await Form.findOneAndUpdate(query, { $push: {owners: newOwner} });
+    const form = await Form.findById(formID);
+    if (!form) {
+      throw new Error("Form not found");
+    }
+    if (
+      !ctx.session.user ||
+      form.owners.find(user => user.id === ctx.session.user.id) === undefined
+    ) {
+      throw new Error("Access not allowed");
+    }
+    form.owners.push(newOwner);
+    form.markModified('owners');
+    form.save();
+    // TODO: Send e-mail update to new owner
     return { id: newOwner.id };
+
   }
 
   public async addScore(
@@ -190,7 +212,13 @@ export class DatabaseFormService implements IFormService {
     score: IScore
   ): Promise<IResponse> {
     var query = {'id': responseID};
-    const response = await Response.findOneAndUpdate(query, { $push: {scoring.type: score} });
+    const response = await Response.findById(responseID);
+    if (!response) {
+      throw new Error("Response not found");
+    }
+    response.scoring.push(score);
+    response.markModified('scoring');
+    response.save();
     return {id: response.id};
   }
 
@@ -198,10 +226,10 @@ export class DatabaseFormService implements IFormService {
     ctx: Context,
     responseID: string
   ): Promise<number> {
-    const form = await Form.findById(formID).populate('scoring.type');
+    const form = await Form.findById(formID).populate('scoring');
     var sum = 0;
-    var numScores = form.scoring.type.length;
-    for (var score of form.scoring.type) {
+    var numScores = form.scoring.length;
+    for (var score of form.scoring) {
       sum += score;
     }
     if (numScores < 1) {
