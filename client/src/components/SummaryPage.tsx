@@ -1,76 +1,125 @@
 import * as React from "react";
 import { Button, Divider } from "semantic-ui-react";
 import SummaryTable from "./SummaryTable";
+import { IFilter, IResponse, IQuestion, IScore } from "../DataTypes";
+import Filter from "./Filter";
 import Page from "./Page";
 import { Link } from "react-router-dom";
-import { IResponse } from "src/DataTypes";
-
-interface IRow {
-  checked: boolean;
-  status: string;
-}
 
 interface IProps {
-  form: any;
+  form: {
+    name: string;
+    responses: IResponse[];
+    questions: IQuestion[];
+    scores: IScore[];
+  };
   id: string;
 }
 
-interface ISummaryPageState {
-  rows: { [email: string]: IRow };
+export interface IRow {
+  responseIndex: number;
+  checked: boolean;
 }
 
-class SummaryPage extends React.Component<IProps, ISummaryPageState> {
+interface IState {
+  filters: IFilter[];
+  statuses: string[];
+  rows: IRow[];
+}
+
+class SummaryPage extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    const rows = {};
-    props.form.responses.forEach(
-      (response: IResponse) =>
-        (rows[response.email] = { checked: true, status: response.status })
-    );
-    this.state = { rows };
+    const rows = this.props.form.responses.map((response, index) => ({
+      checked: true,
+      responseIndex: index
+    }));
+    const statuses = this.props.form.responses.map(() => "Pending");
+    this.state = { filters: [], rows, statuses };
     this.getToggleChecked = this.getToggleChecked.bind(this);
+    this.setFilters = this.setFilters.bind(this);
   }
 
   public componentWillReceiveProps(props: IProps) {
-    const rows = {};
-    props.form.responses.forEach(
-      (response: IResponse) =>
-        (rows[response.email] =
-          rows[response.email] !== undefined
-            ? rows[response.email]
-            : { checked: true, status: response.status })
-    );
+    // const rows = {};
+    // props.form.responses.forEach(
+    //   (response: IResponse) =>
+    //     (rows[response.email] =
+    //       rows[response.email] !== undefined
+    //         ? rows[response.email]
+    //         : { checked: true, status: response.status })
+    // );
+    // this.setState({ rows });
+  }
+
+  public getToggleChecked(index: number) {
+    return () => {
+      const rows = [...this.state.rows];
+      rows[index].checked = !rows[index].checked;
+      this.setState({ rows });
+    };
+  }
+
+  public setFilteredRows() {
+    let rows = [...this.props.form.responses].map((response, index) => ({
+      checked: true,
+      responseIndex: index
+    }));
+    for (const filter of this.state.filters) {
+      let questionIndex = -1;
+      this.props.form.questions.forEach((question, index) => {
+        if (question.prompt === filter.prompt) {
+          questionIndex = index;
+        }
+      });
+      if (questionIndex < 0) {
+        continue;
+      }
+      rows = rows.filter(row => {
+        const answer = this.props.form.responses[row.responseIndex].answers[
+          questionIndex
+        ].value.toLowerCase();
+        const search = filter.search.toLowerCase();
+        switch (filter.type) {
+          case "includes":
+            return answer.includes(search);
+          case "matches":
+            return answer === search;
+          case "greater than":
+          case "less than":
+            const answerNum = parseInt(answer, 10);
+            const searchNum = parseInt(search, 10);
+            return !isNaN(answerNum) &&
+              !isNaN(searchNum) &&
+              filter.type === "greater than"
+              ? answerNum > searchNum
+              : answerNum < searchNum;
+        }
+      });
+    }
     this.setState({ rows });
   }
 
-  public getToggleChecked(email: string) {
-    return () => {
-      const rows = { ...this.state.rows };
-      rows[email].checked = !rows[email].checked;
-      this.setState({ rows });
-    };
-  }
-
   public getCheckAll(shouldCheck: boolean) {
-    return () => {
-      const rows = { ...this.state.rows };
-      Object.keys(rows).forEach(email => (rows[email].checked = shouldCheck));
-      this.setState({ rows });
-    };
+    const rows = [...this.state.rows];
+    for (const row of rows) {
+      row.checked = shouldCheck;
+    }
+    this.setState({ rows });
   }
 
   public getChangeStatus(status: string) {
     return () => {
-      const rows = { ...this.state.rows };
-      Object.keys(rows).forEach(email => {
-        if (rows[email].checked) {
-          if (rows[email].status === status) {
-            rows[email].status = "Pending";
+      const rows = [...this.state.rows];
+      for (const row of rows) {
+        if (row.checked) {
+          if (this.state.statuses[row.responseIndex] === status) {
+            this.state.statuses[row.responseIndex] = "Pending";
           } else {
-            rows[email].status = status;
+            this.state.statuses[row.responseIndex] = status;
           }
         }
-      });
+      }
       this.setState({ rows });
     };
   }
@@ -88,12 +137,12 @@ class SummaryPage extends React.Component<IProps, ISummaryPageState> {
         <Button
           icon="check square"
           content="Select All"
-          onClick={this.getCheckAll(true)}
+          onClick={() => this.getCheckAll(true)}
         />
         <Button
           icon="minus square"
           content="Deselect All"
-          onClick={this.getCheckAll(false)}
+          onClick={() => this.getCheckAll(false)}
         />
       </div>
       <div style={{ float: "right", margin: "10px" }}>
@@ -116,14 +165,30 @@ class SummaryPage extends React.Component<IProps, ISummaryPageState> {
     </React.Fragment>
   );
 
+  public setFilters(filters: IFilter[]) {
+    this.setState({ filters }, () => {
+      this.setFilteredRows();
+    });
+  }
+
   public render() {
     return (
       <Page header={"Summary: " + this.props.form.name}>
+        <Divider hidden />
+        <Filter
+          filters={this.state.filters}
+          questions={this.props.form.questions}
+          setFilters={this.setFilters}
+        />
+        <Divider hidden />
         <this.ButtonRow />
         <SummaryTable
-          {...this.props.form}
+          questions={this.props.form.questions}
+          responses={this.props.form.responses}
+          scores={this.props.form.scores}
           getToggleChecked={this.getToggleChecked}
           rows={this.state.rows}
+          statuses={this.state.statuses}
         />
       </Page>
     );

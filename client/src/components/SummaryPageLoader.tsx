@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import SummaryPage from "./SummaryPage";
 import { RouteComponentProps } from "react-router";
 import { Query } from "react-apollo";
