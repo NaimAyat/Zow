@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import LoginForm from "../components/SummaryPage";
+import ScoringPageLoader from "../components/ScoringPageLoader";
 
 it("renders without crashing", () => {
   const div = document.createElement("div");
-  ReactDOM.render(<LoginForm />, div);
+  ReactDOM.render(<ScoringPageLoader />, div);
   ReactDOM.unmountComponentAtNode(div);
 });

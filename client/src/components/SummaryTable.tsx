@@ -1,18 +1,20 @@
 import * as React from "react";
 import { Checkbox, Table } from "semantic-ui-react";
 import { IQuestion, IResponse, IScore } from "../DataTypes";
+import { IRow } from "./SummaryPage";
 
 interface ISummaryTableProps {
   questions: IQuestion[];
   responses: IResponse[];
   scores: IScore[];
   getToggleChecked: any;
-  rows: any;
+  rows: IRow[];
+  statuses: string[];
 }
 
 class SummaryTable extends React.Component<ISummaryTableProps> {
-  public getStatusCell(email: string) {
-    switch (this.props.rows[email].status) {
+  public getStatusCell(index: number) {
+    switch (this.props.statuses[index]) {
       case "Pending":
         return <Table.Cell warning content="Pending" />;
       case "Approved":
@@ -37,18 +39,18 @@ class SummaryTable extends React.Component<ISummaryTableProps> {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {this.props.responses.map(response => (
+          {this.props.rows.map((row, index) => (
             <Table.Row selectable>
               <Table.Cell textAlign="center" verticalAlign="middle">
                 <Checkbox
-                  checked={this.props.rows[response.email].checked}
-                  onChange={this.props.getToggleChecked(response.email)}
+                  checked={this.props.rows[index].checked}
+                  onChange={this.props.getToggleChecked(index)}
                 />
               </Table.Cell>
-              {response.answers.map(answer => (
+              {this.props.responses[row.responseIndex].answers.map(answer => (
                 <Table.Cell content={answer.answer} />
               ))}
-              {this.getStatusCell(response.email)}
+              {this.getStatusCell(index)}
             </Table.Row>
           ))}
         </Table.Body>
