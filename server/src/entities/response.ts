@@ -1,7 +1,7 @@
 import { IAnswer } from "./answer";
 import { IUser } from "./user";
 
-interface IScore {
+export interface IScore {
   score: number;
   notes: string;
   user: IUser;
@@ -9,7 +9,7 @@ interface IScore {
 
 export interface IResponse {
   id?: any;
-  respondent: string;
+  email: string;
   answers: IAnswer[];
-  scores: IScore[];
+  scoring: IScore[];
 }

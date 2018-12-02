@@ -1,28 +1,48 @@
 import * as React from "react";
-import { Button } from "semantic-ui-react";
-import SampleData from "../SampleData";
+import { Button, Divider } from "semantic-ui-react";
 import SummaryTable from "./SummaryTable";
 import Page from "./Page";
+import { Link } from "react-router-dom";
+import { IResponse } from "src/DataTypes";
 
 interface IRow {
   checked: boolean;
   status: string;
 }
 
+interface IProps {
+  form: any;
+  id: string;
+}
+
 interface ISummaryPageState {
   rows: { [email: string]: IRow };
 }
 
-class SummaryPage extends React.Component<{}, ISummaryPageState> {
-  constructor(props: any) {
+class SummaryPage extends React.Component<IProps, ISummaryPageState> {
+  constructor(props: IProps) {
     super(props);
     const rows = {};
-    SampleData.responses.forEach(
-      response => (rows[response.email] = { checked: true, status: "Pending" })
+    props.form.responses.forEach(
+      (response: IResponse) =>
+        (rows[response.email] = { checked: true, status: response.status })
     );
     this.state = { rows };
     this.getToggleChecked = this.getToggleChecked.bind(this);
   }
+
+  public componentWillReceiveProps(props: IProps) {
+    const rows = {};
+    props.form.responses.forEach(
+      (response: IResponse) =>
+        (rows[response.email] =
+          rows[response.email] !== undefined
+            ? rows[response.email]
+            : { checked: true, status: response.status })
+    );
+    this.setState({ rows });
+  }
+
   public getToggleChecked(email: string) {
     return () => {
       const rows = { ...this.state.rows };
@@ -57,6 +77,13 @@ class SummaryPage extends React.Component<{}, ISummaryPageState> {
 
   public ButtonRow = () => (
     <React.Fragment>
+      <Link to={"/form-creation/" + this.props.id}>
+        <Button primary>Edit Form</Button>
+      </Link>
+      <Link to={"/form/" + this.props.id} target="_blank">
+        <Button>Form Link</Button>
+      </Link>
+      <Divider />
       <div style={{ float: "left", margin: "10px" }}>
         <Button
           icon="check square"
@@ -91,10 +118,10 @@ class SummaryPage extends React.Component<{}, ISummaryPageState> {
 
   public render() {
     return (
-      <Page header="Summary View">
+      <Page header={"Summary: " + this.props.form.name}>
         <this.ButtonRow />
         <SummaryTable
-          {...SampleData}
+          {...this.props.form}
           getToggleChecked={this.getToggleChecked}
           rows={this.state.rows}
         />
