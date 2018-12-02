@@ -16,6 +16,8 @@ const typeDefs = gql`
     saveForm(formID: ID!, form: FormInput): Boolean
     addResponse(formID: ID!, email: String, answers: [String]): Boolean
     addOwner(formID: ID!, userID: ID!): Boolean
+    addScore(responseID: ID!, score: Int!): Boolean
+    getAvgScore(responseID: ID!): Float
   }
 
   type User {
