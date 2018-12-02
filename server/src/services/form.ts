@@ -152,9 +152,10 @@ export class DatabaseFormService implements IFormService {
     if (!ctx.session.user) {
       throw new Error("access not allowed");
     }
-    const form = await Form.findOneAndUpdate({id:form.id}, form, {upsert:true}, function(err,form) {
-      if (err) throw new Error("Could not save form");
-    });
+    const form = await Form.findOneAndUpdate({id:form.id}, form, {upsert:true});
+    if (!form) {
+      throw new Error("Could not save form");
+    }
     return;
   }
 
@@ -172,15 +173,16 @@ export class DatabaseFormService implements IFormService {
     formID: string,
     answers: string[]
   ): Promise<IResponse> {
-    const response = await Response.create({ respondent: respondent, answers: answers });
-    const form = await Form.findById(form.id);
-    if (!form) {
-      throw new Error("Form not found");
-    }
-    form.responses.push(response);
-    form.markModified('responses');
-    form.save();
-    return { id: response.id };
+    // const response = await Response.create({ respondent: respondent, answers: answers });
+    // const form = await Form.findById(form.id);
+    // if (!form) {
+    //   throw new Error("Form not found");
+    // }
+    // form.responses.push(response);
+    // form.markModified('responses');
+    // await form.save();
+    // return { id: response.id };
+    return; // TODO: Parse and create IAnswers properly
   }
 
   public async addOwner(
@@ -199,12 +201,13 @@ export class DatabaseFormService implements IFormService {
       throw new Error("Access not allowed");
     }
     const owner = await User.findOne({email:newOwner});
+    // TODO: Accept e-mail addresses of users w/o an account
     if (!owner) {
       throw new Error("User not found with provided e-mail address")
     }
     form.owners.push(owner);
     form.markModified('owners');
-    form.save();
+    await form.save();
     // TODO: Send e-mail update to new owner
     return { id: newOwner.id };
 
@@ -222,7 +225,7 @@ export class DatabaseFormService implements IFormService {
     }
     response.scoring.push(score);
     response.markModified('scoring');
-    response.save();
+    await response.save();
     return {id: response.id};
   }
 
@@ -230,10 +233,10 @@ export class DatabaseFormService implements IFormService {
     ctx: Context,
     responseID: string
   ): Promise<number> {
-    const form = await Form.findById(formID).populate('scoring');
+    const response = await Response.findById(responseID).populate('scoring');
     var sum = 0;
-    var numScores = form.scoring.length;
-    for (var score of form.scoring) {
+    var numScores = response.scoring.length;
+    for (var score of response.scoring) {
       sum += score;
     }
     if (numScores < 1) {
