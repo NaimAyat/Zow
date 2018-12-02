@@ -18,6 +18,12 @@ import { withRouter } from "react-router";
 import Page from "./Page";
 
 const HomePage = withRouter((props: any) => (
+  <Grid textAlign="center" verticalAlign="middle" divided='vertically'
+  style={{
+    height: "100%",
+    paddingTop: '80px',
+    }}>
+    <Grid.Row>
   <UserContext.Consumer>
     {({ user }) => (
       <Mutation mutation={NEW_FORM_GQL}>
@@ -108,9 +114,38 @@ const HomePage = withRouter((props: any) => (
                     <Redirect to="/login" />
                   </React.Fragment>
                 )}
-              </Page>
-              <Page header="How does it work?">
-                <p>
+              </Header>
+            );
+          }}
+        </Mutation>
+      )}
+          </UserContext.Consumer>
+      </Grid.Row>
+      <Grid.Row style={{
+        height: "50%",
+        backgroundColor: "white",
+        }}>
+        <div>
+    <Grid columns={2} padded style={{
+      paddingLeft: '50px',
+      paddingRight: '100px',
+      }}>
+      <Grid.Column style={{
+        paddingTop: '100px',
+        fontStyle: 'Sans-serif',
+        fontSize: '17px',
+      }}>
+      <p style={{
+        fontSize: '20px',
+        fontStyle: 'bold',
+      }}><b>Our Mission</b></p>
+        <p> Provide a streamlined, centralized, and secure platform
+        for the student organization recruiting process.</p>
+<p style={{
+        fontSize: '20px',
+        fontStyle: 'bold',
+      }}><b>How does it work?</b></p>
+        <p>
                   Zow allows recruiters to create postings for their open
                   positions. You can make custom forms to collect all of the
                   data they need to screen candidates. In addition to that,
@@ -130,13 +165,34 @@ const HomePage = withRouter((props: any) => (
                   candidates and find the best people for you organization. Zow
                   will make you say ZWOW!
                 </p>
-              </Page>
-            </React.Fragment>
-          );
-        }}
-      </Mutation>
-    )}
-  </UserContext.Consumer>
+      </Grid.Column>
+      <Grid.Column style={{
+        paddingTop: '50px',
+        paddingLeft: '200px',
+        paddingBottom: '50px'}}>
+      <img src={require('../images/cow.png')}
+      style={{width: 250, height: 250,}}/>
+      </Grid.Column>
+    </Grid>
+  </div>
+      </Grid.Row>
+      <Grid.Row style={{
+        height: "15%",
+        //backgroundColor: 'rgb(242, 135, 15)',
+        backgroundColor: 'skyblue',
+      }}>
+      <img src={require('../images/footer.png')} style={{
+        bottom: 0,
+        flex: 1,
+        height: '100%',
+        left: 0,
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        width: '100%'
+      }}/>
+      </Grid.Row>
+  </Grid>
 ));
 
 export default HomePage;
