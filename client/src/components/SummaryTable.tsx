@@ -31,7 +31,9 @@ class SummaryTable extends React.Component<ISummaryTableProps> {
       <Table celled selectable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell />
+            <Table.HeaderCell collapsing>
+              {this.props.children}
+            </Table.HeaderCell>
             {this.props.questions.map(question => (
               <Table.HeaderCell content={question.prompt} />
             ))}

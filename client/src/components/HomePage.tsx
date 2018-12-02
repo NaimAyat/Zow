@@ -82,7 +82,7 @@ const HomePage = withRouter((props: any) => (
                                                   <List.Content>
                                                     <List.Header>
                                                       {form.name ||
-                                                        "Unnamed Form"}
+                                                        "[Untitled Form]"}
                                                     </List.Header>
                                                   </List.Content>
                                                 </List.Item>
