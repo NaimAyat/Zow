@@ -46,7 +46,7 @@ class SummaryTable extends React.Component<ISummaryTableProps> {
                 />
               </Table.Cell>
               {response.answers.map(answer => (
-                <Table.Cell content={answer.answer} />
+                <Table.Cell content={answer.value} />
               ))}
               {this.getStatusCell(response.email)}
             </Table.Row>

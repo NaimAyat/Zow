@@ -5,7 +5,6 @@ import FormCreationPageLoader from "./FormCreationPageLoader";
 import FormViewPageLoader from "./FormViewPageLoader";
 import LoginForm from "./LoginForm";
 import ScoringPageLoader from "./ScoringPageLoader";
-import SummaryPage from "./SummaryPage";
 import { UserContext } from "./Context";
 import Logout from "./Logout";
 import InterviewSelection from "./InterviewSelection";
@@ -13,6 +12,7 @@ import InterviewCreation from "./InterviewCreationPage";
 import Registration from "./Registration";
 import HomePage from "./HomePage";
 import Success from "./Success";
+import SummaryPageLoader from "./SummaryPageLoader";
 
 const AppRouter = () => (
   <UserContext.Consumer>
@@ -51,7 +51,7 @@ const AppRouter = () => (
             <Route path="/form/:id" component={FormViewPageLoader} />
             {user && (
               <React.Fragment>
-                <Route path="/summary/:id" component={SummaryPage} />
+                <Route path="/summary/:id" component={SummaryPageLoader} />
                 <Route
                   path="/form-creation/:id"
                   component={FormCreationPageLoader}

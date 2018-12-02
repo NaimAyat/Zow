@@ -15,12 +15,13 @@ export type QuestionType =
 
 export interface IAnswer {
   // question: IQuestion;
-  answer: string;
+  value: string;
 }
 
 export interface IResponse {
   email: string;
   answers: IAnswer[];
+  status?: "Pending" | "Approved" | "Rejected";
 }
 
 export interface IScore {

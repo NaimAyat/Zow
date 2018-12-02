@@ -1,6 +1,6 @@
 import { IForm, IResponse, IUser, IQuestion } from "../entities";
 import { Context } from "koa";
-import { Form, Question } from "../db/models";
+import { Form, Question, Answer, Response } from "../db/models";
 
 export interface IFormService {
   // Accessors
@@ -93,14 +93,10 @@ export class DatabaseFormService implements IFormService {
   }
 
   public async getOwnedForms(ctx: Context): Promise<IForm[]> {
-    console.log("Getting forms for user", ctx.session.user.id);
     try {
-      // const ownerID = mongoose.Types.ObjectId(ctx.session.user.id);
-      console.log("Got objectID");
       const forms = await Form.find({
         owners: ctx.session.user.id
       });
-      console.log("Got forms", forms);
       return forms;
     } catch (e) {
       console.error(e);
@@ -122,7 +118,16 @@ export class DatabaseFormService implements IFormService {
     ctx: Context,
     formID: string
   ): Promise<IResponse[]> {
-    const form = await Form.findById(formID).populate("owners responses");
+    const form = await Form.findById(formID)
+      .populate("owners")
+      .populate({
+        path: "responses",
+        model: "Response",
+        populate: {
+          path: "answers",
+          model: "Answer"
+        }
+      });
     if (!form) {
       throw new Error("form does not exist");
     }
@@ -136,7 +141,6 @@ export class DatabaseFormService implements IFormService {
   }
 
   public async saveForm(ctx: Context, form: IForm): Promise<void> {
-    console.log("Saving form", form);
     const formInDB = await Form.findById(form.id).populate("owners");
 
     if (
@@ -155,7 +159,6 @@ export class DatabaseFormService implements IFormService {
     }
 
     await formInDB.save();
-    console.log("Saved form", formInDB);
   }
 
   public async createNewForm(ctx: Context, author: IUser): Promise<IForm> {
@@ -181,8 +184,30 @@ export class DatabaseFormService implements IFormService {
     email: string,
     answers: string[]
   ): Promise<void> {
-    console.log(email, answers);
-    return; // TODO
+    const form = await Form.findById(formID);
+    if (!form) {
+      throw new Error("Form not found");
+    }
+
+    const answerObjects = await Promise.all(
+      answers.map(
+        async (answer, i) =>
+          (await Answer.create({
+            value: answer,
+            question: form.questions[i]
+          }))._id
+      )
+    );
+
+    const response = await Response.create({
+      email,
+      answers: answerObjects
+    });
+    console.log(response);
+    form.responses.push(response);
+    form.markModified("responses");
+    await form.save();
+    console.log(form);
   }
 
   public async addOwner(

@@ -7,7 +7,7 @@ const AnswerSchema = new mongoose.Schema({
     ref: "Question",
     required: true
   },
-  value: { type: String, required: true }
+  value: { type: String, default: "" }
 });
 
 interface IAnswerModel extends IAnswer, Document {}

@@ -9,7 +9,7 @@ interface IScore {
 
 export interface IResponse {
   id?: any;
-  respondent: string;
+  email: string;
   answers: IAnswer[];
   scores: IScore[];
 }

@@ -23,6 +23,7 @@ class FormViewPageLoader extends React.Component<IProps> {
               {saveForm => {
                 return (
                   <FormCreationPage
+                    id={this.props.match.params.id}
                     initialQuestions={data.form.questions}
                     initialName={data.form.name}
                     saveForm={async (

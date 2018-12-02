@@ -40,7 +40,6 @@ export default function getResolvers(
        * @return IForms for given user
        */
       async ownedForms(parent, args, ctx) {
-        console.log("[Resolver]: Fetching owned forms");
         return await formService.getOwnedForms(ctx);
       },
       //////////////////

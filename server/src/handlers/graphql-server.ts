@@ -34,12 +34,12 @@ const typeDefs = gql`
   type Answer {
     id: ID!
     question: Question!
-    answer: String!
+    value: String!
   }
 
   type Response {
     id: ID!
-    respondent: String!
+    email: String!
     answers: [Answer]!
   }
 
