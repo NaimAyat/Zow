@@ -33,10 +33,10 @@ export interface IFormService {
 
   // Mutators
   /**
-   * Creates given form in database.
+   * Overwrites given form in database if exists, creates if it does not.
    *
    * @param form
-   *          IForm to create in database
+   *          IForm to upsert in database
    *
    * @return void
    */
@@ -60,25 +60,40 @@ export interface IFormService {
    * @param answers
    *          array of answers to include in response
    *
-   * @return void
+   * @return the added response
    */
-  addResponse(
-    ctx: Context,
-    formID: string,
-    email: string,
-    answers: string[]
-  ): Promise<void>;
+  addResponse(ctx: Context, formID: string, answers: string[]): Promise<IResponse>;
   /**
    * Associates an owner with a given form.
    *
    * @param formID
    *          form ID associate owner with
    * @param newOwner
-   *          user to add as owner to form
+   *          e-mail address of user to add as owner to form
    *
-   * @return void
+   * @return the added owner
    */
-  addOwner(ctx: Context, formID: string, newOwner: IUser): Promise<void>;
+  addOwner(ctx: Context, formID: string, newOwner: string): Promise<IUser>;
+  /**
+   * Adds a scoring to a response.
+   *
+   * @param responseID
+   *          response ID associate score with
+   * @param score
+   *          score object to add to response
+   *
+   * @return the updated response
+   */
+  addScore(ctx: Context, responseID: string, score: IScore): Promise<IResponse>;
+  /**
+   * Retrieves average score for a given response.
+   *
+   * @param responseID
+   *          response ID for which to aggregate scores
+   *
+   * @return average of all scores associated with the response
+   */
+  getAvgScore(ctx: Context, responseID: string): Promise<number>;
 }
 
 export class DatabaseFormService implements IFormService {
@@ -177,19 +192,82 @@ export class DatabaseFormService implements IFormService {
 
   public async addResponse(
     ctx: Context,
+    respondent: string,
     formID: string,
     email: string,
     answers: string[]
-  ): Promise<void> {
-    console.log(email, answers);
-    return; // TODO
+  ): Promise<IResponse> {
+    // const response = await Response.create({ respondent: respondent, answers: answers });
+    // const form = await Form.findById(form.id);
+    // if (!form) {
+    //   throw new Error("Form not found");
+    // }
+    // form.responses.push(response);
+    // form.markModified('responses');
+    // await form.save();
+    // return { id: response.id };
+    return; // TODO: Parse and create IAnswers properly
   }
 
   public async addOwner(
     ctx: Context,
     formID: string,
-    newOwner: IUser
-  ): Promise<void> {
-    return; // TODO
+    newOwner: string
+  ): Promise<IUser> {
+    const form = await Form.findById(formID);
+    if (!form) {
+      throw new Error("Form not found");
+    }
+    if (
+      !ctx.session.user ||
+      form.owners.find(user => user.id === ctx.session.user.id) === undefined
+    ) {
+      throw new Error("Access not allowed");
+    }
+    const owner = await User.findOne({email:newOwner});
+    // TODO: Accept e-mail addresses of users w/o an account
+    if (!owner) {
+      throw new Error("User not found with provided e-mail address")
+    }
+    form.owners.push(owner);
+    form.markModified('owners');
+    await form.save();
+    // TODO: Send e-mail update to new owner
+    return { id: newOwner.id };
+
+  }
+
+  public async addScore(
+    ctx: Context,
+    responseID: string,
+    score: IScore
+  ): Promise<IResponse> {
+    var query = {'id': responseID};
+    const response = await Response.findById(responseID);
+    if (!response) {
+      throw new Error("Response not found");
+    }
+    response.scoring.push(score);
+    response.markModified('scoring');
+    await response.save();
+    return {id: response.id};
+  }
+
+  public async getAvgScore(
+    ctx: Context,
+    responseID: string
+  ): Promise<number> {
+    const response = await Response.findById(responseID).populate('scoring');
+    var sum = 0;
+    var numScores = response.scoring.length;
+    for (var score of response.scoring) {
+      sum += score;
+    }
+    if (numScores < 1) {
+      return -1;
+    }
+    else {
+      return sum / numScores;
+    }
   }
 }
