@@ -55,7 +55,7 @@ class QuestionField extends React.Component<IProps, IState> {
     return (
       <React.Fragment>
         <Menu vertical fluid style={{ maxWidth: "50%", margin: "auto" }}>
-          {this.props.question.options!.map((option, index) => (
+          {(this.props.question.options || []).map((option, index) => (
             <Menu.Item>
               {option}
               <Icon
@@ -144,6 +144,7 @@ class QuestionField extends React.Component<IProps, IState> {
                   "Type " + this.getQuestionType() + " question here..."
                 }
                 onChange={this.handleQuestionChange}
+                value={this.props.question.prompt}
               />
               <div style={{ minHeight: "5px" }} />
               {this.getAnswerField()}

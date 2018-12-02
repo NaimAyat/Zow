@@ -5,7 +5,6 @@ import Question from "./Question";
 const FormSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
     default: ""
   },
   owners: {
@@ -14,17 +13,14 @@ const FormSchema = new mongoose.Schema({
   },
   questions: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Question" }],
-    required: true,
     default: []
   },
   responses: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Response" }],
-    required: true,
     default: []
   },
   interviewSlots: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "InterviewSlot" }],
-    required: true,
     default: []
   }
 });

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import { Divider, Menu } from "semantic-ui-react";
-import FormCreationPage from "./FormCreationPage";
+import FormCreationPageLoader from "./FormCreationPageLoader";
 import FormViewPageLoader from "./FormViewPageLoader";
 import LoginForm from "./LoginForm";
 import ScoringPageLoader from "./ScoringPageLoader";
@@ -51,7 +51,10 @@ const AppRouter = () => (
             {user && (
               <React.Fragment>
                 <Route path="/summary/:id" component={SummaryPage} />
-                <Route path="/form-creation/:id" component={FormCreationPage} />
+                <Route
+                  path="/form-creation/:id"
+                  component={FormCreationPageLoader}
+                />
                 <Route path="/score" component={ScoringPageLoader} />
                 <Route
                   path="/interview-creation"

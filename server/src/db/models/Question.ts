@@ -13,7 +13,7 @@ const questionTypes = [
 
 // TODO move those enum values to constants somewhere
 const QuestionSchema = new mongoose.Schema({
-  prompt: { type: String, required: true },
+  prompt: { type: String },
   options: { type: [String] },
   type: { type: String, enum: questionTypes, required: true }
 });

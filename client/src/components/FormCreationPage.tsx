@@ -4,19 +4,25 @@ import { IQuestion, QuestionType } from "src/DataTypes";
 import Page from "./Page";
 import QuestionField from "./QuestionField";
 
+interface IProps {
+  initialQuestions: IQuestion[];
+  initialName: string;
+  saveForm(questions: IQuestion[], formName: string): Promise<void>;
+}
+
 interface IState {
   questions: IQuestion[];
   formName: string;
 }
 
-class FormCreationPage extends React.Component<{}, IState> {
-  public constructor(props: any) {
+class FormCreationPage extends React.Component<IProps, IState> {
+  public constructor(props: IProps) {
     super(props);
-    const emailQuestion: IQuestion = {
-      prompt: "Email",
-      type: "EMAIL"
+    console.log("Creating editing page", props);
+    this.state = {
+      questions: props.initialQuestions,
+      formName: props.initialName
     };
-    this.state = { questions: [emailQuestion], formName: "" };
     this.onChangeFormName = this.onChangeFormName.bind(this);
   }
 
@@ -62,6 +68,7 @@ class FormCreationPage extends React.Component<{}, IState> {
         <Page header="Edit Form">
           <Input
             fluid
+            value={this.state.formName}
             size="huge"
             placeholder="Type form name here..."
             onChange={this.onChangeFormName}
@@ -117,6 +124,19 @@ class FormCreationPage extends React.Component<{}, IState> {
               </Grid.Row>
             </Grid>
           </Segment>
+          <Button
+            fluid
+            primary
+            style={{ maxWidth: "25%", margin: "auto" }}
+            size="huge"
+            content="Save"
+            onClick={() => {
+              this.props
+                .saveForm(this.state.questions, this.state.formName)
+                .then(() => alert("Saved form"));
+            }}
+          />
+          <br />
           <Button
             fluid
             primary

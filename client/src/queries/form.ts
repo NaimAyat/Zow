@@ -7,6 +7,7 @@ export const GET_FORM_GQL = gql`
       questions {
         prompt
         type
+        options
       }
     }
   }

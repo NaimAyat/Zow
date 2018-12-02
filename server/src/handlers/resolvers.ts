@@ -132,6 +132,11 @@ export default function getResolvers(
       async addOwner(parent, args, ctx) {
         const { formID, userID } = args;
         return await formService.addOwner(ctx, formID, userID);
+      },
+      async saveForm(parent, args, ctx) {
+        const { formID, form } = args;
+        form.id = formID;
+        return await formService.saveForm(ctx, form);
       }
     },
 

@@ -27,7 +27,7 @@ const typeDefs = gql`
   type Question {
     id: ID!
     prompt: String!
-    choices: [String]!
+    options: [String]!
     type: String!
   }
 
@@ -60,7 +60,7 @@ const typeDefs = gql`
 
   input QuestionInput {
     prompt: String!
-    choices: [String]!
+    options: [String]
     type: String!
   }
 
