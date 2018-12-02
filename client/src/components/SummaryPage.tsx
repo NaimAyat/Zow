@@ -12,6 +12,7 @@ interface IProps {
     responses: IResponse[];
     questions: IQuestion[];
     scores: IScore[];
+    published: boolean;
   };
   id: string;
 }
@@ -41,15 +42,14 @@ class SummaryPage extends React.Component<IProps, IState> {
   }
 
   public componentWillReceiveProps(props: IProps) {
-    // const rows = {};
-    // props.form.responses.forEach(
-    //   (response: IResponse) =>
-    //     (rows[response.email] =
-    //       rows[response.email] !== undefined
-    //         ? rows[response.email]
-    //         : { checked: true, status: response.status })
-    // );
-    // this.setState({ rows });
+    const rows = props.form.responses.map((response, index) => ({
+      checked: this.state.rows[index] ? this.state.rows[index].checked : true,
+      responseIndex: index
+    }));
+    const statuses = props.form.responses.map((response, index) =>
+      this.state.statuses[index] ? this.state.statuses[index] : "Pending"
+    );
+    this.setState({ rows, statuses });
   }
 
   public getToggleChecked(index: number) {
@@ -173,7 +173,13 @@ class SummaryPage extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <Page header={"Summary: " + this.props.form.name}>
+      <Page
+        header={
+          "Summary: " +
+          this.props.form.name +
+          (this.props.form.published ? " (Published)" : " (Unpublished)")
+        }
+      >
         <Divider hidden />
         <Filter
           filters={this.state.filters}
