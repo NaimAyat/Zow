@@ -18,20 +18,20 @@ import { withRouter } from "react-router";
 import Page from "./Page";
 
 const HomePage = withRouter((props: any) => (
-  <Grid textAlign="center" style={{ height: "100%" }} verticalAlign="middle">
-    <UserContext.Consumer>
-      {({ user }) => (
-        <Mutation mutation={NEW_FORM_GQL}>
-          {newForm => {
-            const handleNewForm = () => {
-              newForm().then(res => {
-                if (res && !res.errors) {
-                  props.history.push("/form-creation/" + res.data.createForm);
-                }
-              });
-            };
+  <UserContext.Consumer>
+    {({ user }) => (
+      <Mutation mutation={NEW_FORM_GQL}>
+        {newForm => {
+          const handleNewForm = () => {
+            newForm().then(res => {
+              if (res && !res.errors) {
+                props.history.push("/form-creation/" + res.data.createForm);
+              }
+            });
+          };
 
-            return (
+          return (
+            <React.Fragment>
               <Page header="Welcome to Zow">
                 {user ? (
                   <React.Fragment>
@@ -109,12 +109,34 @@ const HomePage = withRouter((props: any) => (
                   </React.Fragment>
                 )}
               </Page>
-            );
-          }}
-        </Mutation>
-      )}
-    </UserContext.Consumer>
-  </Grid>
+              <Page header="How does it work?">
+                <p>
+                  Zow allows recruiters to create postings for their open
+                  positions. You can make custom forms to collect all of the
+                  data they need to screen candidates. In addition to that,
+                  student organizations can score each applicant and see the
+                  overall score ranking from the lowest to highest or vice
+                  versa. This way, student organizations can easily distinguish
+                  between strong and weak candidates. Therefore, the sorting
+                  process can be done in much less time. Recruiters can
+                  automatically schedule interviews, and go through multiple
+                  rounds of scoring, so that they can easily get to a final
+                  decision. Lastly, there is also a summary view that lets you
+                  see the overall statistics for your applicant pool, allowing
+                  you to identify trends in candidates.
+                </p>
+                <p>
+                  Ultimately, Zow is a powerful tool that allows you to screen
+                  candidates and find the best people for you organization. Zow
+                  will make you say ZWOW!
+                </p>
+              </Page>
+            </React.Fragment>
+          );
+        }}
+      </Mutation>
+    )}
+  </UserContext.Consumer>
 ));
 
 export default HomePage;
