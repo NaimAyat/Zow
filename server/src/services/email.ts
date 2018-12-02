@@ -103,7 +103,7 @@ class ConcreteEmailService implements IEmailService {
 }
 
 export default function getDefaultEmailService(
-  config: IConfig
+  emailer: IEmailer
 ) {
-  return new ConcreteEmailService(getEmailer(config));
+  return new ConcreteEmailService(emailer);
 }

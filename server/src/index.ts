@@ -16,7 +16,8 @@ connectDb(config);
 
 const encryptService = getEncryptService();
 const authService = getAuthService(config, encryptService);
-const formService = new DatabaseFormService();
+const emailService = getEmailService(emailer);
+const formService = getFormService(emailService);
 
 const app = getHandlers(config, authService, formService);
 
