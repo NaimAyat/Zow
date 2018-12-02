@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Divider } from "semantic-ui-react";
+import { Button, Header, ButtonGroup, Grid, Label } from "semantic-ui-react";
 import SummaryTable from "./SummaryTable";
 import { IFilter, IResponse, IQuestion, IScore } from "../DataTypes";
 import Filter from "./Filter";
@@ -139,44 +139,36 @@ class SummaryPage extends React.Component<IProps, IState> {
   }
 
   public ButtonRow = () => (
-    <React.Fragment>
-      <Link to={"/form-creation/" + this.props.id}>
-        <Button primary>Edit Form</Button>
-      </Link>
-      <Link to={"/form/" + this.props.id} target="_blank">
-        <Button>Form Link</Button>
-      </Link>
-      <Divider />
-      <div style={{ float: "left", margin: "10px" }}>
-        <Button
-          icon="check square"
-          content="Select All"
-          onClick={() => this.getCheckAll(true)}
+    <Grid columns={2}>
+      <Grid.Column width={8} verticalAlign="bottom">
+        <div style={{ marginBottom: "5px" }}>
+          <Button icon="mail" content="Email" />
+          <Button icon="star" content="Score"  onClick={this.onScore}  />
+          <Button icon="calendar" content="Interview" />
+        </div>
+        <div>
+          <Button
+            icon="check"
+            content="Approve"
+            color="green"
+            onClick={this.getChangeStatus("Approved")}
+          />
+          <Button
+            icon="x"
+            content="Reject"
+            color="red"
+            onClick={this.getChangeStatus("Rejected")}
+          />
+        </div>
+      </Grid.Column>
+      <Grid.Column width={8}>
+        <Filter
+          filters={this.state.filters}
+          questions={this.props.form.questions}
+          setFilters={this.setFilters}
         />
-        <Button
-          icon="minus square"
-          content="Deselect All"
-          onClick={() => this.getCheckAll(false)}
-        />
-      </div>
-      <div style={{ float: "right", margin: "10px" }}>
-        <Button icon="mail" content="Email" />
-        <Button icon="star" content="Score" onClick={this.onScore} />
-        <Button icon="calendar" content="Interview" />
-        <Button
-          icon="check"
-          content="Approve"
-          color="green"
-          onClick={this.getChangeStatus("Approved")}
-        />
-        <Button
-          icon="x"
-          content="Reject"
-          color="red"
-          onClick={this.getChangeStatus("Rejected")}
-        />
-      </div>
-    </React.Fragment>
+      </Grid.Column>
+    </Grid>
   );
 
   public setFilters(filters: IFilter[]) {
@@ -187,20 +179,25 @@ class SummaryPage extends React.Component<IProps, IState> {
 
   public render() {
     return (
-      <Page
-        header={
-          "Summary: " +
-          this.props.form.name +
-          (this.props.form.published ? " (Published)" : " (Unpublished)")
-        }
-      >
-        <Divider hidden />
-        <Filter
-          filters={this.state.filters}
-          questions={this.props.form.questions}
-          setFilters={this.setFilters}
-        />
-        <Divider hidden />
+      <Page header="Summary View">
+        <Header as="h1">
+          {this.props.form.name ? this.props.form.name : "[Untitled Form]"}
+          &nbsp;&nbsp;&nbsp;
+          {this.props.form.published ? (
+            <Label color="blue" content="Published" tag />
+          ) : (
+            <Label content="Unpublished" tag />
+          )}
+        </Header>
+
+        <div>
+          <Link to={"/form-creation/" + this.props.id}>
+            <Button icon="file alternate outline" primary content="Edit Form" />
+          </Link>
+          <Link to={"/form/" + this.props.id} target="_blank">
+            <Button icon="linkify" content="Form Link" />
+          </Link>
+        </div>
         <this.ButtonRow />
         <SummaryTable
           questions={this.props.form.questions}
@@ -209,7 +206,18 @@ class SummaryPage extends React.Component<IProps, IState> {
           getToggleChecked={this.getToggleChecked}
           rows={this.state.rows}
           statuses={this.state.statuses}
-        />
+        >
+          <ButtonGroup compact>
+            <Button
+              icon="check square"
+              onClick={() => this.getCheckAll(true)}
+            />
+            <Button
+              icon="minus square"
+              onClick={() => this.getCheckAll(false)}
+            />
+          </ButtonGroup>
+        </SummaryTable>
       </Page>
     );
   }

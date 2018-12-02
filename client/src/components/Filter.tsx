@@ -58,7 +58,7 @@ class Filter extends React.Component<IProps, IState> {
     }));
     return (
       <React.Fragment>
-        <Menu vertical fluid style={{ maxWidth: "50%" }}>
+        <Menu vertical fluid>
           {this.props.filters.map((filter, index) => (
             <Menu.Item>
               <b>{filter.prompt}</b>

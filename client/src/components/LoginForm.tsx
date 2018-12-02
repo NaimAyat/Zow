@@ -71,7 +71,7 @@ class LoginForm extends React.Component<IProps, IState> {
                       error={!!error}
                     >
                       <Segment stacked>
-                        <Header content="Login to Zow" />
+                        <Header as="h1" content="Login to Zow" />
                         {error && <Message error content="Invalid Login" />}
                         <Form.Input
                           fluid
@@ -98,7 +98,7 @@ class LoginForm extends React.Component<IProps, IState> {
                         </Button>
                       </Segment>
                       <Segment style={{ margin: "auto", maxWidth: 200 }}>
-                        <Header as="h3">New to Zow?</Header>
+                        <Header as="h1">New to Zow?</Header>
                         <Link to="/register">
                           <Button secondary size="large" animated>
                             <Button.Content visible>Sign Up</Button.Content>

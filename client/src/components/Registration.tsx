@@ -67,9 +67,6 @@ class Registration extends React.Component<IProps, IState> {
 
                 return (
                   <Grid.Column style={{ maxWidth: 450 }}>
-                    <Header as="h2" textAlign="center">
-                      Create your new account with Zow
-                    </Header>
                     <Form
                       size="large"
                       onSubmit={() =>
@@ -83,8 +80,11 @@ class Registration extends React.Component<IProps, IState> {
                       }
                       error={!!error}
                     >
-                      {error && <Message error content={error} />}
                       <Segment stacked>
+                        <Header as="h1" textAlign="center">
+                          Create your new account with Zow
+                        </Header>
+                        {error && <Message error content={error} />}
                         <Form.Input
                           fluid
                           icon="user"
