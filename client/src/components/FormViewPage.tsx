@@ -7,6 +7,7 @@ import Page from "./Page";
 interface IProps {
   formName: string;
   questions: IQuestion[];
+  onSubmit: (response: IResponse) => Promise<void>;
 }
 
 interface IState {
@@ -58,6 +59,9 @@ class FormViewPage extends React.Component<IProps, IState> {
           style={{ maxWidth: "25%", margin: "auto" }}
           size="huge"
           content="Submit"
+          onClick={() => {
+            this.props.onSubmit(this.state.response);
+          }}
         />
       </Page>
     );

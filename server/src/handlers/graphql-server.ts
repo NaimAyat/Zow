@@ -14,7 +14,7 @@ const typeDefs = gql`
     newUser(name: String!, email: String!, password: String!): Boolean!
     createForm: ID!
     saveForm(formID: ID!, form: FormInput): Boolean
-    addResponse(formID: ID!, answers: [String]): Boolean
+    addResponse(formID: ID!, email: String, answers: [String]): Boolean
     addOwner(formID: ID!, userID: ID!): Boolean
   }
 

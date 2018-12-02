@@ -118,8 +118,8 @@ export default function getResolvers(
        * @return void
        */
       async addResponse(parent, args, ctx) {
-        const { formID, answers } = args;
-        return await formService.addResponse(ctx, formID, answers);
+        const { formID, answers, email } = args;
+        return await formService.addResponse(ctx, formID, email, answers);
       },
       /**
        * Adds an owner to the provided form.
