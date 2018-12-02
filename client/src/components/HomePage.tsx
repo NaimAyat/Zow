@@ -1,10 +1,21 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
-import { Header, Button, Grid, Loader, List } from "semantic-ui-react";
+import { Redirect } from "react-router-dom";
+import {
+  Header,
+  Button,
+  Grid,
+  Loader,
+  List,
+  Icon,
+  Segment,
+  Divider,
+  GridColumn
+} from "semantic-ui-react";
 import { UserContext } from "./Context";
 import { Mutation, Query } from "react-apollo";
 import { NEW_FORM_GQL, OWNED_FORMS_GQL } from "../queries/form";
 import { withRouter } from "react-router";
+import Page from "./Page";
 
 const HomePage = withRouter((props: any) => (
   <Grid textAlign="center" style={{ height: "100%" }} verticalAlign="middle">
@@ -21,27 +32,70 @@ const HomePage = withRouter((props: any) => (
             };
 
             return (
-              <Header as="h1" textAlign="center">
-                Welcome to ZOW
-                <br />
+              <Page header="Welcome to Zow">
                 {user ? (
                   <React.Fragment>
-                    <Button onClick={handleNewForm}>Create New Form</Button>
-                    <br />
                     <Query query={OWNED_FORMS_GQL} fetchPolicy="no-cache">
                       {({ loading, error, data }) => {
                         return !loading && data && data.ownedForms ? (
                           <React.Fragment>
-                            <Header as="h1">My Forms:</Header>
-                            <List>
-                              {data.ownedForms.map((form: any, i: number) => (
-                                <List.Item key={i}>
-                                  <Link to={"/summary/" + form.id}>
-                                    {form.name || "Unnamed Form"}
-                                  </Link>
-                                </List.Item>
-                              ))}
-                            </List>
+                            <Segment placeholder>
+                              <Grid columns={2} stackable textAlign="center">
+                                <Divider vertical>Or</Divider>
+
+                                <Grid.Row verticalAlign="middle">
+                                  <Grid.Column>
+                                    <Header icon>
+                                      <Icon name="edit" />
+                                      Create New Form
+                                    </Header>
+                                    <Button
+                                      size="large"
+                                      primary
+                                      onClick={handleNewForm}
+                                    >
+                                      Create
+                                    </Button>
+                                  </Grid.Column>
+
+                                  <Grid.Column>
+                                    <Header icon>
+                                      <Icon name="search" />
+                                      Find Form
+                                    </Header>
+                                    <Grid>
+                                      <GridColumn width="2" />
+                                      <GridColumn width="12">
+                                        <Segment>
+                                          <List selection animated size="large">
+                                            {data.ownedForms.map(
+                                              (form: any, i: number) => (
+                                                <List.Item
+                                                  key={i}
+                                                  onClick={() =>
+                                                    props.history.push(
+                                                      "/summary/" + form.id
+                                                    )
+                                                  }
+                                                >
+                                                  <Icon name="file alternate outline" />
+                                                  <List.Content>
+                                                    <List.Header>
+                                                      {form.name ||
+                                                        "Unnamed Form"}
+                                                    </List.Header>
+                                                  </List.Content>
+                                                </List.Item>
+                                              )
+                                            )}
+                                          </List>
+                                        </Segment>
+                                      </GridColumn>
+                                    </Grid>
+                                  </Grid.Column>
+                                </Grid.Row>
+                              </Grid>
+                            </Segment>
                           </React.Fragment>
                         ) : (
                           <Loader />
@@ -51,16 +105,10 @@ const HomePage = withRouter((props: any) => (
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
-                    <Link to="/login">
-                      <Button primary>Login</Button>
-                    </Link>
-                    <br />
-                    <Link to="/register">
-                      <Button secondary>Sign Up</Button>
-                    </Link>
+                    <Redirect to="/login" />
                   </React.Fragment>
                 )}
-              </Header>
+              </Page>
             );
           }}
         </Mutation>
