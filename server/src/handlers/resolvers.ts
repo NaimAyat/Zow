@@ -40,7 +40,6 @@ export default function getResolvers(
        * @return IForms for given user
        */
       async ownedForms(parent, args, ctx) {
-        console.log("[Resolver]: Fetching owned forms");
         return await formService.getOwnedForms(ctx);
       },
       //////////////////
@@ -115,11 +114,12 @@ export default function getResolvers(
        *          ID of form
        * @param answers
        *          answers to questions for response
-       * @return void
+       * @return boolean
        */
       async addResponse(parent, args, ctx) {
         const { formID, answers, email } = args;
-        return await formService.addResponse(ctx, formID, email, answers);
+        await formService.addResponse(ctx, formID, email, answers);
+        return true;
       },
       /**
        * Adds an owner to the provided form.
@@ -131,12 +131,60 @@ export default function getResolvers(
        */
       async addOwner(parent, args, ctx) {
         const { formID, userID } = args;
-        return await formService.addOwner(ctx, formID, userID);
+        await formService.addOwner(ctx, formID, userID);
+        return true;
       },
+
+      /**
+       * Saves form.
+       * @param formID
+       *          ID of form to save
+       * @param score
+       *          form content
+       * @return void
+       */
       async saveForm(parent, args, ctx) {
         const { formID, form } = args;
         form.id = formID;
-        return await formService.saveForm(ctx, form);
+        await formService.saveForm(ctx, form);
+        return true;
+      },
+
+      /**
+       * Adds score to given response.
+       * @param responseID
+       *          ID of response
+       * @param score
+       *          score to add to response
+       * @return updated response
+       */
+      async addScore(parent, args, ctx) {
+        const { responseID, score, notes } = args;
+        await formService.addScore(ctx, responseID, score, notes);
+        return true;
+      },
+
+      /**
+       * Gets average score for given response.
+       * @param responseID
+       *          ID of response
+       *
+       * @return average score
+       */
+      async getAvgScore(parent, args, ctx) {
+        const { responseID } = args;
+        return await formService.getAvgScore(ctx, responseID);
+      },
+
+      /**
+       * Publishes or upublishes a form to the public
+       * @param formID form to publish
+       * @param published new publish state
+       */
+      async setPublishState(parent, args, ctx) {
+        const { formID, published } = args;
+        await formService.setPublishState(ctx, formID, published);
+        return true;
       }
     },
 

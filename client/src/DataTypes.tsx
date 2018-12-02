@@ -15,12 +15,14 @@ export type QuestionType =
 
 export interface IAnswer {
   // question: IQuestion;
-  answer: string;
+  value: string;
 }
 
 export interface IResponse {
+  id?: string;
   email: string;
   answers: IAnswer[];
+  status?: "Pending" | "Approved" | "Rejected";
 }
 
 export interface IScore {
@@ -31,4 +33,12 @@ export interface IScore {
 export interface ISlot {
   start: Date;
   end: Date;
+}
+
+export type FilterType = "less than" | "greater than" | "matches" | "includes";
+
+export interface IFilter {
+  prompt: string;
+  type: FilterType;
+  search: string;
 }

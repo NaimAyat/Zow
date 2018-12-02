@@ -14,8 +14,11 @@ const typeDefs = gql`
     newUser(name: String!, email: String!, password: String!): Boolean!
     createForm: ID!
     saveForm(formID: ID!, form: FormInput): Boolean
+    setPublishState(formID: ID!, published: Boolean!): Boolean!
     addResponse(formID: ID!, email: String, answers: [String]): Boolean
     addOwner(formID: ID!, userID: ID!): Boolean
+    addScore(responseID: ID!, score: Int!, notes: String): Boolean
+    getAvgScore(responseID: ID!): Float
   }
 
   type User {
@@ -34,12 +37,12 @@ const typeDefs = gql`
   type Answer {
     id: ID!
     question: Question!
-    answer: String!
+    value: String!
   }
 
   type Response {
     id: ID!
-    respondent: String!
+    email: String!
     answers: [Answer]!
   }
 
@@ -51,6 +54,7 @@ const typeDefs = gql`
     responses: [Response]
     scores: [Scoring]
     slots: [InterviewSlot]
+    published: Boolean!
   }
 
   input FormInput {

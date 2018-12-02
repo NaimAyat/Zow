@@ -15,6 +15,7 @@ interface IProps {
   formName: string;
   questions: IQuestion[];
   response: IResponse;
+  onSubmit(rating: number, notes: string): Promise<void>;
 }
 
 interface IState {
@@ -40,7 +41,7 @@ class ScoringPage extends React.Component<IProps, IState> {
   }
 
   public getAnswer(question: IQuestion, answer: IAnswer) {
-    const text = answer.answer;
+    const text = answer.value;
 
     if (question.type === "CHECKBOX") {
       const words = text.split(",");
@@ -71,7 +72,14 @@ class ScoringPage extends React.Component<IProps, IState> {
                 />
               </Form.Field>
               <Form.Field>
-                <Button primary size="huge" content="Score" />
+                <Button
+                  primary
+                  size="huge"
+                  content="Score"
+                  onClick={() => {
+                    this.props.onSubmit(this.state.rating, this.state.notes);
+                  }}
+                />
               </Form.Field>
             </Form>
           </div>
