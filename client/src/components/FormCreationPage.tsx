@@ -15,14 +15,17 @@ import { Link } from "react-router-dom";
 
 interface IProps {
   id: string;
+  initialPublished: boolean;
   initialQuestions: IQuestion[];
   initialName: string;
   saveForm(questions: IQuestion[], formName: string): Promise<void>;
+  updatePublishState(published: boolean): Promise<void>;
 }
 
 interface IState {
   questions: IQuestion[];
   formName: string;
+  published: boolean;
 }
 
 class FormCreationPage extends React.Component<IProps, IState> {
@@ -30,7 +33,8 @@ class FormCreationPage extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       questions: props.initialQuestions,
-      formName: props.initialName
+      formName: props.initialName,
+      published: props.initialPublished
     };
     this.onChangeFormName = this.onChangeFormName.bind(this);
   }
@@ -74,7 +78,12 @@ class FormCreationPage extends React.Component<IProps, IState> {
   public render() {
     return (
       <React.Fragment>
-        <Page header="Edit Form">
+        <Page
+          header={
+            "Edit Form " +
+            (this.state.published ? "(Published)" : "(Unpublished)")
+          }
+        >
           <Link to={"/summary/" + this.props.id}>
             <Button fluid style={{ maxWidth: "25%", margin: "auto" }}>
               Return to Form Summary
@@ -157,7 +166,11 @@ class FormCreationPage extends React.Component<IProps, IState> {
             primary
             style={{ maxWidth: "25%", margin: "auto" }}
             size="huge"
-            content="Publish"
+            content={this.state.published ? "Unpublish" : "Publish"}
+            onClick={async () => {
+              await this.props.updatePublishState(!this.state.published);
+              this.setState({ published: !this.state.published });
+            }}
           />
         </Page>
       </React.Fragment>

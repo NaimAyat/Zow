@@ -14,6 +14,7 @@ const typeDefs = gql`
     newUser(name: String!, email: String!, password: String!): Boolean!
     createForm: ID!
     saveForm(formID: ID!, form: FormInput): Boolean
+    setPublishState(formID: ID!, published: Boolean!): Boolean!
     addResponse(formID: ID!, email: String, answers: [String]): Boolean
     addOwner(formID: ID!, userID: ID!): Boolean
     addScore(responseID: ID!, score: Int!): Boolean
@@ -53,6 +54,7 @@ const typeDefs = gql`
     responses: [Response]
     scores: [Scoring]
     slots: [InterviewSlot]
+    published: Boolean!
   }
 
   input FormInput {

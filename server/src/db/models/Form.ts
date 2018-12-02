@@ -22,6 +22,10 @@ const FormSchema = new mongoose.Schema({
   interviewSlots: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "InterviewSlot" }],
     default: []
+  },
+  published: {
+    type: Boolean,
+    default: false
   }
 });
 
