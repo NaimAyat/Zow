@@ -67,11 +67,11 @@ export interface IFormService {
    * @param formID
    *          form ID associate owner with
    * @param newOwner
-   *          user to add as owner to form
+   *          e-mail address of user to add as owner to form
    *
    * @return the added owner
    */
-  addOwner(ctx: Context, formID: string, newOwner: IUser): Promise<IUser>;
+  addOwner(ctx: Context, formID: string, newOwner: string): Promise<IUser>;
   /**
    * Adds a scoring to a response.
    *
@@ -186,7 +186,7 @@ export class DatabaseFormService implements IFormService {
   public async addOwner(
     ctx: Context,
     formID: string,
-    newOwner: IUser
+    newOwner: string
   ): Promise<IUser> {
     const form = await Form.findById(formID);
     if (!form) {
@@ -198,7 +198,11 @@ export class DatabaseFormService implements IFormService {
     ) {
       throw new Error("Access not allowed");
     }
-    form.owners.push(newOwner);
+    const owner = await User.findOne({email:newOwner});
+    if (!owner) {
+      throw new Error("User not found with provided e-mail address")
+    }
+    form.owners.push(owner);
     form.markModified('owners');
     form.save();
     // TODO: Send e-mail update to new owner
