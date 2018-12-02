@@ -1,6 +1,6 @@
 import { IForm, IResponse, IUser, IQuestion } from "../entities";
 import { Context } from "koa";
-import { Form } from "../db/models";
+import { Form, Question } from "../db/models";
 
 export interface IFormService {
   // Accessors
@@ -82,7 +82,7 @@ export class DatabaseFormService implements IFormService {
       throw new Error("form does not exist");
     }
 
-    return { id: form.id, name: form.id };
+    return { id: form.id, name: form.name };
   }
 
   public async getOwnedForms(ctx: Context): Promise<IForm[]> {
@@ -129,14 +129,42 @@ export class DatabaseFormService implements IFormService {
   }
 
   public async saveForm(ctx: Context, form: IForm): Promise<void> {
-    return; // TODO
+    console.log("Saving form", form);
+    const formInDB = await Form.findById(form.id).populate("owners");
+
+    if (
+      !ctx.session.user ||
+      !formInDB ||
+      formInDB.owners.find(user => user.id === ctx.session.user.id) ===
+        undefined
+    ) {
+      throw new Error("access not allowed");
+    }
+
+    formInDB.name = form.name;
+    formInDB.questions = [];
+    for (const question of form.questions) {
+      formInDB.questions.push(await Question.create(question));
+    }
+
+    await formInDB.save();
+    console.log("Saved form", formInDB);
   }
 
   public async createNewForm(ctx: Context, author: IUser): Promise<IForm> {
     if (!author) {
       throw new Error("access not allowed");
     }
-    const form = await Form.create({ name: "New Form", owners: [author.id] });
+
+    const emailQuestion = await Question.create({
+      prompt: "Email",
+      type: "EMAIL"
+    });
+    const form = await Form.create({
+      name: "",
+      owners: [author.id],
+      questions: [emailQuestion]
+    });
     return { id: form.id };
   }
 
