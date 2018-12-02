@@ -55,12 +55,19 @@ export interface IFormService {
    *
    * @param formID
    *          form ID associate response with
+   * @param email
+   *          email address of submiter
    * @param answers
    *          array of answers to include in response
    *
    * @return void
    */
-  addResponse(ctx: Context, formID: string, answers: string[]): Promise<void>;
+  addResponse(
+    ctx: Context,
+    formID: string,
+    email: string,
+    answers: string[]
+  ): Promise<void>;
   /**
    * Associates an owner with a given form.
    *
@@ -171,8 +178,10 @@ export class DatabaseFormService implements IFormService {
   public async addResponse(
     ctx: Context,
     formID: string,
+    email: string,
     answers: string[]
   ): Promise<void> {
+    console.log(email, answers);
     return; // TODO
   }
 

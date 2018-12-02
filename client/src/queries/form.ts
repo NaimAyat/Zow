@@ -33,3 +33,9 @@ export const OWNED_FORMS_GQL = gql`
     }
   }
 `;
+
+export const ADD_RESPONSE_GQL = gql`
+  mutation addResponse($formID: ID!, $email: String!, $answers: [String]!) {
+    addResponse(formID: $formID, email: $email, answers: $answers)
+  }
+`;

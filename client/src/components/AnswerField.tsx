@@ -48,7 +48,9 @@ class AnswerField extends React.Component<IProps, IState> {
     event: React.FormEvent<HTMLInputElement>,
     data: CheckboxProps
   ) {
-    let answers = this.props.answer.answer.split(",");
+    let answers = this.props.answer.answer
+      ? this.props.answer.answer.split(",")
+      : [];
     const value = String(data.value);
     if (data.checked) {
       answers.push(value);
