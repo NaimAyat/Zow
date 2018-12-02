@@ -68,3 +68,9 @@ export const UPDATE_PUBLISH_STATE_GQL = gql`
     setPublishState(formID: $formID, published: $published)
   }
 `;
+
+export const SUBMIT_SCORE_GQL = gql`
+  mutation addScore($responseID: ID!, $score: Int!, $notes: String) {
+    addScore(responseID: $responseID, score: $score, notes: $notes)
+  }
+`;

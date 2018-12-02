@@ -16,7 +16,11 @@ const SummaryPageLoader: React.SFC<IProps> = props => {
     >
       {({ loading, error, data }) => {
         return !loading && data ? (
-          <SummaryPage id={props.match.params.id} form={data.form} />
+          <SummaryPage
+            id={props.match.params.id}
+            form={data.form}
+            history={props.history}
+          />
         ) : (
           <Loader />
         );

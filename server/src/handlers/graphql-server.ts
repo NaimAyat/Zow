@@ -17,7 +17,7 @@ const typeDefs = gql`
     setPublishState(formID: ID!, published: Boolean!): Boolean!
     addResponse(formID: ID!, email: String, answers: [String]): Boolean
     addOwner(formID: ID!, userID: ID!): Boolean
-    addScore(responseID: ID!, score: Int!): Boolean
+    addScore(responseID: ID!, score: Int!, notes: String): Boolean
     getAvgScore(responseID: ID!): Float
   }
 

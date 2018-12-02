@@ -5,6 +5,7 @@ import { IFilter, IResponse, IQuestion, IScore } from "../DataTypes";
 import Filter from "./Filter";
 import Page from "./Page";
 import { Link } from "react-router-dom";
+import { History } from "history";
 
 interface IProps {
   form: {
@@ -15,6 +16,7 @@ interface IProps {
     published: boolean;
   };
   id: string;
+  history: History;
 }
 
 export interface IRow {
@@ -39,6 +41,7 @@ class SummaryPage extends React.Component<IProps, IState> {
     this.state = { filters: [], rows, statuses };
     this.getToggleChecked = this.getToggleChecked.bind(this);
     this.setFilters = this.setFilters.bind(this);
+    this.onScore = this.onScore.bind(this);
   }
 
   public componentWillReceiveProps(props: IProps) {
@@ -58,6 +61,17 @@ class SummaryPage extends React.Component<IProps, IState> {
       rows[index].checked = !rows[index].checked;
       this.setState({ rows });
     };
+  }
+
+  public onScore() {
+    const selectedRowIDs = this.state.rows
+      .filter(row => row.checked)
+      .map(({ responseIndex }) => this.props.form.responses[responseIndex].id);
+    if (selectedRowIDs.length > 0) {
+      this.props.history.push(
+        "/score/" + this.props.id + "/" + selectedRowIDs.join(",")
+      );
+    }
   }
 
   public setFilteredRows() {
@@ -129,7 +143,7 @@ class SummaryPage extends React.Component<IProps, IState> {
       <Grid.Column width={8} verticalAlign="bottom">
         <div style={{ marginBottom: "5px" }}>
           <Button icon="mail" content="Email" />
-          <Button icon="star" content="Score" />
+          <Button icon="star" content="Score"  onClick={this.onScore}  />
           <Button icon="calendar" content="Interview" />
         </div>
         <div>

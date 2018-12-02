@@ -1,7 +1,7 @@
 import { IForm, IResponse, IUser, IQuestion, IScore } from "../entities";
 import { Context } from "koa";
 import { Form, Question, Answer, Response, User } from "../db/models";
-import { IEmailService } from "./email"
+import { IEmailService } from "./email";
 
 export interface IFormService {
   // Accessors
@@ -86,11 +86,18 @@ export interface IFormService {
    * @param responseID
    *          response ID associate score with
    * @param score
-   *          score object to add to response
+   *          score number
+   * @param notes
+   *          score notes
    *
    * @return the updated response
    */
-  addScore(ctx: Context, responseID: string, score: IScore): Promise<IResponse>;
+  addScore(
+    ctx: Context,
+    responseID: string,
+    score: number,
+    notes: string
+  ): Promise<IResponse>;
   /**
    * Retrieves average score for a given response.
    *
@@ -115,7 +122,6 @@ export interface IFormService {
 }
 
 export class DatabaseFormService implements IFormService {
-
   private emailService: IEmailService;
   constructor(emailService: IEmailService) {
     this.emailService = emailService;
@@ -288,14 +294,15 @@ export class DatabaseFormService implements IFormService {
   public async addScore(
     ctx: Context,
     responseID: string,
-    score: IScore
+    score: number,
+    notes: string
   ): Promise<IResponse> {
     const query = { id: responseID };
     const response = await Response.findById(responseID);
     if (!response) {
       throw new Error("Response not found");
     }
-    response.scoring.push(score);
+    response.scoring.push({ user: ctx.session.user.id, score, notes });
     response.markModified("scoring");
     await response.save();
     return response;
@@ -336,8 +343,6 @@ export class DatabaseFormService implements IFormService {
   }
 }
 
-export default function getDefaultFormService(
-  emailService: IEmailService
-) {
+export default function getDefaultFormService(emailService: IEmailService) {
   return new DatabaseFormService(emailService);
 }
