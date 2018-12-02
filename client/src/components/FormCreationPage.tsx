@@ -6,7 +6,7 @@ import {
   Header,
   Input,
   Segment,
-  Divider
+  Label
 } from "semantic-ui-react";
 import { IQuestion, QuestionType } from "src/DataTypes";
 import Page from "./Page";
@@ -78,25 +78,24 @@ class FormCreationPage extends React.Component<IProps, IState> {
   public render() {
     return (
       <React.Fragment>
-        <Page
-          header={
-            "Edit Form " +
-            (this.state.published ? "(Published)" : "(Unpublished)")
-          }
-        >
-          <Link to={"/summary/" + this.props.id}>
-            <Button fluid style={{ maxWidth: "25%", margin: "auto" }}>
-              Return to Form Summary
-            </Button>
-          </Link>
-          <Divider />
+        <Page>
+          <Header as="h1" textAlign="center">
+            Form Creation
+          </Header>
           <Input
-            fluid
             value={this.state.formName}
             size="huge"
             placeholder="Type form name here..."
             onChange={this.onChangeFormName}
+            floated="left"
+            style={{ minWidth: "80%" }}
           />
+          &nbsp;&nbsp;&nbsp;
+          {this.state.published ? (
+            <Label floated="right" color="blue" content="Published" tag />
+          ) : (
+            <Label floated="right" content="Unpublished" tag />
+          )}
           <Form size="big">
             {this.state.questions.map((question, index) => (
               <QuestionField
@@ -148,30 +147,38 @@ class FormCreationPage extends React.Component<IProps, IState> {
               </Grid.Row>
             </Grid>
           </Segment>
-          <Button
-            fluid
-            primary
-            style={{ maxWidth: "25%", margin: "auto" }}
-            size="huge"
-            content="Save"
-            onClick={() => {
-              this.props
-                .saveForm(this.state.questions, this.state.formName)
-                .then(() => alert("Saved form"));
-            }}
-          />
-          <br />
-          <Button
-            fluid
-            primary
-            style={{ maxWidth: "25%", margin: "auto" }}
-            size="huge"
-            content={this.state.published ? "Unpublish" : "Publish"}
-            onClick={async () => {
-              await this.props.updatePublishState(!this.state.published);
-              this.setState({ published: !this.state.published });
-            }}
-          />
+          <Header textAlign="center">
+            <Link to={"/summary/" + this.props.id}>
+              <Button size="huge" icon="angle left" content="Back" />
+            </Link>
+            <Button
+              secondary
+              size="huge"
+              content="Save"
+              icon="save"
+              onClick={() => {
+                this.props
+                  .saveForm(this.state.questions, this.state.formName)
+                  .then(() => alert("Successfully saved form"));
+              }}
+            />
+            <Button
+              size="huge"
+              color={this.state.published ? undefined : "blue"}
+              icon="file alternate outline"
+              content={this.state.published ? "Unpublish" : "Save and Publish"}
+              onClick={async () => {
+                if (!this.state.published) {
+                  await this.props.saveForm(
+                    this.state.questions,
+                    this.state.formName
+                  );
+                }
+                await this.props.updatePublishState(!this.state.published);
+                this.setState({ published: !this.state.published });
+              }}
+            />
+          </Header>
         </Page>
       </React.Fragment>
     );
