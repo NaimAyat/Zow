@@ -44,6 +44,7 @@ const typeDefs = gql`
     id: ID!
     email: String!
     answers: [Answer]!
+    scoring: [Scoring]
   }
 
   type Form {
@@ -52,7 +53,6 @@ const typeDefs = gql`
     author: [User]!
     questions: [Question]!
     responses: [Response]
-    scores: [Scoring]
     slots: [InterviewSlot]
     published: Boolean!
   }
