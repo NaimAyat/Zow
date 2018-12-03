@@ -61,7 +61,7 @@ class SummaryTable extends React.Component<ISummaryTableProps> {
             {this.props.questions.map(question => (
               <Table.HeaderCell content={question.prompt} />
             ))}
-            <Table.HeaderCell>Score</Table.HeaderCell>
+            <Table.HeaderCell>Average Score</Table.HeaderCell>
             <Table.HeaderCell>Status</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
