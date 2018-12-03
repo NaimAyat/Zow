@@ -15,6 +15,7 @@ import HomePage from "./HomePage";
 import Success from "./Success";
 import Failure from "./Failure";
 import CowImage from "../images/cow.png";
+import InterviewSuccess from "./InterviewSuccess";
 
 const AppRouter = () => (
   <UserContext.Consumer>
@@ -53,6 +54,9 @@ const AppRouter = () => (
             <Route path="/login" component={LoginForm} />
             <Route path="/register" component={Registration} />
             <Route path="/form/:id" component={FormViewPageLoader} />
+            <Route path="/success" component={Success} />
+            <Route path="/interview-success" component={InterviewSuccess} />
+            <Route path="/interview/:token" component={InterviewSelection} />
             {user && (
               <React.Fragment>
                 <Route path="/summary/:id" component={SummaryPageLoader} />
@@ -68,11 +72,6 @@ const AppRouter = () => (
                   path="/interview-creation/:id"
                   component={InterviewCreation}
                 />
-                <Route
-                  path="/interview/:token"
-                  component={InterviewSelection}
-                />
-                <Route path="/success" component={Success} />
               </React.Fragment>
             )}
             <Route path="/*" component={Failure} />

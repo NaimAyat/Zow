@@ -131,13 +131,13 @@ export default function getResolvers(
        * Adds an owner to the provided form.
        * @param formID
        *          ID of form
-       * @param userID
-       *          owner to add to form
+       * @param newOwner
+       *          email of owner to add to form
        * @return void
        */
       async addOwner(parent, args, ctx) {
-        const { formID, userID } = args;
-        await formService.addOwner(ctx, formID, userID);
+        const { formID, newOwner } = args;
+        await formService.addOwner(ctx, formID, newOwner);
         return true;
       },
 

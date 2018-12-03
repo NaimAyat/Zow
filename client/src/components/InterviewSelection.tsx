@@ -77,7 +77,9 @@ export default class InterviewSelection extends React.Component<IProps> {
                         .map((slot, j) => (
                           <Card
                             as="a"
-                            onClick={() => alert(slot.start)}
+                            onClick={() => {
+                              this.props.history.push("/interview-success");
+                            }}
                             key={j}
                           >
                             <Card.Content>
