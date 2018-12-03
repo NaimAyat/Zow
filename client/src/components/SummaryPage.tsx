@@ -159,7 +159,7 @@ class SummaryPage extends React.Component<IProps, IState> {
             onClick={this.onInterview}
           />
           <Link to={"/interview-creation/" + this.props.id}>
-            <Button content="Add Interview Slots" />
+            <Button content="Add Interview Slots" icon="add to calendar" />
           </Link>
         </div>
         <div>
