@@ -4,10 +4,10 @@ import { Message } from "semantic-ui-react";
 
 const Success: React.SFC = () => {
   return (
-    <Page header="Thanks for submitting!">
+    <Page header="Thanks for your submission!">
       <Message success>
         <Message.Header>Success!</Message.Header>
-        Check the status of your application at the email that you submitted.
+        We'll email you with updates on the status of your application.
       </Message>
     </Page>
   );
