@@ -59,7 +59,6 @@ const AppRouter = () => (
             <Route path="/login" component={LoginForm} />
             <Route path="/register" component={Registration} />
             <Route path="/form/:id" component={FormViewPageLoader} />
-            <Route path="/*" component={Failure} />
             {user && (
               <React.Fragment>
                 <Route path="/summary/:id" component={SummaryPageLoader} />
@@ -79,6 +78,7 @@ const AppRouter = () => (
                 <Route path="/success" component={Success} />
               </React.Fragment>
             )}
+            <Route path="/*" component={Failure} />
           </Switch>
           <Divider style={{ minHeight: "50px" }} hidden />
         </div>

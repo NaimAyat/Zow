@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Header,
   Button,
@@ -105,7 +105,9 @@ const HomePage = withRouter((props: any) => (
                   </React.Fragment>
                 ) : (
                   <React.Fragment>
-                    <Redirect to="/login" />
+                    <Link to="/login">
+                      <Button>Login</Button>
+                    </Link>
                   </React.Fragment>
                 )}
               </Page>
