@@ -1,12 +1,11 @@
 import * as React from "react";
-import { Checkbox, Table } from "semantic-ui-react";
-import { IQuestion, IResponse, IScore } from "../DataTypes";
+import { Checkbox, Table, Rating } from "semantic-ui-react";
+import { IQuestion, IResponse } from "../DataTypes";
 import { IRow } from "./SummaryPage";
 
 interface ISummaryTableProps {
   questions: IQuestion[];
   responses: IResponse[];
-  scores: IScore[];
   getToggleChecked: any;
   rows: IRow[];
   statuses: string[];
@@ -25,6 +24,31 @@ class SummaryTable extends React.Component<ISummaryTableProps> {
         return <Table.Cell content="No Status" />;
     }
   }
+  public getScoreCell(index: number) {
+    const response = this.props.responses[index];
+    const score = this.getScore(response);
+    if (isNaN(score)) {
+      return <Table.Cell content="No Scores" key={index} />;
+    } else {
+      return (
+        <Table.Cell key={index}>
+          <Rating defaultRating={score} maxRating={5} disabled />
+        </Table.Cell>
+      );
+    }
+  }
+  public getScore(response: IResponse): number {
+    if (!response.scoring) {
+      return NaN;
+    }
+    let total = 0;
+    let count = 0;
+    for (const score of response.scoring) {
+      total += score.score;
+      count += 1;
+    }
+    return total / count;
+  }
 
   public render() {
     return (
@@ -37,6 +61,7 @@ class SummaryTable extends React.Component<ISummaryTableProps> {
             {this.props.questions.map(question => (
               <Table.HeaderCell content={question.prompt} />
             ))}
+            <Table.HeaderCell>Average Score</Table.HeaderCell>
             <Table.HeaderCell>Status</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -52,6 +77,7 @@ class SummaryTable extends React.Component<ISummaryTableProps> {
               {this.props.responses[row.responseIndex].answers.map(answer => (
                 <Table.Cell content={answer.value} />
               ))}
+              {this.getScoreCell(index)}
               {this.getStatusCell(index)}
             </Table.Row>
           ))}
