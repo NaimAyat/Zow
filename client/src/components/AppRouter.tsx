@@ -13,6 +13,7 @@ import InterviewCreation from "./InterviewCreationPage";
 import Registration from "./Registration";
 import HomePage from "./HomePage";
 import Success from "./Success";
+import Failure from "./Failure";
 import CowImage from "../images/cow.png";
 
 const AppRouter = () => (
@@ -61,6 +62,7 @@ const AppRouter = () => (
             <Route path="/login" component={LoginForm} />
             <Route path="/register" component={Registration} />
             <Route path="/form/:id" component={FormViewPageLoader} />
+            <Route path="/*" component={Failure} />
             {user && (
               <React.Fragment>
                 <Route path="/summary/:id" component={SummaryPageLoader} />
