@@ -155,9 +155,12 @@ class SummaryPage extends React.Component<IProps, IState> {
           <Button icon="star" content="Score" onClick={this.onScore} />
           <Button
             icon="calendar"
-            content="Interview"
+            content="Request Interviews"
             onClick={this.onInterview}
           />
+          <Link to={"/interview-creation/" + this.props.id}>
+            <Button content="Add Interview Slots" />
+          </Link>
         </div>
         <div>
           <Button
