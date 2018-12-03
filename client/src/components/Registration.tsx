@@ -82,7 +82,7 @@ class Registration extends React.Component<IProps, IState> {
                     >
                       <Segment stacked>
                         <Header as="h1" textAlign="center">
-                          Create your new account with Zow
+                          Create an Account
                         </Header>
                         {error && <Message error content={error} />}
                         <Form.Input
@@ -95,7 +95,7 @@ class Registration extends React.Component<IProps, IState> {
                         />
                         <Form.Input
                           fluid
-                          icon="user"
+                          icon="mail"
                           iconPosition="left"
                           placeholder="Email address"
                           value={this.state.email}
