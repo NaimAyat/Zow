@@ -36,12 +36,6 @@ const AppRouter = () => (
                 </Header>
               </Link>
             </Menu.Item>
-            <Menu.Item>
-              <Link to="/interview-creation">Interview Creation</Link>
-            </Menu.Item>
-            <Menu.Item>
-              <Link to="/interview">Interview Selection</Link>
-            </Menu.Item>
             {user && (
               <React.Fragment>
                 <Menu.Item position="right">
@@ -71,10 +65,13 @@ const AppRouter = () => (
                   component={ScoringPageLoader}
                 />
                 <Route
-                  path="/interview-creation"
+                  path="/interview-creation/:id"
                   component={InterviewCreation}
                 />
-                <Route path="/interview" component={InterviewSelection} />
+                <Route
+                  path="/interview/:token"
+                  component={InterviewSelection}
+                />
                 <Route path="/success" component={Success} />
               </React.Fragment>
             )}

@@ -27,12 +27,12 @@ export async function newInterviewToken(
   formID: string
 ): Promise<string> {
   const token = await InterviewToken.create({
-    token: crypto.randomBytes(16).toString("ascii"),
+    token: crypto.randomBytes(16).toString("hex"),
     userEmail,
     claimedSlot: false,
     form: formID
   });
 
-  return token.id;
+  return token.token;
 }
 export default InterviewToken;

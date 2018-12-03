@@ -14,6 +14,16 @@ export const GET_FORM_GQL = gql`
   }
 `;
 
+export const GET_INTERVIEWS_GQL = gql`
+  query form($token: String!) {
+    getInterviewSlots(token: $token) {
+      start
+      end
+      id
+    }
+  }
+`;
+
 export const GET_SUMMARY_DATA = gql`
   query summaryData($id: ID!) {
     form(formID: $id) {
