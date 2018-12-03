@@ -12,6 +12,9 @@ import {
 } from "semantic-ui-react";
 import { ISlot } from "../DataTypes";
 import Page from "./Page";
+import { Mutation } from "react-apollo";
+import { ADD_INTERVIEW_SLOT } from "../queries/form";
+import { RouteComponentProps } from "react-router";
 
 function InterviewHeader(props: { date: Date }) {
   return <Header>{props.date.toDateString()}</Header>;
@@ -73,8 +76,13 @@ interface IState {
   slots: ISlot[];
 }
 
-export default class InterviewCreationPage extends React.Component<{}, IState> {
-  constructor(props: {}) {
+interface IProps extends RouteComponentProps<{ id: string }> {}
+
+export default class InterviewCreationPage extends React.Component<
+  IProps,
+  IState
+> {
+  constructor(props: IProps) {
     super(props);
     const now = new Date();
     const defaultSlots = [];
@@ -125,11 +133,15 @@ export default class InterviewCreationPage extends React.Component<{}, IState> {
     };
   }
 
-  public getOnCreateSlot(index: number) {
+  public getOnCreateSlot(
+    index: number,
+    saveSlot: (start: number, end: number) => Promise<void>
+  ) {
     return () => {
       const slots = [...this.state.slots];
       const newSlot = { ...this.state.defaultSlots[index] };
       slots.push(newSlot);
+      saveSlot(newSlot.start.getTime(), newSlot.end.getTime());
       this.setState({ slots });
     };
   }
@@ -166,39 +178,56 @@ export default class InterviewCreationPage extends React.Component<{}, IState> {
       slots[i].sort((a, b) => a.start.getTime() - b.start.getTime());
     }
     return (
-      <Page header="Interview Creation">
-        <Grid columns={6} textAlign="center">
-          <Grid.Row>
-            {defaultSlots.map((slot, i) => (
-              <Grid.Column key={i}>
-                <InterviewHeader date={slot.start} />
-              </Grid.Column>
-            ))}
-          </Grid.Row>
-          <Grid.Row>
-            {slots.map((slotList, i) => (
-              <Grid.Column key={i}>
-                {slotList.map((slot, j) => (
-                  <InterviewSlot
-                    key={j}
-                    slot={slot}
-                    onRemoveSlot={this.getOnRemoveSlot(slot)}
-                  />
-                ))}
-                <DefaultInterviewSlot
-                  key={i}
-                  slot={defaultSlots[i]}
-                  onCreateSlot={this.getOnCreateSlot(i)}
-                  onChange={this.getOnDefaultSlotChange(
-                    i,
-                    defaultSlots[i].start
-                  )}
-                />
-              </Grid.Column>
-            ))}
-          </Grid.Row>
-        </Grid>
-      </Page>
+      <Mutation mutation={ADD_INTERVIEW_SLOT}>
+        {addSlot => {
+          return (
+            <Page header="Interview Creation">
+              <Grid columns={6} textAlign="center">
+                <Grid.Row>
+                  {defaultSlots.map((slot, i) => (
+                    <Grid.Column key={i}>
+                      <InterviewHeader date={slot.start} />
+                    </Grid.Column>
+                  ))}
+                </Grid.Row>
+                <Grid.Row>
+                  {slots.map((slotList, i) => (
+                    <Grid.Column key={i}>
+                      {slotList.map((slot, j) => (
+                        <InterviewSlot
+                          key={j}
+                          slot={slot}
+                          onRemoveSlot={this.getOnRemoveSlot(slot)}
+                        />
+                      ))}
+                      <DefaultInterviewSlot
+                        key={i}
+                        slot={defaultSlots[i]}
+                        onCreateSlot={this.getOnCreateSlot(
+                          i,
+                          async (start, end) => {
+                            addSlot({
+                              variables: {
+                                formID: this.props.match.params.id,
+                                startTime: start,
+                                endTime: end
+                              }
+                            });
+                          }
+                        )}
+                        onChange={this.getOnDefaultSlotChange(
+                          i,
+                          defaultSlots[i].start
+                        )}
+                      />
+                    </Grid.Column>
+                  ))}
+                </Grid.Row>
+              </Grid>
+            </Page>
+          );
+        }}
+      </Mutation>
     );
   }
 }

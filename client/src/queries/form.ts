@@ -93,3 +93,13 @@ export const INTERVIEW_GQL = gql`
     requestInterviewFrom(formID: $formID, userEmail: $userEmail)
   }
 `;
+
+export const ADD_INTERVIEW_SLOT = gql`
+  mutation addInterviewSlot(
+    $formID: ID!
+    $startTime: Float!
+    $endTime: Float!
+  ) {
+    addInterviewSlot(formID: $formID, startTime: $startTime, endTime: $endTime)
+  }
+`;

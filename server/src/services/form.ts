@@ -421,8 +421,7 @@ export class DatabaseFormService implements IFormService {
     ctx: Context,
     token: string
   ): Promise<IInterviewSlot[]> {
-    const realTokenString = new Buffer(token, "hex").toString("ascii");
-    const tokenObj = await InterviewToken.findOne({ token: realTokenString });
+    const tokenObj = await InterviewToken.findOne({ token });
     console.log(await InterviewToken.find());
     if (!tokenObj) {
       throw new Error("Invalid token");
@@ -436,6 +435,7 @@ export class DatabaseFormService implements IFormService {
     }
 
     let slots = form.interviewSlots;
+    console.log(slots);
     if (
       !ctx.session.user ||
       form.owners.find(user => user.id === ctx.session.user.id) === undefined
@@ -444,7 +444,15 @@ export class DatabaseFormService implements IFormService {
       slots = slots.filter(slot => !slot.available);
     }
 
-    return form.interviewSlots;
+    const res: any = slots.map(slot => ({
+      start: slot.start.getTime(),
+      end: slot.end.getTime(),
+      id: slot.id
+    }));
+
+    console.log("slots", res);
+
+    return res;
   }
 
   public async addInterviewSlot(
@@ -453,6 +461,7 @@ export class DatabaseFormService implements IFormService {
     startTime: number,
     endTime: number
   ): Promise<string> {
+    console.log("Adding interview slots");
     const form = await Form.findById(formID).populate("owners interviewSlots");
     if (!form) {
       throw new Error("Form not found");
@@ -464,9 +473,10 @@ export class DatabaseFormService implements IFormService {
       throw new Error("Access not allowed");
     }
     const slot = await InterviewSlot.create({ start: startTime, end: endTime });
-    form.interviewSlots.push(slot);
+    form.interviewSlots.push(slot._id);
     form.markModified("interviewSlots");
     await form.save();
+    console.log(form.interviewSlots);
 
     return slot.id;
   }
