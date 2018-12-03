@@ -3,18 +3,50 @@ import { IConfig } from "../config";
 import getEmailer, { IEmailer } from "../email";
 
 export interface IEmailService {
+  /**
+   * Sends approval response to form submission.
+   *
+   * @param recipient
+   *          e-mail address of recipient
+   * @param formTitle
+   *          title of pertinent form
+   *
+   * @return void
+   */
   sendApproval(
     ctx: Koa.Context,
     recipient: string,
     formTitle: string
   ): Promise<void>;
 
+  /**
+   * Sends rejection response to form submission.
+   *
+   * @param recipient
+   *          e-mail address of recipient
+   * @param formTitle
+   *          title of pertinent form
+   *
+   * @return void
+   */
   sendRejection(
     ctx: Koa.Context,
     recipient: string,
     formTitle: string
   ): Promise<void>;
 
+  /**
+   * Sends interview request response to form submission.
+   *
+   * @param recipient
+   *          e-mail address of recipient
+   * @param formTitle
+   *          title of pertinent form
+   * @param scheduleURL
+   *          URL of interview scheduling
+   *
+   * @return void
+   */
   sendInterviewRequest(
     ctx: Koa.Context,
     recipient: string,
@@ -22,6 +54,18 @@ export interface IEmailService {
     scheduleURL: string
   ): Promise<void>;
 
+  /**
+   * Sends confirmation of interview slot selection.
+   *
+   * @param recipient
+   *          e-mail address of recipient
+   * @param formTitle
+   *          title of pertinent form
+   * @param interviewSlot
+   *          selected slot for confirmation
+   *
+   * @return void
+   */
   sendInterviewConfirmation(
     ctx: Koa.Context,
     recipient: string,
@@ -72,13 +116,8 @@ class ConcreteEmailService implements IEmailService {
     formTitle: string,
     scheduleURL: string
   ): Promise<void> {
-    await this.sendMessage(
-      ctx,
-      recipient,
-      "Interview Request: " + formTitle,
-      `Thank you for applying for ${formTitle}.
-    The board would like to invite you for an interview. Please schedule an interview at this link: ${scheduleURL}`
-    );
+    // TODO
+    return;
   }
 
   public async sendInterviewConfirmation(
@@ -101,6 +140,9 @@ class ConcreteEmailService implements IEmailService {
   }
 }
 
-export default function getDefaultEmailService(emailer: IEmailer) {
+export default function getDefaultEmailService(
+  emailer: IEmailer
+) {
+
   return new ConcreteEmailService(emailer);
 }
