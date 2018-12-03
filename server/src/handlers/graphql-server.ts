@@ -21,7 +21,7 @@ const typeDefs = gql`
     addScore(responseID: ID!, score: Int!, notes: String): Boolean
     getAvgScore(responseID: ID!): Float
 
-    addInterviewSlot(formID: ID!, startTime: Int!, endTime: Int!): ID!
+    addInterviewSlot(formID: ID!, startTime: Float!, endTime: Float!): ID!
     removeInterviewSlot(formID: ID!, slotID: ID!): Boolean
     claimInterviewSlot(slotID: ID!, token: String!): Boolean
     requestInterviewFrom(formID: ID!, userEmail: String!): Boolean
@@ -82,8 +82,8 @@ const typeDefs = gql`
 
   type InterviewSlot {
     id: ID!
-    start: Int!
-    end: Int!
+    start: Float!
+    end: Float!
     claimedBy: User
   }
 `;
