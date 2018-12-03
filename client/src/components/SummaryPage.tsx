@@ -151,28 +151,24 @@ class SummaryPage extends React.Component<IProps, IState> {
   public ButtonRow = () => (
     <Grid columns={2}>
       <Grid.Column width={8} verticalAlign="bottom">
-        <div style={{ marginBottom: "5px" }}>
-          <Button icon="star" content="Score" onClick={this.onScore} />
-          <Button
-            icon="calendar"
-            content="Interview"
-            onClick={this.onInterview}
-          />
-        </div>
-        <div>
-          <Button
-            icon="check"
-            content="Approve"
-            color="green"
-            onClick={this.getChangeStatus("Approved")}
-          />
-          <Button
-            icon="x"
-            content="Reject"
-            color="red"
-            onClick={this.getChangeStatus("Rejected")}
-          />
-        </div>
+        <Button icon="star" content="Score" onClick={this.onScore} />
+        <Button
+          icon="calendar"
+          content="Interview"
+          onClick={this.onInterview}
+        />
+        <Button
+          icon="check"
+          content="Approve"
+          color="green"
+          onClick={this.getChangeStatus("Approved")}
+        />
+        <Button
+          icon="x"
+          content="Reject"
+          color="red"
+          onClick={this.getChangeStatus("Rejected")}
+        />
       </Grid.Column>
       <Grid.Column width={8}>
         <Filter
