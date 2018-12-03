@@ -1,16 +1,16 @@
 
-describe('The Zow App', () => {
+describe('Authentication', () => {
   
 
   beforeEach(async () => {
-    await page.goto('http://localhost:3000');
+    await page.goto('http://localhost:3000/login');
   });
 
   afterEach(async () => {
     // Logout after each test
     try{
-      await page.waitForSelector("span>a")
-      await page.click("span>a")
+      await page.waitForSelector("div.item>button")
+      await page.click("div.item>button")
     }
     catch(err) {
       console.log(err)
@@ -18,31 +18,31 @@ describe('The Zow App', () => {
   })
 
   it('should login to an existing account', async () => {
-    await page.waitForSelector(".ui.primary.button")
-    await page.click(".ui.primary.button")
     await page.waitForSelector('input[type=text]')
     await page.type('input[type=text]', "testuser")
     await page.type('input[type=password]', "testpass")
     const loginButton = await page.$('button[role=button]');
-    await loginButton.click()  
-    await page.waitForSelector("div.right.item")
+    await page.click("button.ui.large.primary.animated.button")
+    await page.waitForSelector('h3.ui.header>div')
+
     let username = await page.evaluate(()=> {
-      return document.querySelector("div.right.item span").innerText.split("\n")[0]
+      return document.querySelector('h3.ui.header>div').innerText
     })
     await expect(username).toBe("testuser")
   });
 
   it('should signup and create a new account', async() => {
-    await page.waitForSelector(".ui.secondary.button")
-    await page.click(".ui.secondary.button")
+    await page.waitForSelector('a[href="/register"]')
+    await page.click('a[href="/register"]')
     await page.type('input[placeholder="Name"]', "e2etest")
     await page.type('input[placeholder="Email address"]', "e2etest@test.com")
     await page.type('input[placeholder="Password"]', "password")
     await page.click("button")
-    await page.waitForSelector("div.right.item")
+    await page.waitForSelector('h3.ui.header>div')
+
     let username = await page.evaluate(()=> {
-      return document.querySelector("div.right.item span").innerText.split("\n")[0]
+      return document.querySelector('h3.ui.header>div').innerText
     })
-    expect(username).toBe("e2etest@test.com")
+    await expect(username).toBe("e2etest@test.com")
   })
 });
