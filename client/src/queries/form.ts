@@ -31,6 +31,9 @@ export const GET_SUMMARY_DATA = gql`
         answers {
           value
         }
+        scoring {
+          score
+        }
       }
     }
   }

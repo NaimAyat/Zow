@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, Header, ButtonGroup, Grid, Label } from "semantic-ui-react";
 import SummaryTable from "./SummaryTable";
-import { IFilter, IResponse, IQuestion, IScore } from "../DataTypes";
+import { IFilter, IResponse, IQuestion } from "../DataTypes";
 import Filter from "./Filter";
 import Page from "./Page";
 import { Link } from "react-router-dom";
@@ -12,7 +12,6 @@ interface IProps {
     name: string;
     responses: IResponse[];
     questions: IQuestion[];
-    scores: IScore[];
     published: boolean;
   };
   id: string;
@@ -216,7 +215,6 @@ class SummaryPage extends React.Component<IProps, IState> {
         <SummaryTable
           questions={this.props.form.questions}
           responses={this.props.form.responses}
-          scores={this.props.form.scores}
           getToggleChecked={this.getToggleChecked}
           rows={this.state.rows}
           statuses={this.state.statuses}

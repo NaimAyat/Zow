@@ -200,7 +200,7 @@ export class DatabaseFormService implements IFormService {
       throw new Error("form does not exist");
     }
 
-    return { id: form.id, name: form.name, published: form.published };
+    return form;
   }
 
   public async getOwnedForms(ctx: Context): Promise<IForm[]> {
@@ -242,10 +242,15 @@ export class DatabaseFormService implements IFormService {
       .populate({
         path: "responses",
         model: "Response",
-        populate: {
-          path: "answers",
-          model: "Answer"
-        }
+        populate: [
+          {
+            path: "answers",
+            model: "Answer"
+          },
+          {
+            path: "scoring.user"
+          }
+        ]
       });
     if (!form) {
       throw new Error("form does not exist");

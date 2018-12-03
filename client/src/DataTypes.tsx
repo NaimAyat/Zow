@@ -23,11 +23,14 @@ export interface IResponse {
   email: string;
   answers: IAnswer[];
   status?: "Pending" | "Approved" | "Rejected";
+  scoring?: IScore[];
 }
 
 export interface IScore {
-  email: string;
-  score: string;
+  // user: {
+  //   email: string;
+  // };
+  score: number;
 }
 
 export interface ISlot {
