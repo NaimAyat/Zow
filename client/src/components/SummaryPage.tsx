@@ -6,6 +6,8 @@ import Filter from "./Filter";
 import Page from "./Page";
 import { Link } from "react-router-dom";
 import { History } from "history";
+import { Mutation } from "react-apollo";
+import { ADD_OWNER } from "src/queries/form";
 
 interface IProps {
   form: {
@@ -213,6 +215,22 @@ class SummaryPage extends React.Component<IProps, IState> {
           <Link to={"/form/" + this.props.id} target="_blank">
             <Button icon="linkify" content="Form Link" />
           </Link>
+          <Mutation mutation={ADD_OWNER}>
+            {addOwner => {
+              return (
+                <Button
+                  icon="address book outline"
+                  content="Add Recruiter"
+                  onClick={() => {
+                    const email = prompt("Email Address:");
+                    addOwner({
+                      variables: { formID: this.props.id, newOwner: email }
+                    });
+                  }}
+                />
+              );
+            }}
+          </Mutation>
         </div>
         <this.ButtonRow />
         <SummaryTable

@@ -103,3 +103,9 @@ export const ADD_INTERVIEW_SLOT = gql`
     addInterviewSlot(formID: $formID, startTime: $startTime, endTime: $endTime)
   }
 `;
+
+export const ADD_OWNER = gql`
+  mutation addOwner($formID: ID!, $newOwner: String!) {
+    addOwner(formID: $formID, newOwner: $newOwner)
+  }
+`;
