@@ -1,4 +1,5 @@
 # Zow
+View demo video [here](https://www.youtube.com/watch?v=VHAJ-WC4qEo).
 
 View project proposal [here](documentation/proposal.pdf).
 
