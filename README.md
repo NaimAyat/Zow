@@ -13,12 +13,12 @@ Project for UCLA Computer Science 130 (Software Engineering) with Professor Miry
 
 ### Test Cases
 
-#### Frontend
+#### Frontend Tests
 
 Client tests can be viewed [here](https://github.com/NaimAyat/Zow/tree/master/client/src/components).
 Client tests are written in the components folder. For example, if there is a component named `component` in the file `component.tsx`, its frontend component test is in `component.test.tsx`.
 
-#### Backend
+#### Backend Tests
 
 Backend tests are all in separate folders.
 
@@ -33,6 +33,12 @@ Backend tests are all in separate folders.
 - [graphql-server.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/handlers/graphql-server.test.ts): tests to ensure graphql server works correctly
 - [resolvers.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/handlers/resolvers.test.ts): tests to ensure graphql resolvers work correctly
 - [encrypt.test.ts](https://github.com/NaimAyat/Zow/blob/master/server/src/services/encrypt.test.ts): tests to ensure encryption module works correctly
+
+#### End to End (Automation) Tests
+These need to be run from the e2etests folder using the following command: `bash test.sh`
+
+- [e2etests/auth.test.js](https://github.com/NaimAyat/Zow/blob/master/e2etests/auth.test.js): End to end testing for authentication
+- [e2etests/form.test.js](https://github.com/NaimAyat/Zow/blob/master/e2etests/form.test.js): End to end testing for forms
 
 ## Team
 
