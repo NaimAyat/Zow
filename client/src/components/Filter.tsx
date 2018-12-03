@@ -60,7 +60,7 @@ class Filter extends React.Component<IProps, IState> {
       <React.Fragment>
         <Menu vertical fluid>
           {this.props.filters.map((filter, index) => (
-            <Menu.Item>
+            <Menu.Item key={index}>
               <b>{filter.prompt}</b>
               {" " + filter.type + ' "' + filter.search + '"'}
               <Icon

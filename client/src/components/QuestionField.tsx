@@ -150,7 +150,7 @@ class QuestionField extends React.Component<IProps, IState> {
               {this.getAnswerField()}
             </Form.Field>
           </Grid.Column>
-          <Grid.Column segment centered width={1}>
+          <Grid.Column width={1}>
             <Icon
               style={
                 this.props.question.type === "EMAIL"
