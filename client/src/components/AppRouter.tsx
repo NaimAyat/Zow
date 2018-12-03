@@ -25,9 +25,6 @@ const AppRouter = () => (
               <Link to="/">Home</Link>
             </Menu.Item>
             <Menu.Item>
-              <Link to="/score">Scoring Page</Link>
-            </Menu.Item>
-            <Menu.Item>
               <Link to="/interview-creation">Interview Creation</Link>
             </Menu.Item>
             <Menu.Item>

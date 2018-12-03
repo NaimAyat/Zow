@@ -6,6 +6,7 @@ const typeDefs = gql`
     user(userID: ID!): User!
     form(formID: ID!): Form!
     ownedForms: [Form!]!
+    getInterviewSlots(formID: ID!): [InterviewSlot]!
   }
 
   type Mutation {
@@ -19,6 +20,11 @@ const typeDefs = gql`
     addOwner(formID: ID!, userID: ID!): Boolean
     addScore(responseID: ID!, score: Int!, notes: String): Boolean
     getAvgScore(responseID: ID!): Float
+
+    addInterviewSlot(formID: ID!, startTime: Int!, endTime: Int!): ID!
+    removeInterviewSlot(formID: ID!, slotID: ID!): Boolean
+    claimInterviewSlot(slotID: ID!, token: String!): Boolean
+    requestInterviewFrom(formID: ID!, userEmail: String!): Boolean
   }
 
   type User {

@@ -74,3 +74,9 @@ export const SUBMIT_SCORE_GQL = gql`
     addScore(responseID: $responseID, score: $score, notes: $notes)
   }
 `;
+
+export const INTERVIEW_GQL = gql`
+  mutation requestInterviewFrom($formID: ID!, $userEmail: String!) {
+    requestInterviewFrom(formID: $formID, userEmail: $userEmail)
+  }
+`;
