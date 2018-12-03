@@ -7,7 +7,7 @@ const Success: React.SFC = () => {
     <Page header="Thanks for your submission!">
       <Message success>
         <Message.Header>Success!</Message.Header>
-        We sent you an email so you can check the status of your application.
+        We'll email you with updates on the status of your application.
       </Message>
     </Page>
   );
