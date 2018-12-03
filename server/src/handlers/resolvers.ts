@@ -58,8 +58,8 @@ export default function getResolvers(
       },
 
       async getInterviewSlots(parent, args, ctx): Promise<IInterviewSlot[]> {
-        const { formID } = args;
-        return await formService.getInterviewSlots(ctx, formID);
+        const { token } = args;
+        return await formService.getInterviewSlots(ctx, token);
       }
     },
 

@@ -13,12 +13,11 @@ import {
   Answer,
   Response,
   User,
-  InterviewSlot
+  InterviewSlot,
+  InterviewToken,
+  newInterviewToken
 } from "../db/models";
 import { IEmailService } from "./email";
-import InterviewToken, {
-  newInterviewToken
-} from "../db/models/InterviewTokens";
 
 export interface IFormService {
   // Accessors
@@ -51,7 +50,7 @@ export interface IFormService {
 
   /**
    * Get interview slots for a form
-   * @param formID form ID
+   * @param token token string
    */
   getInterviewSlots(ctx: Context, formID: string): Promise<IInterviewSlot[]>;
 
@@ -200,7 +199,12 @@ export class DatabaseFormService implements IFormService {
       throw new Error("form does not exist");
     }
 
-    return form;
+    return {
+      id: form.id,
+      name: form.name,
+      owners: form.owners,
+      published: form.published
+    };
   }
 
   public async getOwnedForms(ctx: Context): Promise<IForm[]> {
@@ -368,7 +372,6 @@ export class DatabaseFormService implements IFormService {
     score: number,
     notes: string
   ): Promise<IResponse> {
-    const query = { id: responseID };
     const response = await Response.findById(responseID);
     if (!response) {
       throw new Error("Response not found");
@@ -416,12 +419,22 @@ export class DatabaseFormService implements IFormService {
   //// Interview slots
   public async getInterviewSlots(
     ctx: Context,
-    formID: string
+    token: string
   ): Promise<IInterviewSlot[]> {
-    const form = await Form.findById(formID).populate("owners interviewSlots");
+    const realTokenString = new Buffer(token, "hex").toString("ascii");
+    const tokenObj = await InterviewToken.findOne({ token: realTokenString });
+    console.log(await InterviewToken.find());
+    if (!tokenObj) {
+      throw new Error("Invalid token");
+    }
+
+    const form = await Form.findById(tokenObj.form).populate(
+      "owners interviewSlots"
+    );
     if (!form) {
       throw new Error("Form not found");
     }
+
     let slots = form.interviewSlots;
     if (
       !ctx.session.user ||

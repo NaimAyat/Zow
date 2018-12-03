@@ -6,7 +6,7 @@ const typeDefs = gql`
     user(userID: ID!): User!
     form(formID: ID!): Form!
     ownedForms: [Form!]!
-    getInterviewSlots(formID: ID!): [InterviewSlot]!
+    getInterviewSlots(token: String!): [InterviewSlot]!
   }
 
   type Mutation {
