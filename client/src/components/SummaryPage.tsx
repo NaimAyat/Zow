@@ -16,6 +16,7 @@ interface IProps {
   };
   id: string;
   history: History;
+  offerInterview(userEmail: string): void;
 }
 
 export interface IRow {
@@ -41,6 +42,7 @@ class SummaryPage extends React.Component<IProps, IState> {
     this.getToggleChecked = this.getToggleChecked.bind(this);
     this.setFilters = this.setFilters.bind(this);
     this.onScore = this.onScore.bind(this);
+    this.onInterview = this.onInterview.bind(this);
   }
 
   public componentWillReceiveProps(props: IProps) {
@@ -71,6 +73,15 @@ class SummaryPage extends React.Component<IProps, IState> {
         "/score/" + this.props.id + "/" + selectedRowIDs.join(",")
       );
     }
+  }
+
+  public onInterview() {
+    const selectedRowEmails = this.state.rows
+      .filter(row => row.checked)
+      .map(
+        ({ responseIndex }) => this.props.form.responses[responseIndex].email
+      );
+    selectedRowEmails.forEach(email => this.props.offerInterview(email));
   }
 
   public setFilteredRows() {
@@ -141,9 +152,12 @@ class SummaryPage extends React.Component<IProps, IState> {
     <Grid columns={2}>
       <Grid.Column width={8} verticalAlign="bottom">
         <div style={{ marginBottom: "5px" }}>
-          <Button icon="mail" content="Email" />
           <Button icon="star" content="Score" onClick={this.onScore} />
-          <Button icon="calendar" content="Interview" />
+          <Button
+            icon="calendar"
+            content="Interview"
+            onClick={this.onInterview}
+          />
         </div>
         <div>
           <Button

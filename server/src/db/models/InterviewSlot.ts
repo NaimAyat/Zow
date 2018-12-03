@@ -13,4 +13,5 @@ const InterviewSlot = mongoose.model<IInterviewSlotModel>(
   "InterviewSlot",
   InterviewSlotSchema
 );
+
 export default InterviewSlot;

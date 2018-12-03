@@ -72,8 +72,13 @@ class ConcreteEmailService implements IEmailService {
     formTitle: string,
     scheduleURL: string
   ): Promise<void> {
-    // TODO
-    return;
+    await this.sendMessage(
+      ctx,
+      recipient,
+      "Interview Request: " + formTitle,
+      `Thank you for applying for ${formTitle}.
+    The board would like to invite you for an interview. Please schedule an interview at this link: ${scheduleURL}`
+    );
   }
 
   public async sendInterviewConfirmation(
@@ -96,9 +101,6 @@ class ConcreteEmailService implements IEmailService {
   }
 }
 
-export default function getDefaultEmailService(
-  emailer: IEmailer
-) {
-  
+export default function getDefaultEmailService(emailer: IEmailer) {
   return new ConcreteEmailService(emailer);
 }

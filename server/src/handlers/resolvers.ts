@@ -1,7 +1,8 @@
 import { IAuthorizationService } from "../services/auth";
-import { IUser } from "../entities";
+import { IUser, IInterviewSlot } from "../entities";
 import { IFormService } from "../services/form";
 import { IUserService } from "../services/user";
+import { newInterviewToken } from "../db/models/InterviewTokens";
 
 export default function getResolvers(
   authService: IAuthorizationService,
@@ -54,6 +55,11 @@ export default function getResolvers(
       async user(parent, args, ctx) {
         const { userID } = args;
         return await userService.findUserById(ctx, userID);
+      },
+
+      async getInterviewSlots(parent, args, ctx): Promise<IInterviewSlot[]> {
+        const { formID } = args;
+        return await formService.getInterviewSlots(ctx, formID);
       }
     },
 
@@ -184,6 +190,32 @@ export default function getResolvers(
       async setPublishState(parent, args, ctx) {
         const { formID, published } = args;
         await formService.setPublishState(ctx, formID, published);
+        return true;
+      },
+
+      async addInterviewSlot(parent, args, ctx) {
+        const { formID, startTime, endTime } = args;
+        return await formService.addInterviewSlot(
+          ctx,
+          formID,
+          startTime,
+          endTime
+        );
+      },
+
+      async removeInterviewSlot(parent, args, ctx) {
+        const { formID, slotID } = args;
+        return await formService.removeInterviewSlot(ctx, formID, slotID);
+      },
+
+      async claimInterviewSlot(parent, args, ctx) {
+        const { slotID, token } = args;
+        return await formService.claimInterviewSlot(ctx, slotID, token);
+      },
+
+      async requestInterviewFrom(parent, args, ctx) {
+        const { formID, userEmail } = args;
+        await formService.requestInterviewFrom(ctx, formID, userEmail);
         return true;
       }
     },

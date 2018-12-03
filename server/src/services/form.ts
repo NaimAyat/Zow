@@ -1,7 +1,24 @@
-import { IForm, IResponse, IUser, IQuestion, IScore } from "../entities";
+import {
+  IForm,
+  IResponse,
+  IUser,
+  IQuestion,
+  IScore,
+  IInterviewSlot
+} from "../entities";
 import { Context } from "koa";
-import { Form, Question, Answer, Response, User } from "../db/models";
+import {
+  Form,
+  Question,
+  Answer,
+  Response,
+  User,
+  InterviewSlot
+} from "../db/models";
 import { IEmailService } from "./email";
+import InterviewToken, {
+  newInterviewToken
+} from "../db/models/InterviewTokens";
 
 export interface IFormService {
   // Accessors
@@ -32,7 +49,50 @@ export interface IFormService {
    */
   getResponses(ctx: Context, formID: string): Promise<IResponse[]>;
 
+  /**
+   * Get interview slots for a form
+   * @param formID form ID
+   */
+  getInterviewSlots(ctx: Context, formID: string): Promise<IInterviewSlot[]>;
+
   // Mutators
+
+  /**
+   * Add an interview slot to a form
+   * @param formID id of form to add slot to
+   * @param startTime starting time of interview slot
+   * @param endTime ending time of interview slot
+   */
+  addInterviewSlot(
+    ctx: Context,
+    formID: string,
+    startTime: number,
+    endTime: number
+  ): Promise<string>;
+
+  /**
+   * Remove interview slot from a form
+   * @param ctx
+   * @param formID id of form to remove interview slot from
+   * @param slotID slot ID
+   */
+  removeInterviewSlot(
+    ctx: Context,
+    formID: string,
+    slotID: string
+  ): Promise<void>;
+
+  /**
+   * Claim an interview slot for a user
+   * @param slotID ID of slot to claim
+   * @param token unique token for user
+   */
+  claimInterviewSlot(
+    ctx: Context,
+    slotID: string,
+    token: string
+  ): Promise<boolean>;
+
   /**
    * Overwrites given form in database if exists, creates if it does not.
    *
@@ -118,6 +178,12 @@ export interface IFormService {
     ctx: Context,
     formID: string,
     published: boolean
+  ): Promise<void>;
+
+  requestInterviewFrom(
+    ctx: Context,
+    formID: string,
+    userEmail: string
   ): Promise<void>;
 }
 
@@ -345,6 +411,125 @@ export class DatabaseFormService implements IFormService {
 
     form.published = published;
     await form.save();
+  }
+
+  //// Interview slots
+  public async getInterviewSlots(
+    ctx: Context,
+    formID: string
+  ): Promise<IInterviewSlot[]> {
+    const form = await Form.findById(formID).populate("owners interviewSlots");
+    if (!form) {
+      throw new Error("Form not found");
+    }
+    let slots = form.interviewSlots;
+    if (
+      !ctx.session.user ||
+      form.owners.find(user => user.id === ctx.session.user.id) === undefined
+    ) {
+      // don't show unavailable slots to non-owners
+      slots = slots.filter(slot => !slot.available);
+    }
+
+    return form.interviewSlots;
+  }
+
+  public async addInterviewSlot(
+    ctx: Context,
+    formID: string,
+    startTime: number,
+    endTime: number
+  ): Promise<string> {
+    const form = await Form.findById(formID).populate("owners interviewSlots");
+    if (!form) {
+      throw new Error("Form not found");
+    }
+    if (
+      !ctx.session.user ||
+      form.owners.find(user => user.id === ctx.session.user.id) === undefined
+    ) {
+      throw new Error("Access not allowed");
+    }
+    const slot = await InterviewSlot.create({ start: startTime, end: endTime });
+    form.interviewSlots.push(slot);
+    form.markModified("interviewSlots");
+    await form.save();
+
+    return slot.id;
+  }
+
+  public async removeInterviewSlot(
+    ctx: Context,
+    formID: string,
+    slotID: string
+  ): Promise<void> {
+    const form = await Form.findById(formID).populate("owners interviewSlots");
+    if (!form) {
+      throw new Error("Form not found");
+    }
+    if (
+      !ctx.session.user ||
+      form.owners.find(user => user.id === ctx.session.user.id) === undefined
+    ) {
+      throw new Error("Access not allowed");
+    }
+
+    form.interviewSlots = form.interviewSlots.filter(
+      slot => slot.id !== slotID
+    );
+    await form.save();
+  }
+
+  public async claimInterviewSlot(
+    ctx: Context,
+    slotID: string,
+    token: string
+  ): Promise<boolean> {
+    const tokenObj = await InterviewToken.findOne({ token }).populate("form");
+    if (!tokenObj) {
+      throw new Error("invalid token");
+    }
+
+    const form = await Form.findById(tokenObj.form.id).populate(
+      "interviewSlots"
+    );
+    if (!form) {
+      throw new Error("form not found");
+    }
+
+    // find slot
+    const slot: any = form.interviewSlots.find(s => s.id === slotID);
+    if (slot.available) {
+      slot.available = false;
+      slot.intervieweeEmail = tokenObj.userEmail;
+      await slot.save();
+      return true;
+    }
+
+    return false; // failed
+  }
+
+  public async requestInterviewFrom(
+    ctx: Context,
+    formID: string,
+    userEmail: string
+  ) {
+    console.log("Requesting Interview");
+    const form = await Form.findById(formID);
+    if (!form) {
+      throw new Error("form not found");
+    }
+
+    const tokenString = await newInterviewToken(userEmail, formID);
+    console.log("Generated token");
+    // TODO: Refactor out hostname
+    await this.emailService.sendInterviewRequest(
+      ctx,
+      userEmail,
+      form.name,
+      `http://localhost:3000/interview/${tokenString}`
+    );
+    console.log("Sent email");
   }
 }
 
