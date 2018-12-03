@@ -88,7 +88,7 @@ class ScoringPage extends React.Component<IProps, IState> {
           <Header as="h1">{this.props.formName}</Header>
           <Form size="big">
             {this.props.questions.map((question, index) => (
-              <Message style={{ margin: "10px" }}>
+              <Message style={{ margin: "10px" }} key={index}>
                 <Form.Field required>
                   <label>{question.prompt}</label>
                   {this.getAnswer(question, this.props.response.answers[index])}
