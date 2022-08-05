@@ -47,6 +47,6 @@
     "graphql": "^14.0.2",
     "koa": "^2.6.1",
     "koa-session": "^5.10.0",
-    "mongoose": "^5.3.10"
+    "mongoose": "^5.7.5"
   }
 }
